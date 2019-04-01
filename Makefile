@@ -108,7 +108,9 @@ do-install:
 	cd ${WRKDIR}/VSCode-linux-x64/bin && \
 		${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/share/code-oss/bin
 	cd ${WRKDIR}/VSCode-linux-x64/resources/app && \
-		${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/share/code-oss/resources/app
+		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/code-oss/resources/app
+	cd ${STAGEDIR}${PREFIX}/share/code-oss/resources/app/node_modules.asar.unpacked && \
+		${FIND} . -type f -exec ${CHMOD} ${BINMODE} {} ';'
 	${RLN} ${STAGEDIR}${PREFIX}/share/code-oss/code-oss ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>
