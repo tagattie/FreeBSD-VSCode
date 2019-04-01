@@ -2,6 +2,7 @@
 
 PORTNAME=	vscode
 DISTVERSION=	1.33.0.g20190329
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v${ELECTRON_VER}/:electron \
 		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep
