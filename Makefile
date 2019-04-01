@@ -108,7 +108,7 @@ do-install:
 	cd ${WRKDIR}/VSCode-linux-x64/bin && \
 		${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/share/code-oss/bin
 	cd ${WRKDIR}/VSCode-linux-x64/resources/app && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/code-oss/resources/app
+		${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/share/code-oss/resources/app
 	${RLN} ${STAGEDIR}${PREFIX}/share/code-oss/code-oss ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>
