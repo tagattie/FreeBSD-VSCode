@@ -6,7 +6,7 @@ PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v${ELECTRON_VER}/:electron \
 		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep
-DISTFILES=	electron-v${ELECTRON_VER}-freebsd-x64.zip:electron \
+DISTFILES=	electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip:electron \
 		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
