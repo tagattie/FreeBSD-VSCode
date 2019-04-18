@@ -6,7 +6,8 @@ PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v${ELECTRON_VER}/:electron \
 		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep
-DISTFILES=	electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip:electron \
+DISTFILES=	electron-v${ELECTRON_VER}-freebsd12-x64.zip:electron \
+		electron-v${ELECTRON_VER}-freebsd11-x64.zip:electron \
 		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -55,7 +56,7 @@ DATADIR=	${PREFIX}/share/code-oss
 
 post-extract:
 	cd ${WRKDIR} && ${UNZIP_CMD} -qo \
-		${_DISTDIR}/electron-v${ELECTRON_VER}-freebsd-x64.zip -d electron
+		${_DISTDIR}/electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip -d electron
 	${MKDIR} ${WRKDIR}/vscode-ripgrep
 	${TAR} -xzf ${_DISTDIR}/vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz \
 		--strip-components 1 -C ${WRKDIR}/vscode-ripgrep
