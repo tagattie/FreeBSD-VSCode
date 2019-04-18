@@ -51,6 +51,8 @@ USE_GNOME=	atk pango gtk30 libxml2 libxslt
 ELECTRON_VER=	4.1.2
 VSCODE_RIPGREP_VER=	1.2.5
 
+DATADIR=	${PREFIX}/share/code-oss
+
 post-extract:
 	cd ${WRKDIR} && ${UNZIP_CMD} -qo \
 		${_DISTDIR}/electron-v${ELECTRON_VER}-freebsd-x64.zip -d electron
@@ -95,27 +97,26 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps
 	${INSTALL_DATA} ${WRKSRC}/resources/linux/code.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/com.visualstudio.code.oss.png
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/code-oss
+	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_PROGRAM} ${WRKDIR}/electron/electron \
-		${STAGEDIR}${PREFIX}/share/code-oss/code-oss
+		${STAGEDIR}${DATADIR}/code-oss
 .for f in libEGL.so libGLESv2.so libVkICD_mock_icd.so
 	${INSTALL_LIB} ${WRKDIR}/electron/${f} \
-		${STAGEDIR}${PREFIX}/share/code-oss
+		${STAGEDIR}${DATADIR}
 .endfor
 .for f in chrome_100_percent.pak chrome_200_percent.pak icudtl.dat natives_blob.bin resources.pak snapshot_blob.bin v8_context_snapshot.bin
-	${INSTALL_DATA} ${WRKDIR}/electron/${f} \
-		${STAGEDIR}${PREFIX}/share/code-oss
+	${INSTALL_DATA} ${WRKDIR}/electron/${f} ${STAGEDIR}${DATADIR}
 .endfor
 .for d in locales resources swiftshader
 	cd ${WRKDIR}/electron/${d} && ${COPYTREE_SHARE} . \
-		${STAGEDIR}${PREFIX}/share/code-oss/${d} "! -name default_app.asar"
+		${STAGEDIR}${DATADIR}/${d} "! -name default_app.asar"
 .endfor
 	cd ${WRKDIR}/VSCode-linux-x64/bin && \
-		${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/share/code-oss/bin
+		${COPYTREE_BIN} . ${STAGEDIR}${DATADIR}/bin
 	cd ${WRKDIR}/VSCode-linux-x64/resources/app && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/code-oss/resources/app
-	cd ${STAGEDIR}${PREFIX}/share/code-oss/resources/app/node_modules.asar.unpacked && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/resources/app
+	cd ${STAGEDIR}${DATADIR}/resources/app/node_modules.asar.unpacked && \
 		${FIND} . -type f -exec ${CHMOD} ${BINMODE} {} ';'
-	${RLN} ${STAGEDIR}${PREFIX}/share/code-oss/code-oss ${STAGEDIR}${PREFIX}/bin
+	${RLN} ${STAGEDIR}${DATADIR}/code-oss ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>
