@@ -24,6 +24,7 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libsnappy.so:archivers/snappy \
 		libFLAC.so:audio/flac \
 		libopus.so:audio/opus \
+		libinotify.so:devel/libinotify \
 		libnotify.so:devel/libnotify \
 		libpci.so:devel/libpci \
 		libdrm.so:graphics/libdrm \
@@ -32,15 +33,18 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libopenh264.so:multimedia/openh264 \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
+		libsecret-1.so:security/libsecret \
 		libnss3.so:security/nss \
 		libfontconfig.so:x11-fonts/fontconfig
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		desktop-file-utils gnome jpeg
+USES=		desktop-file-utils gnome jpeg python:2.7,build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Microsoft
 GH_TAGNAME=	2cf0b8d67e95456ee550a58c0bb1c2002ffa7996
+
+BINARY_ALIAS=	python=${PYTHON_CMD}
 
 USE_GNOME=	atk pango gtk30 libxml2 libxslt
 
