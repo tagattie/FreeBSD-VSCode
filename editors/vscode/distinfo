@@ -1,9 +1,9 @@
-TIMESTAMP = 1555574534
-SHA256 (electron-v4.1.4-freebsd12-x64.zip) = e2c530867fee1adffee242c34343d7868846066a48f5e9725ded20f54ea65d25
-SIZE (electron-v4.1.4-freebsd12-x64.zip) = 61924370
-SHA256 (electron-v4.1.4-freebsd11-x64.zip) = 8b796d95f9b83119182180d2889a84c123319895fbe77971a82d397431485606
-SIZE (electron-v4.1.4-freebsd11-x64.zip) = 61843053
+TIMESTAMP = 1558185137
+SHA256 (electron-v4.2.2-freebsd12-x64.zip) = 826c4929ae4619e495f6cded6409b5adf28d7904e22d07ccaa22b1867a22486b
+SIZE (electron-v4.2.2-freebsd12-x64.zip) = 63108830
+SHA256 (electron-v4.2.2-freebsd11-x64.zip) = 776587131a48ff75a63440b4b40c4b7eff420e4fdfa9ac8d4ef7a0f5fa0862b6
+SIZE (electron-v4.2.2-freebsd11-x64.zip) = 63016039
 SHA256 (vscode-ripgrep-1.2.5.tgz) = 10f0d5201364fea13cc8604dfd2c900984a32aa382a52bbe8d2c4a50fadd846b
 SIZE (vscode-ripgrep-1.2.5.tgz) = 2119403
-SHA256 (Microsoft-vscode-1.34.0.g20190418-a872a905cad7185d9bf55603aa95436df2df3601_GH0.tar.gz) = eb083fe5887717a94d4beeec231ac49f06147fca0030a7a418217883b406381b
-SIZE (Microsoft-vscode-1.34.0.g20190418-a872a905cad7185d9bf55603aa95436df2df3601_GH0.tar.gz) = 8954291
+SHA256 (Microsoft-vscode-1.35.0.g20190517-7b78242a5f63fd40322ff93e5be2b687fb3778cd_GH0.tar.gz) = 47238a80a086909da61ac19531ff6fccea8d5a5708d5f9523ab62e6e9cec56a3
+SIZE (Microsoft-vscode-1.35.0.g20190517-7b78242a5f63fd40322ff93e5be2b687fb3778cd_GH0.tar.gz) = 8970069

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vscode
-DISTVERSION=	1.34.0.g20190418
+DISTVERSION=	1.35.0.g20190517
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v${ELECTRON_VER}/:electron \
 		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep
@@ -42,13 +42,13 @@ USES=		desktop-file-utils gnome jpeg python:2.7,build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Microsoft
-GH_TAGNAME=	a872a905cad7185d9bf55603aa95436df2df3601
+GH_TAGNAME=	7b78242a5f63fd40322ff93e5be2b687fb3778cd
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
 USE_GNOME=	atk pango gtk30 libxml2 libxslt
 
-ELECTRON_VER=	4.1.4
+ELECTRON_VER=	4.2.2
 VSCODE_RIPGREP_VER=	1.2.5
 
 DATADIR=	${PREFIX}/share/code-oss
