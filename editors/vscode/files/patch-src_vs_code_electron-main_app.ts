@@ -1,6 +1,6 @@
---- src/vs/code/electron-main/app.ts.orig	2019-03-29 14:40:10 UTC
+--- src/vs/code/electron-main/app.ts.orig	2019-05-17 20:03:55 UTC
 +++ src/vs/code/electron-main/app.ts
-@@ -426,7 +426,7 @@ export class CodeApplication extends Disposable {
+@@ -435,7 +435,7 @@ export class CodeApplication extends Disposable {
  
  		if (process.platform === 'win32') {
  			services.set(IUpdateService, new SyncDescriptor(Win32UpdateService));
@@ -9,8 +9,11 @@
  			if (process.env.SNAP && process.env.SNAP_REVISION) {
  				services.set(IUpdateService, new SyncDescriptor(SnapUpdateService, [process.env.SNAP, process.env.SNAP_REVISION]));
  			} else {
-@@ -775,4 +775,3 @@ export class CodeApplication extends Disposable {
+@@ -784,7 +784,6 @@ export class CodeApplication extends Disposable {
  		});
  	}
  }
 -
+ function getURIToOpenFromPathSync(path: string): IURIToOpen {
+ 	try {
+ 		const fileStat = statSync(path);

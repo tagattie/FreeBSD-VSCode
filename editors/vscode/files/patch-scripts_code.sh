@@ -1,6 +1,6 @@
---- scripts/code.sh.orig	2019-03-20 08:48:14 UTC
+--- scripts/code.sh.orig	2019-05-17 20:03:55 UTC
 +++ scripts/code.sh
-@@ -19,14 +19,11 @@ function code() {
+@@ -24,14 +24,11 @@ function code() {
  		CODE="./.build/electron/$NAME.app/Contents/MacOS/Electron"
  	else
  		NAME=`node -p "require('./product.json').applicationName"`
