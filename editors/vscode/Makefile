@@ -40,8 +40,9 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libnss3.so:security/nss \
 		libfontconfig.so:x11-fonts/fontconfig
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
+TEST_DEPENDS=	bash:shells/bash
 
-USES=		desktop-file-utils gnome jpeg python:2.7,build
+USES=		desktop-file-utils gnome jpeg python:2.7,build shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
@@ -54,6 +55,8 @@ USE_GNOME=	atk pango gtk30 libxml2 libxslt
 ELECTRON_VER=	4.2.2
 VSCODE_RIPGREP_VER=	1.2.5
 
+SHEBANG_FILES=	scripts/test.sh
+
 DATADIR=	${PREFIX}/share/code-oss
 
 post-extract:
@@ -65,6 +68,11 @@ post-extract:
 	# for offline "yarn install" of all necessary node_modules
 	${MKDIR} ${WRKDIR}/.cache
 	${MV} ${WRKDIR}/yarn ${WRKDIR}/.cache
+	# for unit tests dependency
+	${MKDIR} ${WRKSRC}/.build
+	cd ${WRKDIR} && \
+		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKSRC}/.build
+	cd ${WRKSRC}/.build/electron && ${MV} electron code-oss
 
 post-patch:
 	${REINPLACE_CMD} -e 's/@@NAME_LONG@@/Code - OSS/; \
@@ -124,5 +132,10 @@ do-install:
 	cd ${STAGEDIR}${DATADIR}/resources/app/node_modules.asar.unpacked && \
 		${FIND} . -type f -exec ${CHMOD} ${BINMODE} {} ';'
 	${RLN} ${STAGEDIR}${DATADIR}/code-oss ${STAGEDIR}${PREFIX}/bin
+
+do-test:
+	# Note: Xvfb or something similar is necessary for headless testing
+	# unit tests
+	cd ${WRKSRC} && ./scripts/test.sh
 
 .include <bsd.port.mk>
