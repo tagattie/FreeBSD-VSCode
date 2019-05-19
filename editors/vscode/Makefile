@@ -104,9 +104,8 @@ do-build:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline # --no-progress
 	${MV} ${WRKDIR}/vscode-ripgrep ${WRKSRC}/node_modules
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn compile # --verbose --no-progress
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${WRKSRC}/node_modules/.bin/gulp \
-		vscode-linux-x64 --max_old_space_size=4095
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn compile
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/appdata
