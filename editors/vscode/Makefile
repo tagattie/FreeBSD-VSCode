@@ -4,11 +4,14 @@ PORTNAME=	vscode
 DISTVERSION=	1.35.0.g20190517
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v${ELECTRON_VER}/:electron \
-		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep
 DISTFILES=	electron-v${ELECTRON_VER}-freebsd12-x64.zip:electron \
+		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep \
+		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
 		electron-v${ELECTRON_VER}-freebsd11-x64.zip:electron \
-		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
+		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep \
+		yarn-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
+		yarn-cache-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	maintainer@example.com
 COMMENT=	Code Editing. Redefined.
@@ -59,6 +62,9 @@ post-extract:
 	${MKDIR} ${WRKDIR}/vscode-ripgrep
 	${TAR} -xzf ${_DISTDIR}/vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz \
 		--strip-components 1 -C ${WRKDIR}/vscode-ripgrep
+	# for offline "yarn install" of all necessary node_modules
+	${MKDIR} ${WRKDIR}/.cache
+	${MV} ${WRKDIR}/yarn ${WRKDIR}/.cache
 
 post-patch:
 	${REINPLACE_CMD} -e 's/@@NAME_LONG@@/Code - OSS/; \

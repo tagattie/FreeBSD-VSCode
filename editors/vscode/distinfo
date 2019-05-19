@@ -5,5 +5,7 @@ SHA256 (electron-v4.2.2-freebsd11-x64.zip) = 776587131a48ff75a63440b4b40c4b7eff4
 SIZE (electron-v4.2.2-freebsd11-x64.zip) = 63016039
 SHA256 (vscode-ripgrep-1.2.5.tgz) = 10f0d5201364fea13cc8604dfd2c900984a32aa382a52bbe8d2c4a50fadd846b
 SIZE (vscode-ripgrep-1.2.5.tgz) = 2119403
+SHA256 (yarn-cache-1.35.0.g20190517.tar.gz) = 87b9c1a96bf388166410a1e8b97a5d4f12f8bc84f45c91d21cffd81dc33ceb09
+SIZE (yarn-cache-1.35.0.g20190517.tar.gz) = 197855220
 SHA256 (microsoft-vscode-1.35.0.g20190517-7b78242a5f63fd40322ff93e5be2b687fb3778cd_GH0.tar.gz) = 47238a80a086909da61ac19531ff6fccea8d5a5708d5f9523ab62e6e9cec56a3
 SIZE (microsoft-vscode-1.35.0.g20190517-7b78242a5f63fd40322ff93e5be2b687fb3778cd_GH0.tar.gz) = 8970069
