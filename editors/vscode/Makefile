@@ -41,7 +41,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils
 USES=		desktop-file-utils gnome jpeg python:2.7,build
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	Microsoft
+GH_ACCOUNT=	microsoft
 GH_TAGNAME=	7b78242a5f63fd40322ff93e5be2b687fb3778cd
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
