@@ -4,9 +4,10 @@ PORTNAME=	vscode
 DISTVERSION=	1.35.0.g20190517
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v${ELECTRON_VER}/:electron \
-DISTFILES=	electron-v${ELECTRON_VER}-freebsd12-x64.zip:electron \
 		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep \
 		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
+DISTFILES=	SHASUMS256.txt:electron \
+		electron-v${ELECTRON_VER}-freebsd12-x64.zip:electron \
 		electron-v${ELECTRON_VER}-freebsd11-x64.zip:electron \
 		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep \
 		yarn-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
@@ -73,6 +74,14 @@ post-extract:
 	cd ${WRKDIR} && \
 		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKSRC}/.build
 	cd ${WRKSRC}/.build/electron && ${MV} electron code-oss
+	# for UI smoke tests dependency
+	${MKDIR} ${WRKDIR}/.cache/electron
+	${SED} -e 's/freebsd${OSREL:R}/freebsd/' ${_DISTDIR}/SHASUMS256.txt > \
+		${WRKDIR}/.cache/electron/SHASUMS256.txt-${ELECTRON_VER}
+	${CP} ${_DISTDIR}/electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip \
+		${WRKDIR}/.cache/electron/electron-v${ELECTRON_VER}-freebsd-x64.zip
+	# rename SHASUMS256.txt so that fetch correctly works on next time building
+	${MV} -f ${_DISTDIR}/SHASUMS256.txt ${_DISTDIR}/SHASUMS256-${ELECTRON_VER}.txt
 
 post-patch:
 	${REINPLACE_CMD} -e 's/@@NAME_LONG@@/Code - OSS/; \
@@ -137,5 +146,7 @@ do-test:
 	# Note: Xvfb or something similar is necessary for headless testing
 	# unit tests
 	cd ${WRKSRC} && ./scripts/test.sh
+	# UI smoke tests
+	cd ${WRKSRC} && yarn smoketest
 
 .include <bsd.port.mk>
