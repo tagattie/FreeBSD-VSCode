@@ -84,7 +84,7 @@ pre-build:
 
 do-build:
 	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn # --verbose --no-progress
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline # --no-progress
 	${MV} ${WRKDIR}/vscode-ripgrep ${WRKSRC}/node_modules
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn compile # --verbose --no-progress
