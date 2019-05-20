@@ -144,8 +144,8 @@ do-install:
 do-test:
 	# Note: Xvfb or something similar is necessary for headless testing
 	# unit tests
-	cd ${WRKSRC} && ./scripts/test.sh
+	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ./scripts/test.sh
 	# UI smoke tests
-	cd ${WRKSRC} && yarn smoketest
+	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} yarn smoketest
 
 .include <bsd.port.mk>
