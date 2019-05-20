@@ -108,7 +108,7 @@ do-build:
 	${MV} ${WRKDIR}/vscode-ripgrep ${WRKSRC}/node_modules
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn compile
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/appdata
