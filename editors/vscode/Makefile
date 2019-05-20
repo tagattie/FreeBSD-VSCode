@@ -56,7 +56,8 @@ USE_GNOME=	atk pango gtk30 libxml2 libxslt
 ELECTRON_VER=	4.2.2
 VSCODE_RIPGREP_VER=	1.2.5
 
-SHEBANG_FILES=	scripts/test.sh
+SHEBANG_FILES=	resources/linux/bin/code.sh \
+		scripts/test.sh
 
 DATADIR=	${PREFIX}/share/code-oss
 
@@ -86,11 +87,13 @@ post-extract:
 post-patch:
 	${REINPLACE_CMD} -e 's/@@NAME_LONG@@/Code - OSS/; \
 			s/@@NAME_SHORT@@/Code - OSS/; \
+			s/@@PRODNAME@@/Code - OSS/; \
 			s/@@NAME@@/code-oss/g; \
 			s/@@ICON@@/com.visualstudio.code.oss/; \
 			s/@@URLPROTOCOL@@/code-oss/; \
 			s/@@LICENSE@@/MIT/; \
 			s|/usr/share|${PREFIX}/share|' \
+		${WRKSRC}/resources/linux/bin/code.sh \
 		${WRKSRC}/resources/linux/code.appdata.xml \
 		${WRKSRC}/resources/linux/code.desktop \
 		${WRKSRC}/resources/linux/code-url-handler.desktop
