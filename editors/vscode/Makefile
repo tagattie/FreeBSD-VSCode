@@ -7,10 +7,14 @@ MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v${
 		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep \
 		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
 DISTFILES=	SHASUMS256.txt:electron \
-		electron-v${ELECTRON_VER}-freebsd12-x64.zip:electron \
-		electron-v${ELECTRON_VER}-freebsd11-x64.zip:electron \
 		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep \
 		yarn-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
+.if make(makesum)
+DISTFILES+=	electron-v${ELECTRON_VER}-freebsd11-x64.zip:electron \
+		electron-v${ELECTRON_VER}-freebsd12-x64.zip:electron
+.else
+DISTFILES+=	electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip:electron
+.endif
 DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
 		yarn-cache-${DISTVERSION}${EXTRACT_SUFX}
