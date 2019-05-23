@@ -11,6 +11,7 @@ DISTFILES=	SHASUMS256.txt:electron \
 		electron-v${ELECTRON_VER}-freebsd11-x64.zip:electron \
 		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep \
 		yarn-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
+DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
 		yarn-cache-${DISTVERSION}${EXTRACT_SUFX}
 
@@ -81,8 +82,6 @@ post-extract:
 		${WRKDIR}/.cache/electron/SHASUMS256.txt-${ELECTRON_VER}
 	${CP} ${_DISTDIR}/electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip \
 		${WRKDIR}/.cache/electron/electron-v${ELECTRON_VER}-freebsd-x64.zip
-	# rename SHASUMS256.txt so that fetch correctly works on next time building
-	${MV} -f ${_DISTDIR}/SHASUMS256.txt ${_DISTDIR}/SHASUMS256-${ELECTRON_VER}.txt
 
 post-patch:
 	${REINPLACE_CMD} -e 's/@@NAME_LONG@@/Code - OSS/; \
