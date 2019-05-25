@@ -54,6 +54,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 GH_TAGNAME=	7b78242a5f63fd40322ff93e5be2b687fb3778cd
 
+SOURCE_COMMIT_HASH=	7b78242a5f63fd40322ff93e5be2b687fb3778cd
+
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
 USE_GNOME=	atk pango gtk30 libxml2 libxslt
@@ -110,8 +112,8 @@ do-build:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline # --no-progress
 	${MV} ${WRKDIR}/vscode-ripgrep ${WRKSRC}/node_modules
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn compile
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} yarn compile
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} yarn gulp vscode-linux-x64-min
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/appdata
