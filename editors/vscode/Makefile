@@ -147,7 +147,7 @@ do-install:
 		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/resources/app
 	cd ${STAGEDIR}${DATADIR}/resources/app/node_modules.asar.unpacked && \
 		${FIND} . -type f -exec ${CHMOD} ${BINMODE} {} ';'
-	${RLN} ${STAGEDIR}${DATADIR}/code-oss ${STAGEDIR}${PREFIX}/bin
+	${RLN} ${STAGEDIR}${DATADIR}/bin/code-oss ${STAGEDIR}${PREFIX}/bin
 
 do-test:
 	# Note: Xvfb or something similar is necessary for headless testing
