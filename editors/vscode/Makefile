@@ -27,7 +27,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
 # Set www/yarn option to use www/node10 before build
-BUILD_DEPENDS=	yarn:www/yarn \
+BUILD_DEPENDS=	npm:www/npm-node10 \
+		yarn:www/yarn \
 		rg:textproc/ripgrep
 LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libsnappy.so:archivers/snappy \
