@@ -4,9 +4,11 @@ PORTNAME=	vscode
 DISTVERSION=	1.35.0.g20190517
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v${ELECTRON_VER}/:electron \
+		https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
 		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep \
 		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
 DISTFILES=	SHASUMS256.txt:electron \
+		node-v${ELECTRON_VER}-headers${EXTRACT_SUFX}:electron_headers \
 		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep \
 		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
 .if make(makesum)
@@ -17,6 +19,7 @@ DISTFILES+=	electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip:electron
 .endif
 DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
+		node-v${ELECTRON_VER}-headers${EXTRACT_SUFX} \
 		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	maintainer@example.com
@@ -75,6 +78,10 @@ post-extract:
 	${MKDIR} ${WRKDIR}/vscode-ripgrep
 	${TAR} -xzf ${_DISTDIR}/vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz \
 		--strip-components 1 -C ${WRKDIR}/vscode-ripgrep
+	# setup electron headers for node-gyp
+	${MKDIR} ${WRKDIR}/.node-gyp
+	${MV} ${WRKDIR}/node_headers ${WRKDIR}/.node-gyp/${ELECTRON_VER}
+	${ECHO} 9 > ${WRKDIR}/.node-gyp/${ELECTRON_VER}/installVersion
 	# for offline "yarn install" of all necessary node_modules
 	${SED} -e 's|$${WRKDIR}|${WRKDIR}|' \
 		${FILESDIR}/yarnrc-offline-mirror >> ${WRKSRC}/.yarnrc
