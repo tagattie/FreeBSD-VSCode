@@ -1,4 +1,4 @@
-TIMESTAMP = 1558877908
+TIMESTAMP = 1558926915
 SHA256 (vscode/1.35.0.g20190517/SHASUMS256.txt) = 9d46c82e925c00ec1b61eef6d4d6082d6ab9e2740e2833225cf228d1256c95fc
 SIZE (vscode/1.35.0.g20190517/SHASUMS256.txt) = 612
 SHA256 (vscode/1.35.0.g20190517/node-v4.2.2-headers.tar.gz) = 8738958e1026cfac1424c893c90db1c78a279ab592ea8532413d41a4c2208b56
@@ -7,6 +7,8 @@ SHA256 (vscode/1.35.0.g20190517/vscode-ripgrep-1.2.5.tgz) = 10f0d5201364fea13cc8
 SIZE (vscode/1.35.0.g20190517/vscode-ripgrep-1.2.5.tgz) = 2119403
 SHA256 (vscode/1.35.0.g20190517/yarn-offline-cache-1.35.0.g20190517.tar.gz) = 9195c0b7bce88adb7e5b30cccb6af95a3d76c9c2054049ef8fed0fb5fb705d2f
 SIZE (vscode/1.35.0.g20190517/yarn-offline-cache-1.35.0.g20190517.tar.gz) = 96660697
+SHA256 (vscode/1.35.0.g20190517/vscode-marketplace-exts-1.35.0.g20190517.tar.gz) = 4083c4c2d2d08e2df8ef8b137acecda30cc634c96a946d8711213c90b79ffc0d
+SIZE (vscode/1.35.0.g20190517/vscode-marketplace-exts-1.35.0.g20190517.tar.gz) = 1571727
 SHA256 (vscode/1.35.0.g20190517/electron-v4.2.2-freebsd11-x64.zip) = 0ad9da3500b7a32ba9ea657ed6ff1fa7ba826e4d899e6b5f7145542ea5f832f4
 SIZE (vscode/1.35.0.g20190517/electron-v4.2.2-freebsd11-x64.zip) = 63015086
 SHA256 (vscode/1.35.0.g20190517/electron-v4.2.2-freebsd12-x64.zip) = 6d3a0ab1f2aa9ed4f049ffeb3ab1b782a63a577df98420e543dcc6589078fecc

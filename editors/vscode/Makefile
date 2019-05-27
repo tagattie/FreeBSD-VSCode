@@ -10,7 +10,8 @@ MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v${
 DISTFILES=	SHASUMS256.txt:electron \
 		node-v${ELECTRON_VER}-headers${EXTRACT_SUFX}:electron_headers \
 		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep \
-		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
+		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache \
+		vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
 .if make(makesum)
 DISTFILES+=	electron-v${ELECTRON_VER}-freebsd11-x64.zip:electron \
 		electron-v${ELECTRON_VER}-freebsd12-x64.zip:electron
@@ -20,7 +21,8 @@ DISTFILES+=	electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip:electron
 DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
 		node-v${ELECTRON_VER}-headers${EXTRACT_SUFX} \
-		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}
+		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX} \
+		vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	maintainer@example.com
 COMMENT=	Code Editing. Redefined.
@@ -123,6 +125,7 @@ do-build:
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} yarn compile
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} yarn gulp vscode-linux-x64-min
+	${MV} ${WRKDIR}/builtInExtensions/* ${WRKDIR}/VSCode-linux-x64/resources/app/extensions
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/appdata
