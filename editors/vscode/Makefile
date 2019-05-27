@@ -66,6 +66,8 @@ BINARY_ALIAS=	python=${PYTHON_CMD}
 
 USE_GNOME=	atk pango gtk30 libxml2 libxslt
 
+USE_LDCONFIG=	${DATADIR}
+
 ELECTRON_VER=	4.2.2
 VSCODE_RIPGREP_VER=	1.2.5
 
