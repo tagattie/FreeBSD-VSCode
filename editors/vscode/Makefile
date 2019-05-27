@@ -119,6 +119,7 @@ do-build:
 	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline # --no-progress
 	${MV} ${WRKDIR}/vscode-ripgrep ${WRKSRC}/node_modules
+	${CP} ${WRKSRC}/src/vs/vscode.d.ts ${WRKSRC}/extensions/vscode-colorize-tests/node_modules/vscode
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} yarn compile
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} yarn gulp vscode-linux-x64-min
