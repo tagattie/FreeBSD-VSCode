@@ -31,7 +31,8 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
-# Set www/yarn option to use www/node10 before build
+# FIXME: Introduce yarn ports using node 8 and 10 LTS like npm-node8 and npm-node10
+#	 For now, set www/yarn option to use www/node10 before build
 BUILD_DEPENDS=	npm:www/npm-node10 \
 		yarn:www/yarn \
 		rg:textproc/ripgrep
