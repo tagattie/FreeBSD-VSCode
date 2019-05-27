@@ -55,7 +55,8 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 TEST_DEPENDS=	bash:shells/bash
 
-USES=		desktop-file-utils gnome jpeg python:2.7,build shebangfix
+USES=		desktop-file-utils gmake gnome jpeg pkgconfig \
+		python:2.7,build shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
@@ -65,6 +66,7 @@ SOURCE_COMMIT_HASH=	7b78242a5f63fd40322ff93e5be2b687fb3778cd
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
+USE_XORG=	x11 xkbfile
 USE_GNOME=	atk pango gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
