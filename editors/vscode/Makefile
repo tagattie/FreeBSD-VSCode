@@ -81,6 +81,8 @@ SHEBANG_FILES=	resources/linux/bin/code.sh \
 		scripts/test.sh
 
 DATADIR=	${PREFIX}/share/code-oss
+TMPDIR=		${WRKDIR}
+
 MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH}
 
 post-extract:
