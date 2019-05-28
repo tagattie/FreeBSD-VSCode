@@ -81,6 +81,7 @@ SHEBANG_FILES=	resources/linux/bin/code.sh \
 		scripts/test.sh
 
 DATADIR=	${PREFIX}/share/code-oss
+MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH}
 
 post-extract:
 	cd ${WRKDIR} && ${UNZIP_CMD} -qo \
@@ -137,8 +138,8 @@ do-build:
 	${MV} ${WRKDIR}/vscode-ripgrep ${WRKSRC}/node_modules
 	${CP} ${WRKSRC}/src/vs/vscode.d.ts ${WRKSRC}/extensions/vscode-colorize-tests/node_modules/vscode
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} yarn compile
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} yarn gulp vscode-linux-x64-min
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn compile
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min
 	${MV} ${WRKDIR}/builtInExtensions/* ${WRKDIR}/VSCode-linux-x64/resources/app/extensions
 
 do-install:
