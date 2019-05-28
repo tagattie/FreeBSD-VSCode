@@ -81,9 +81,9 @@ DATADIR=	${PREFIX}/share/code-oss
 
 post-extract:
 	cd ${WRKDIR} && ${UNZIP_CMD} -qo \
-		${_DISTDIR}/electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip -d electron
+		${DISTDIR}/${DIST_SUBDIR}/electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip -d electron
 	${MKDIR} ${WRKDIR}/vscode-ripgrep
-	${TAR} -xzf ${_DISTDIR}/vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz \
+	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz \
 		--strip-components 1 -C ${WRKDIR}/vscode-ripgrep
 	# setup electron headers for node-gyp
 	${MKDIR} ${WRKDIR}/.node-gyp
@@ -99,9 +99,9 @@ post-extract:
 	cd ${WRKSRC}/.build/electron && ${MV} electron code-oss
 	# for UI smoke tests dependency
 	${MKDIR} ${WRKDIR}/.cache/electron
-	${SED} -e 's/freebsd${OSREL:R}/freebsd/' ${_DISTDIR}/SHASUMS256.txt > \
+	${SED} -e 's/freebsd${OSREL:R}/freebsd/' ${DISTDIR}/${DIST_SUBDIR}/SHASUMS256.txt > \
 		${WRKDIR}/.cache/electron/SHASUMS256.txt-${ELECTRON_VER}
-	${CP} ${_DISTDIR}/electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip \
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip \
 		${WRKDIR}/.cache/electron/electron-v${ELECTRON_VER}-freebsd-x64.zip
 
 post-patch:
