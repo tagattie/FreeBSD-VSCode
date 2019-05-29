@@ -83,7 +83,8 @@ SHEBANG_FILES=	resources/linux/bin/code.sh \
 DATADIR=	${PREFIX}/share/code-oss
 TMPDIR=		${WRKDIR}
 
-MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH}
+MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} \
+		XDG_CACHE_HOME=${WRKDIR}/.cache
 
 post-extract:
 	cd ${WRKDIR} && ${UNZIP_CMD} -qo \
