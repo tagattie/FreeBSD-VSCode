@@ -55,7 +55,8 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libsecret-1.so:security/libsecret \
 		libnss3.so:security/nss \
 		libfontconfig.so:x11-fonts/fontconfig
-RUN_DEPENDS=	xdg-open:devel/xdg-utils
+RUN_DEPENDS=	xdg-open:devel/xdg-utils \
+		bash:shells/bash
 TEST_DEPENDS=	bash:shells/bash
 
 USES=		desktop-file-utils gmake gnome jpeg pkgconfig \
