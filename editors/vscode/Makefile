@@ -211,4 +211,17 @@ do-test:
 	# UI smoke tests
 	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} yarn smoketest
 
+### targets for port maintainer(s)
+make-yarn-cache:
+	# do "make build" before executing this target
+	cd ${WRKDIR} && ${TAR} -czf \
+		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX} yarn-offline-cache
+
+make-marketplace-exts:
+	cd ${WRKSRC} && \
+		${SETENV} ${MAKE_ENV} yarn download-builtin-extensions && \
+	cd ${WRKSRC}/.build && ${TAR} -czf \
+		vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX} builtInExtensions && \
+		${MV} vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX} ${WRKDIR}
+
 .include <bsd.port.mk>
