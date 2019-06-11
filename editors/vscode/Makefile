@@ -41,17 +41,22 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libsnappy.so:archivers/snappy \
 		libFLAC.so:audio/flac \
 		libopus.so:audio/opus \
+		libdbus-1.so:devel/dbus \
 		libinotify.so:devel/libinotify \
 		libnotify.so:devel/libnotify \
 		libpci.so:devel/libpci \
+		libnspr4.so:devel/nspr \
+		libpcre2-8.so:devel/pcre2 \
 		libdrm.so:graphics/libdrm \
 		libwebp.so:graphics/webp \
 		libavcodec.so:multimedia/ffmpeg \
 		libopenh264.so:multimedia/openh264 \
+		libcups.so:print/cups \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
 		libsecret-1.so:security/libsecret \
 		libnss3.so:security/nss \
+		libexpat.so:textproc/expat2 \
 		libfontconfig.so:x11-fonts/fontconfig
 RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		bash:shells/bash
@@ -68,8 +73,10 @@ SOURCE_COMMIT_HASH=	7b78242a5f63fd40322ff93e5be2b687fb3778cd
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
-USE_XORG=	x11 xkbfile
-USE_GNOME=	atk pango gtk30 libxml2 libxslt
+USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
+		xrandr xrender xscrnsaver xtst
+USE_GL=		gl glesv2
+USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
