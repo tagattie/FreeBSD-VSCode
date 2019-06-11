@@ -169,10 +169,15 @@ do-install:
 	${INSTALL_LIB} ${WRKDIR}/electron/${f} \
 		${STAGEDIR}${DATADIR}
 .endfor
+	${MKDIR} ${STAGEDIR}${DATADIR}/swiftshader
+.for f in libEGL.so libGLESv2.so
+	${INSTALL_LIB} ${WRKDIR}/electron/swiftshader/${f} \
+		${STAGEDIR}${DATADIR}/swiftshader
+.endfor
 .for f in chrome_100_percent.pak chrome_200_percent.pak icudtl.dat natives_blob.bin resources.pak snapshot_blob.bin v8_context_snapshot.bin
 	${INSTALL_DATA} ${WRKDIR}/electron/${f} ${STAGEDIR}${DATADIR}
 .endfor
-.for d in locales resources swiftshader
+.for d in locales resources
 	cd ${WRKDIR}/electron/${d} && ${COPYTREE_SHARE} . \
 		${STAGEDIR}${DATADIR}/${d} "! -name default_app.asar"
 .endfor
@@ -181,7 +186,8 @@ do-install:
 	cd ${WRKDIR}/VSCode-linux-x64/resources/app && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/resources/app
 	cd ${STAGEDIR}${DATADIR}/resources/app/node_modules.asar.unpacked && \
-		${FIND} . -type f -exec ${CHMOD} ${BINMODE} {} ';'
+		${FIND} . -type f -exec ${CHMOD} ${BINMODE} {} ';' \
+				-exec ${STRIP_CMD} {} ';'
 	${RLN} ${STAGEDIR}${DATADIR}/bin/code-oss ${STAGEDIR}${PREFIX}/bin
 
 do-test:
