@@ -12,9 +12,7 @@ DISTFILES=	SHASUMS256.txt:electron \
 		node-v${ELECTRON_VER}-headers${EXTRACT_SUFX}:electron_headers \
 		electron-v${ELECTRON_VER}-linux-x64.zip:electron_linux \
 		ffmpeg-v${ELECTRON_VER}-linux-x64.zip:electron_linux \
-		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep \
-		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache \
-		vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
+		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep
 .if make(makesum)
 DISTFILES+=	electron-v${ELECTRON_VER}-freebsd11-x64.zip:electron \
 		electron-v${ELECTRON_VER}-freebsd12-x64.zip:electron
@@ -23,9 +21,7 @@ DISTFILES+=	electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip:electron
 .endif
 DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
-		node-v${ELECTRON_VER}-headers${EXTRACT_SUFX} \
-		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX} \
-		vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}
+		node-v${ELECTRON_VER}-headers${EXTRACT_SUFX}
 
 MAINTAINER=	maintainer@example.com
 COMMENT=	Code Editing. Redefined.
@@ -92,6 +88,16 @@ TMPDIR=		${WRKDIR}
 MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} \
 		XDG_CACHE_HOME=${WRKDIR}/.cache
 
+OPTIONS_DEFINE=	POUDRIERE
+POUDRIERE_DESC=	Support build with poudriere (KEEP THIS ON)
+OPTIONS_DEFAULT=	POUDRIERE
+
+POUDRIERE_DISTFILES=	yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache \
+			vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
+POUDRIERE_EXTRACT_ONLY=	yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX} \
+			vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}
+POUDRIERE_EXTRA_PATCHES=	${FILESDIR}/extra-patch-build_lib_extensions.ts
+
 post-extract:
 	cd ${WRKDIR} && ${UNZIP_CMD} -qo \
 		${DISTDIR}/${DIST_SUBDIR}/electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip -d electron
@@ -141,13 +147,21 @@ pre-build:
 	${MKDIR} ${WRKDIR}/vscode-ripgrep/bin
 	${CP} ${LOCALBASE}/bin/rg ${WRKDIR}/vscode-ripgrep/bin
 
-do-build:
+pre-build-POUDRIERE-on:
 	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline # --no-progress
+
+pre-build-POUDRIERE-off:
+	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile # --no-progress
+
+do-build:
 	${MV} ${WRKDIR}/vscode-ripgrep ${WRKSRC}/node_modules
 	${CP} ${WRKSRC}/src/vs/vscode.d.ts ${WRKSRC}/extensions/vscode-colorize-tests/node_modules/vscode
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min
+
+post-build-POUDRIERE-on:
 	${MV} ${WRKDIR}/builtInExtensions/* ${WRKDIR}/VSCode-linux-x64/resources/app/extensions
 
 do-install:
