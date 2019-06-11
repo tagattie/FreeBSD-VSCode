@@ -62,7 +62,7 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		bash:shells/bash
 TEST_DEPENDS=	bash:shells/bash
 
-USES=		desktop-file-utils gmake gnome jpeg pkgconfig \
+USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 		python:2.7,build shebangfix
 
 USE_GITHUB=	yes
