@@ -1,17 +1,19 @@
 # $FreeBSD$
 
 PORTNAME=	vscode
-DISTVERSION=	1.35.0.g20190517
+DISTVERSION=	1.36.0.g20190608
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v${ELECTRON_VER}/:electron \
 		https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
 		https://github.com/electron/electron/releases/download/v${ELECTRON_VER}/:electron_linux \
+		https://nodejs.org/dist/v${NODE_VER}/:node_headers \
 		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep \
 		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
 DISTFILES=	SHASUMS256.txt:electron \
 		node-v${ELECTRON_VER}-headers${EXTRACT_SUFX}:electron_headers \
 		electron-v${ELECTRON_VER}-linux-x64.zip:electron_linux \
 		ffmpeg-v${ELECTRON_VER}-linux-x64.zip:electron_linux \
+		node-v${NODE_VER}-headers${EXTRACT_SUFX}:node_headers \
 		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep
 .if make(makesum)
 DISTFILES+=	electron-v${ELECTRON_VER}-freebsd11-x64.zip:electron \
@@ -20,8 +22,7 @@ DISTFILES+=	electron-v${ELECTRON_VER}-freebsd11-x64.zip:electron \
 DISTFILES+=	electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip:electron
 .endif
 DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
-		node-v${ELECTRON_VER}-headers${EXTRACT_SUFX}
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	maintainer@example.com
 COMMENT=	Code Editing. Redefined.
@@ -63,9 +64,9 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
-GH_TAGNAME=	7b78242a5f63fd40322ff93e5be2b687fb3778cd
+GH_TAGNAME=	81d7885dc2e9dc617e1522697a2966bc4025a45d
 
-SOURCE_COMMIT_HASH=	7b78242a5f63fd40322ff93e5be2b687fb3778cd
+SOURCE_COMMIT_HASH=	81d7885dc2e9dc617e1522697a2966bc4025a45d
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -76,7 +77,8 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
-ELECTRON_VER=	4.2.2
+ELECTRON_VER=	4.2.3
+NODE_VER=	10.2.1
 VSCODE_RIPGREP_VER=	1.2.5
 
 SHEBANG_FILES=	resources/linux/bin/code.sh \
@@ -105,9 +107,15 @@ post-extract:
 	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz \
 		--strip-components 1 -C ${WRKDIR}/vscode-ripgrep
 	# setup electron headers for node-gyp
-	${MKDIR} ${WRKDIR}/.node-gyp
-	${MV} ${WRKDIR}/node_headers ${WRKDIR}/.node-gyp/${ELECTRON_VER}
+	${MKDIR} ${WRKDIR}/.node-gyp/${ELECTRON_VER}
+	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/node-v${ELECTRON_VER}-headers${EXTRACT_SUFX} \
+		--strip-components 1 -C ${WRKDIR}/.node-gyp/${ELECTRON_VER}
 	${ECHO} 9 > ${WRKDIR}/.node-gyp/${ELECTRON_VER}/installVersion
+	# setup node headers for node-gyp
+	${MKDIR} ${WRKDIR}/.node-gyp/${NODE_VER}
+	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/node-v${NODE_VER}-headers${EXTRACT_SUFX} \
+		--strip-components 1 -C ${WRKDIR}/.node-gyp/${NODE_VER}
+	${ECHO} 9 > ${WRKDIR}/.node-gyp/${NODE_VER}/installVersion
 	# setup download cache for gulp-atom-electron
 	${MKDIR} ${WRKDIR}/gulp-electron-cache/atom/electron
 	${CP} ${DISTDIR}/${DIST_SUBDIR}/electron-v${ELECTRON_VER}-linux-x64.zip \
@@ -149,16 +157,21 @@ pre-build:
 
 pre-build-POUDRIERE-on:
 	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
+	${CP} ${FILESDIR}/package.json-remote-build ${WRKSRC}/remote/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline # --no-progress
 
 pre-build-POUDRIERE-off:
 	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
+	${CP} ${FILESDIR}/package.json-remote-build ${WRKSRC}/remote/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile # --no-progress
 
 do-build:
-	${MV} ${WRKDIR}/vscode-ripgrep ${WRKSRC}/node_modules
-	${CP} ${WRKSRC}/src/vs/vscode.d.ts ${WRKSRC}/extensions/vscode-colorize-tests/node_modules/vscode
+	cd ${WRKDIR} && \
+		${TAR} -cf - vscode-ripgrep | ${TAR} -xf - -C ${WRKSRC}/node_modules
+	cd ${WRKDIR} && \
+		${TAR} -cf - vscode-ripgrep | ${TAR} -xf - -C ${WRKSRC}/remote/node_modules
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
+	${CP} ${FILESDIR}/package.json-remote-package ${WRKSRC}/remote/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min
 
 post-build-POUDRIERE-on:

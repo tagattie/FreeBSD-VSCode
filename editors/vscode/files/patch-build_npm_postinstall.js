@@ -1,4 +1,4 @@
---- build/npm/postinstall.js.orig	2019-05-17 20:03:55 UTC
+--- build/npm/postinstall.js.orig	2019-06-08 04:51:50 UTC
 +++ build/npm/postinstall.js
 @@ -26,6 +26,13 @@ function yarnInstall(location, opts) {
  		args.push('--ignore-optional');
@@ -14,7 +14,7 @@
  	console.log('Installing dependencies in \'%s\'.', location);
  	const result = cp.spawnSync(yarn, args, opts);
  
-@@ -77,4 +84,4 @@ const processTreeDts = path.join('node_modules', 'wind
+@@ -79,4 +86,4 @@ const processTreeDts = path.join('node_modules', 'wind
  if (fs.existsSync(processTreeDts)) {
  	console.log('Removing windows-process-tree.d.ts');
  	fs.unlinkSync(processTreeDts);

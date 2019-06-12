@@ -86,6 +86,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/configuration-editing/dist/nls.metadata.json
 %%DATADIR%%/resources/app/extensions/configuration-editing/package.json
 %%DATADIR%%/resources/app/extensions/configuration-editing/package.nls.json
+%%DATADIR%%/resources/app/extensions/configuration-editing/schemas/devContainer.schema.json
 %%DATADIR%%/resources/app/extensions/cpp/language-configuration.json
 %%DATADIR%%/resources/app/extensions/cpp/package.json
 %%DATADIR%%/resources/app/extensions/cpp/package.nls.json
@@ -168,6 +169,11 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/fsharp/package.nls.json
 %%DATADIR%%/resources/app/extensions/fsharp/snippets/fsharp.json
 %%DATADIR%%/resources/app/extensions/fsharp/syntaxes/fsharp.tmLanguage.json
+%%DATADIR%%/resources/app/extensions/git-ui/README.md
+%%DATADIR%%/resources/app/extensions/git-ui/dist/main.js
+%%DATADIR%%/resources/app/extensions/git-ui/package.json
+%%DATADIR%%/resources/app/extensions/git-ui/package.nls.json
+%%DATADIR%%/resources/app/extensions/git-ui/resources/icons/git.png
 %%DATADIR%%/resources/app/extensions/git/README.md
 %%DATADIR%%/resources/app/extensions/git/dist/askpass-empty.sh
 %%DATADIR%%/resources/app/extensions/git/dist/askpass-main.js
@@ -747,6 +753,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/LICENSE.txt
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/README.md
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/dist/extension.js
+%%DATADIR%%/resources/app/extensions/ms-vscode.references-view/dist/extension.js.map
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/media/action-clear-dark.svg
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/media/action-clear.svg
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/media/action-refresh-dark.svg
@@ -858,6 +865,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/npm/resources/light/prepostscript.svg
 %%DATADIR%%/resources/app/extensions/npm/resources/light/refresh.svg
 %%DATADIR%%/resources/app/extensions/npm/resources/light/script.svg
+%%DATADIR%%/resources/app/extensions/objective-c/build/update-grammars.js
 %%DATADIR%%/resources/app/extensions/objective-c/language-configuration.json
 %%DATADIR%%/resources/app/extensions/objective-c/package.json
 %%DATADIR%%/resources/app/extensions/objective-c/package.nls.json
@@ -1090,6 +1098,12 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/vs/platform/extensionManagement/node/media/defaultIcon.png
 %%DATADIR%%/resources/app/out/vs/vscode.d.ts
 %%DATADIR%%/resources/app/out/vs/workbench/api/browser/media/test.svg
+%%DATADIR%%/resources/app/out/vs/workbench/browser/media/images/git/close-alt1.svg
+%%DATADIR%%/resources/app/out/vs/workbench/browser/media/images/intellisense/key-alt1.svg
+%%DATADIR%%/resources/app/out/vs/workbench/browser/media/images/misc/json-alt1.svg
+%%DATADIR%%/resources/app/out/vs/workbench/browser/media/images/misc/split-alt1.svg
+%%DATADIR%%/resources/app/out/vs/workbench/browser/media/images/panel/close-all-alt1.svg
+%%DATADIR%%/resources/app/out/vs/workbench/browser/media/images/panel/gear-alt1.svg
 %%DATADIR%%/resources/app/out/vs/workbench/browser/parts/editor/media/back-tb.png
 %%DATADIR%%/resources/app/out/vs/workbench/browser/parts/editor/media/close-big-alt.svg
 %%DATADIR%%/resources/app/out/vs/workbench/browser/parts/editor/media/close-big-inverse-alt.svg
@@ -1159,6 +1173,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/electron-browser/media/profile-start-inverse.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/electron-browser/media/profile-start.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/electron-browser/media/profile-stop-inverse.svg
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/electron-browser/media/profile-stop.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/electron-browser/media/save-inverse.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/electron-browser/media/save.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/electron-browser/media/start-inverse.svg
@@ -1166,6 +1181,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/electron-browser/media/theme-icon.png
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/externalTerminal/electron-browser/TerminalHelper.scpt
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/externalTerminal/electron-browser/iTermHelper.scpt
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/feedback/electron-browser/media/smiley.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/files/browser/media/check-inverse.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/files/browser/media/check.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/files/browser/media/undo-inverse.svg
@@ -1173,16 +1189,16 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/output/common/outputLinkComputer.js
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/clean-dark.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/clean.svg
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/edit-json-inverse.svg
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/edit-json.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/ellipsis-inverse.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/ellipsis.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/open-file-inverse.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/open-file.svg
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/preferences-editor-inverse.svg
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/preferences-editor.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/regex-dark.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/browser/media/regex.svg
-%%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/electron-browser/media/edit-json-inverse.svg
-%%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/electron-browser/media/edit-json.svg
-%%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/electron-browser/media/preferences-editor-inverse.svg
-%%DATADIR%%/resources/app/out/vs/workbench/contrib/preferences/electron-browser/media/preferences-editor.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/scm/browser/media/check-inverse.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/scm/browser/media/check.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/scm/browser/media/icon-light.svg
