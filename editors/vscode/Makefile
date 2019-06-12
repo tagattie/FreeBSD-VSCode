@@ -200,8 +200,8 @@ do-install:
 	cd ${WRKDIR}/VSCode-linux-x64/resources/app && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/resources/app
 	cd ${STAGEDIR}${DATADIR}/resources/app/node_modules.asar.unpacked && \
-		${FIND} . -type f -exec ${CHMOD} ${BINMODE} {} ';' \
-				-exec ${STRIP_CMD} {} ';'
+		${FIND} . -type f -exec ${STRIP_CMD} {} ';' \
+				-exec ${CHMOD} ${BINMODE} {} ';'
 	${RLN} ${STAGEDIR}${DATADIR}/bin/code-oss ${STAGEDIR}${PREFIX}/bin
 
 do-test:
