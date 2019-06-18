@@ -148,20 +148,18 @@ post-patch:
 		${WRKSRC}/resources/linux/code-url-handler.desktop
 
 pre-build:
-	${MKDIR} ${WRKDIR}/vscode-ripgrep/bin
-	${CP} ${LOCALBASE}/bin/rg ${WRKDIR}/vscode-ripgrep/bin
-
-pre-build-POUDRIERE-on:
 	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
 	${CP} ${FILESDIR}/package.json-remote-build ${WRKSRC}/remote/package.json
+
+pre-build-POUDRIERE-on:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline # --no-progress
 
 pre-build-POUDRIERE-off:
-	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
-	${CP} ${FILESDIR}/package.json-remote-build ${WRKSRC}/remote/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile # --no-progress
 
 do-build:
+	${MKDIR} ${WRKDIR}/vscode-ripgrep/bin
+	${CP} ${LOCALBASE}/bin/rg ${WRKDIR}/vscode-ripgrep/bin
 	cd ${WRKDIR} && \
 		${TAR} -cf - vscode-ripgrep | ${TAR} -xf - -C ${WRKSRC}/node_modules
 	cd ${WRKDIR} && \
