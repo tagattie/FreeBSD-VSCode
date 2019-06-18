@@ -104,8 +104,6 @@ POUDRIERE_EXTRACT_ONLY=	yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX} \
 POUDRIERE_EXTRA_PATCHES=	${FILESDIR}/extra-patch-build_lib_extensions.ts
 
 post-extract:
-	cd ${WRKDIR} && ${UNZIP_CMD} -qo \
-		${DISTDIR}/${DIST_SUBDIR}/electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip -d electron
 	${MKDIR} ${WRKDIR}/vscode-ripgrep
 	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz \
 		--strip-components 1 -C ${WRKDIR}/vscode-ripgrep
@@ -128,11 +126,6 @@ post-extract:
 	# for offline "yarn install" of all necessary node_modules
 	${SED} -e 's|$${WRKDIR}|${WRKDIR}|' \
 		${FILESDIR}/yarnrc-offline-mirror >> ${WRKSRC}/.yarnrc
-	# for unit tests dependency
-	${MKDIR} ${WRKSRC}/.build
-	cd ${WRKDIR} && \
-		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKSRC}/.build
-	cd ${WRKSRC}/.build/electron && ${MV} electron code-oss
 	# for UI smoke tests dependency
 	${MKDIR} ${WRKDIR}/.cache/electron
 	${SED} -e 's/freebsd${OSREL:R}/freebsd/' ${DISTDIR}/${DIST_SUBDIR}/SHASUMS256.txt > \
@@ -218,6 +211,13 @@ do-install:
 		${FIND} . -type f -exec ${STRIP_CMD} {} ';' \
 				-exec ${CHMOD} ${BINMODE} {} ';'
 	${RLN} ${STAGEDIR}${DATADIR}/bin/code-oss ${STAGEDIR}${PREFIX}/bin
+
+pre-test:
+	# setup electron dependency for unit tests
+	${MKDIR} ${WRKSRC}/.build
+	cd ${LOCALBASE}/share && \
+		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKSRC}/.build
+	cd ${WRKSRC}/.build/electron && ${MV} electron code-oss
 
 do-test:
 	# Note: Xvfb or something similar is necessary for headless testing
