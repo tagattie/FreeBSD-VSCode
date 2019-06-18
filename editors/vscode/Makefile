@@ -31,9 +31,10 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
-BUILD_DEPENDS=	npm:www/npm-node10 \
-		yarn:www/yarn-node10 \
-		rg:textproc/ripgrep
+BUILD_DEPENDS=	electron:devel/electron4 \
+		rg:textproc/ripgrep \
+		npm:www/npm-node10 \
+		yarn:www/yarn-node10
 LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libsnappy.so:archivers/snappy \
 		libasound.so:audio/alsa-lib \
@@ -57,7 +58,6 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libexpat.so:textproc/expat2 \
 		libfontconfig.so:x11-fonts/fontconfig
 RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins \
-		electron:devel/electron4 \
 		xdg-open:devel/xdg-utils \
 		bash:shells/bash
 TEST_DEPENDS=	bash:shells/bash
@@ -148,6 +148,8 @@ post-patch:
 		${WRKSRC}/resources/linux/code-url-handler.desktop
 
 pre-build:
+	cd ${LOCALBASE}/share &&
+		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKDIR}
 	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
 	${CP} ${FILESDIR}/package.json-remote-build ${WRKSRC}/remote/package.json
 
@@ -184,21 +186,21 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/resources/linux/code.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/com.visualstudio.code.oss.png
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_PROGRAM} ${LOCALBASE}/share/electron/electron \
+	${INSTALL_PROGRAM} ${WRKDIR}/electron/electron \
 		${STAGEDIR}${DATADIR}/code-oss
 .for f in libEGL.so libGLESv2.so libVkICD_mock_icd.so
-	${INSTALL_LIB} ${LOCALBASE}/share/electron/${f} ${STAGEDIR}${DATADIR}
+	${INSTALL_LIB} ${WRKDIR}/electron/${f} ${STAGEDIR}${DATADIR}
 .endfor
 	${MKDIR} ${STAGEDIR}${DATADIR}/swiftshader
 .for f in libEGL.so libGLESv2.so
-	${INSTALL_LIB} ${LOCALBASE}/share/electron/swiftshader/${f} \
+	${INSTALL_LIB} ${WRKDIR}/electron/swiftshader/${f} \
 		${STAGEDIR}${DATADIR}/swiftshader
 .endfor
 .for f in chrome_100_percent.pak chrome_200_percent.pak icudtl.dat natives_blob.bin resources.pak snapshot_blob.bin v8_context_snapshot.bin
-	${INSTALL_DATA} ${LOCALBASE}/share/electron/${f} ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKDIR}/electron/${f} ${STAGEDIR}${DATADIR}
 .endfor
 .for d in locales resources
-	cd ${LOCALBASE}/share/electron/${d} && ${COPYTREE_SHARE} . \
+	cd ${WRKDIR}/electron/${d} && ${COPYTREE_SHARE} . \
 		${STAGEDIR}${DATADIR}/${d} "! -name default_app.asar"
 .endfor
 	cd ${WRKDIR}/VSCode-linux-x64/bin && \
