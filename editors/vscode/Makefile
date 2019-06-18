@@ -36,6 +36,7 @@ BUILD_DEPENDS=	npm:www/npm-node10 \
 		rg:textproc/ripgrep
 LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libsnappy.so:archivers/snappy \
+		libasound.so:audio/alsa-lib \
 		libFLAC.so:audio/flac \
 		libopus.so:audio/opus \
 		libdbus-1.so:devel/dbus \
@@ -55,7 +56,8 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libnss3.so:security/nss \
 		libexpat.so:textproc/expat2 \
 		libfontconfig.so:x11-fonts/fontconfig
-RUN_DEPENDS=	xdg-open:devel/xdg-utils \
+RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins \
+		xdg-open:devel/xdg-utils \
 		bash:shells/bash
 TEST_DEPENDS=	bash:shells/bash
 
