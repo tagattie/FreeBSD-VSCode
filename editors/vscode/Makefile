@@ -126,12 +126,12 @@ post-extract:
 	# for offline "yarn install" of all necessary node_modules
 	${SED} -e 's|$${WRKDIR}|${WRKDIR}|' \
 		${FILESDIR}/yarnrc-offline-mirror >> ${WRKSRC}/.yarnrc
-	# for UI smoke tests dependency
-	${MKDIR} ${WRKDIR}/.cache/electron
-	${SED} -e 's/freebsd${OSREL:R}/freebsd/' ${DISTDIR}/${DIST_SUBDIR}/SHASUMS256.txt > \
-		${WRKDIR}/.cache/electron/SHASUMS256.txt-${ELECTRON_VER}
-	${CP} ${DISTDIR}/${DIST_SUBDIR}/electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip \
-		${WRKDIR}/.cache/electron/electron-v${ELECTRON_VER}-freebsd-x64.zip
+	# setup electron download cache for UI smoke tests
+	# ${MKDIR} ${WRKDIR}/.cache/electron
+	# ${SED} -e 's/freebsd${OSREL:R}/freebsd/' ${DISTDIR}/${DIST_SUBDIR}/SHASUMS256.txt > \
+	# 	${WRKDIR}/.cache/electron/SHASUMS256.txt-${ELECTRON_VER}
+	# ${CP} ${DISTDIR}/${DIST_SUBDIR}/electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip \
+	# 	${WRKDIR}/.cache/electron/electron-v${ELECTRON_VER}-freebsd-x64.zip
 
 post-patch:
 	${REINPLACE_CMD} -e 's/@@NAME_LONG@@/Code - OSS/; \
@@ -222,7 +222,7 @@ do-test:
 	# unit tests
 	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ./scripts/test.sh || ${TRUE}
 	# UI smoke tests
-	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} yarn smoketest
+	# cd ${WRKSRC} && ${SETENV} ${TEST_ENV} yarn smoketest
 
 ### targets for port maintainer(s)
 make-yarn-cache:
