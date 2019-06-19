@@ -215,7 +215,7 @@ do-install:
 pre-test:
 	# setup electron dependency for unit tests
 	${MKDIR} ${WRKSRC}/.build
-	cd ${LOCALBASE}/share && \
+	cd ${WRKDIR} && \
 		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKSRC}/.build
 	cd ${WRKSRC}/.build/electron && ${MV} electron code-oss
 
