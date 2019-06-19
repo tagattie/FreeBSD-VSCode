@@ -123,9 +123,6 @@ post-extract:
 		${WRKDIR}/gulp-electron-cache/atom/electron
 	${CP} ${DISTDIR}/${DIST_SUBDIR}/ffmpeg-v${ELECTRON_VER}-linux-x64.zip \
 		${WRKDIR}/gulp-electron-cache/atom/electron
-	# for offline "yarn install" of all necessary node_modules
-	${SED} -e 's|$${WRKDIR}|${WRKDIR}|' \
-		${FILESDIR}/yarnrc-offline-mirror >> ${WRKSRC}/.yarnrc
 	# setup electron download cache for UI smoke tests
 	# ${MKDIR} ${WRKDIR}/.cache/electron
 	# ${SED} -e 's/freebsd${OSREL:R}/freebsd/' ${DISTDIR}/${DIST_SUBDIR}/SHASUMS256.txt > \
@@ -134,6 +131,12 @@ post-extract:
 	# 	${WRKDIR}/.cache/electron/electron-v${ELECTRON_VER}-freebsd-x64.zip
 
 post-patch:
+	# force use of electron version matching port one
+	${REINPLACE_CMD} -E 's|^(target ").*(")$$|\1${ELECTRON_VER}\2|' \
+		${WRKSRC}/.yarnrc
+	# setup yarnrc for offline node_modules installation
+	${SED} -e 's|$${WRKDIR}|${WRKDIR}|' \
+		${FILESDIR}/yarnrc-offline-mirror >> ${WRKSRC}/.yarnrc
 	${REINPLACE_CMD} -e 's/@@NAME_LONG@@/Code - OSS/; \
 			s/@@NAME_SHORT@@/Code - OSS/; \
 			s/@@PRODNAME@@/Code - OSS/; \
