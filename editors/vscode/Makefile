@@ -148,7 +148,7 @@ post-patch:
 		${WRKSRC}/resources/linux/code-url-handler.desktop
 
 pre-build:
-	cd ${LOCALBASE}/share &&
+	cd ${LOCALBASE}/share && \
 		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKDIR}
 	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
 	${CP} ${FILESDIR}/package.json-remote-build ${WRKSRC}/remote/package.json
