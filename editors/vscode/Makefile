@@ -25,7 +25,7 @@ DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	maintainer@example.com
-COMMENT=	Code Editing. Redefined.
+COMMENT=	Visual Studio Code - Open Source ("Code - OSS")
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
