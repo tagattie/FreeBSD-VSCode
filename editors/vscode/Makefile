@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vscode
-DISTVERSION=	1.36.0.g20190608
+DISTVERSION=	1.36.0
 CATEGORIES=	editors
 MASTER_SITES=	https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
 		https://github.com/electron/electron/releases/download/v${ELECTRON_VER}/:electron_linux \
@@ -59,9 +59,8 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
-GH_TAGNAME=	81d7885dc2e9dc617e1522697a2966bc4025a45d
 
-SOURCE_COMMIT_HASH=	81d7885dc2e9dc617e1522697a2966bc4025a45d
+SOURCE_COMMIT_HASH=	0f3794b38477eea13fb47fbe15a42798e6129338
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -73,7 +72,7 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 USE_LDCONFIG=	${DATADIR}
 
 ELECTRON_VER=	4.2.6	# keep in sync with devel/electron4
-NODE_VER=	10.2.1
+NODE_VER=	10.11.0
 VSCODE_RIPGREP_VER=	1.2.5
 
 SHEBANG_FILES=	resources/linux/bin/code.sh \

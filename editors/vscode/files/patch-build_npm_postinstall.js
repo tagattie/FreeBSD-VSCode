@@ -1,20 +1,16 @@
---- build/npm/postinstall.js.orig	2019-06-08 04:51:50 UTC
+--- build/npm/postinstall.js.orig	2019-07-02 17:42:48 UTC
 +++ build/npm/postinstall.js
-@@ -26,6 +26,13 @@ function yarnInstall(location, opts) {
- 		args.push('--ignore-optional');
- 	}
+@@ -20,7 +20,8 @@ function yarnInstall(location, opts) {
+ 	const raw = process.env['npm_config_argv'] || '{}';
+ 	const argv = JSON.parse(raw);
+ 	const original = argv.original || [];
+-	const args = original.filter(arg => arg === '--ignore-optional' || arg === '--frozen-lockfile');
++	const passargs = ['--ignore-optional', '--frozen-lockfile', '--offline', '--no-progress', '--verbose'];
++	const args = original.filter(arg => passargs.includes(arg));
  
-+	const addargs = ['--frozen-lockfile', '--offline', '--no-progress', '--verbose'];
-+	addargs.forEach(arg => {
-+		if (original.indexOf(arg) > -1) {
-+			args.push(arg)
-+		}
-+	});
-+
- 	console.log('Installing dependencies in \'%s\'.', location);
- 	const result = cp.spawnSync(yarn, args, opts);
- 
-@@ -71,7 +78,7 @@ runtime "${runtime}"`;
+ 	console.log(`Installing dependencies in ${location}...`);
+ 	console.log(`$ yarn ${args.join(' ')}`);
+@@ -68,7 +69,7 @@ runtime "${runtime}"`;
  }
  
  yarnInstall(`build`); // node modules required for build
@@ -23,7 +19,7 @@
  yarnInstallBuildDependencies(); // node modules for watching, specific to host node version, not electron
  
  // Remove the windows process tree typings as this causes duplicate identifier errors in tsc builds
-@@ -79,4 +86,4 @@ const processTreeDts = path.join('node_modules', 'wind
+@@ -76,4 +77,4 @@ const processTreeDts = path.join('node_modules', 'wind
  if (fs.existsSync(processTreeDts)) {
  	console.log('Removing windows-process-tree.d.ts');
  	fs.unlinkSync(processTreeDts);
