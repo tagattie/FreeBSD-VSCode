@@ -3,25 +3,17 @@
 PORTNAME=	vscode
 DISTVERSION=	1.36.0.g20190608
 CATEGORIES=	editors
-MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v${ELECTRON_VER}/:electron \
-		https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
+MASTER_SITES=	https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
 		https://github.com/electron/electron/releases/download/v${ELECTRON_VER}/:electron_linux \
 		https://nodejs.org/dist/v${NODE_VER}/:node_headers \
 		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep \
 		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
-DISTFILES=	SHASUMS256.txt:electron \
-		node-v${ELECTRON_VER}-headers${EXTRACT_SUFX}:electron_headers \
+DISTFILES=	node-v${ELECTRON_VER}-headers${EXTRACT_SUFX}:electron_headers \
 		electron-v${ELECTRON_VER}-linux-x64.zip:electron_linux \
 		ffmpeg-v${ELECTRON_VER}-linux-x64.zip:electron_linux \
 		node-v${NODE_VER}-headers${EXTRACT_SUFX}:node_headers \
 		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep
-.if make(makesum)
-DISTFILES+=	electron-v${ELECTRON_VER}-freebsd11-x64.zip:electron \
-		electron-v${ELECTRON_VER}-freebsd12-x64.zip:electron
-.else
-DISTFILES+=	electron-v${ELECTRON_VER}-freebsd${OSREL:R}-x64.zip:electron
-.endif
-DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
+DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	maintainer@example.com
@@ -80,7 +72,7 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
-ELECTRON_VER=	4.2.4	# keep in sync with devel/electron4
+ELECTRON_VER=	4.2.6	# keep in sync with devel/electron4
 NODE_VER=	10.2.1
 VSCODE_RIPGREP_VER=	1.2.5
 
@@ -191,7 +183,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_PROGRAM} ${WRKDIR}/electron/electron \
 		${STAGEDIR}${DATADIR}/code-oss
-.for f in libEGL.so libGLESv2.so libVkICD_mock_icd.so
+.for f in libEGL.so libGLESv2.so
 	${INSTALL_LIB} ${WRKDIR}/electron/${f} ${STAGEDIR}${DATADIR}
 .endfor
 	${MKDIR} ${STAGEDIR}${DATADIR}/swiftshader
