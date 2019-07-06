@@ -22,7 +22,6 @@ COMMENT=	Visual Studio Code - Open Source ("Code - OSS")
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
 BUILD_DEPENDS=	electron:devel/electron4 \
 		rg:textproc/ripgrep \
 		npm:www/npm-node10 \
