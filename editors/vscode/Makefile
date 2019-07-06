@@ -51,7 +51,8 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins \
 		xdg-open:devel/xdg-utils \
 		bash:shells/bash
-TEST_DEPENDS=	bash:shells/bash
+TEST_DEPENDS=	electron:devel/electron4 \
+		bash:shells/bash
 
 USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 		python:2.7,build shebangfix
@@ -209,7 +210,7 @@ do-install:
 pre-test:
 	# setup electron dependency for unit tests
 	${MKDIR} ${WRKSRC}/.build
-	cd ${WRKDIR} && \
+	cd ${LOCALBASE}/share && \
 		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKSRC}/.build
 	cd ${WRKSRC}/.build/electron && ${MV} electron code-oss
 
