@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vscode
-DISTVERSION=	1.36.0
+DISTVERSION=	1.36.1
 CATEGORIES=	editors
 MASTER_SITES=	https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
 		https://github.com/electron/electron/releases/download/v${ELECTRON_VER}/:electron_linux \
@@ -60,7 +60,7 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	0f3794b38477eea13fb47fbe15a42798e6129338
+SOURCE_COMMIT_HASH=	2213894ea0415ee8c85c5eea0d0ff81ecc191529
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 

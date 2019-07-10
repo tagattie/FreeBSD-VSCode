@@ -752,6 +752,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/LICENSE.txt
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/README.md
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/dist/extension.js
+%%DATADIR%%/resources/app/extensions/ms-vscode.references-view/dist/extension.js.map
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/media/action-clear-dark.svg
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/media/action-clear.svg
 %%DATADIR%%/resources/app/extensions/ms-vscode.references-view/media/action-refresh-dark.svg
