@@ -1,10 +1,10 @@
-TIMESTAMP = 1562754346
-SHA256 (vscode/node-v4.2.6-headers.tar.gz) = d8d76e69a7a2b0b912ec8f1219cd69d680e1bd7c06c0dd84c04c64b45262a25c
-SIZE (vscode/node-v4.2.6-headers.tar.gz) = 190205
-SHA256 (vscode/electron-v4.2.6-linux-x64.zip) = b7d595a47dd1a6467a3e9315ebab82c9184663de605333b289289197e2fe0c56
-SIZE (vscode/electron-v4.2.6-linux-x64.zip) = 59848584
-SHA256 (vscode/ffmpeg-v4.2.6-linux-x64.zip) = 26c1a5dca59d291d3dde9ad0387a907f2cff9110ecfdba324d1eb80918f96275
-SIZE (vscode/ffmpeg-v4.2.6-linux-x64.zip) = 3877262
+TIMESTAMP = 1564484219
+SHA256 (vscode/node-v4.2.8-headers.tar.gz) = efd7b851ad0f2e2a2c3ef41b33e28ce11b61dbcee48eb8e5cb5c15a4b44c40c3
+SIZE (vscode/node-v4.2.8-headers.tar.gz) = 190216
+SHA256 (vscode/electron-v4.2.8-linux-x64.zip) = 90c47198c17ad1a9a93936ec7184cbd19ade5cb4756604dba66e042619298971
+SIZE (vscode/electron-v4.2.8-linux-x64.zip) = 59849328
+SHA256 (vscode/ffmpeg-v4.2.8-linux-x64.zip) = 3443f794b6314b7926199f08e4d1bee2f38241324ad9a64571d6265efefa7e1d
+SIZE (vscode/ffmpeg-v4.2.8-linux-x64.zip) = 3877262
 SHA256 (vscode/node-v10.11.0-headers.tar.gz) = c6def41bb66b88d6f42e2a93a265690686bf8aa7712cbc6cb9281c2685082651
 SIZE (vscode/node-v10.11.0-headers.tar.gz) = 447475
 SHA256 (vscode/vscode-ripgrep-1.2.5.tgz) = 10f0d5201364fea13cc8604dfd2c900984a32aa382a52bbe8d2c4a50fadd846b

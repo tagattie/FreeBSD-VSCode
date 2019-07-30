@@ -71,7 +71,7 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
-ELECTRON_VER=	4.2.6	# keep in sync with devel/electron4
+ELECTRON_VER=	4.2.8	# keep in sync with devel/electron4
 NODE_VER=	10.11.0
 VSCODE_RIPGREP_VER=	1.2.5
 
