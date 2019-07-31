@@ -22,6 +22,8 @@ COMMENT=	Visual Studio Code - Open Source ("Code - OSS")
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+ONLY_FOR_ARCHS=	amd64
+
 BUILD_DEPENDS=	electron:devel/electron4 \
 		rg:textproc/ripgrep \
 		npm:www/npm-node10 \
