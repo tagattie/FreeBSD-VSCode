@@ -1,11 +1,11 @@
---- src/vs/base/common/platform.ts.orig	2019-05-17 20:03:55 UTC
+--- src/vs/base/common/platform.ts.orig	2019-08-08 00:55:19 UTC
 +++ src/vs/base/common/platform.ts
-@@ -51,14 +51,14 @@ if (typeof navigator === 'object' && !isElectronRender
- 	const userAgent = navigator.userAgent;
- 	_isWindows = userAgent.indexOf('Windows') >= 0;
- 	_isMacintosh = userAgent.indexOf('Macintosh') >= 0;
--	_isLinux = userAgent.indexOf('Linux') >= 0;
-+	_isLinux = userAgent.indexOf('Linux') >= 0 || userAgent.indexOf('FreeBSD') >= 0;
+@@ -52,14 +52,14 @@ if (typeof navigator === 'object' && !isElectronRender
+ 	_userAgent = navigator.userAgent;
+ 	_isWindows = _userAgent.indexOf('Windows') >= 0;
+ 	_isMacintosh = _userAgent.indexOf('Macintosh') >= 0;
+-	_isLinux = _userAgent.indexOf('Linux') >= 0;
++	_isLinux = _userAgent.indexOf('Linux') >= 0 || _userAgent.indexOf('FreeBSD') >= 0;
  	_isWeb = true;
  	_locale = navigator.language;
  	_language = _locale;

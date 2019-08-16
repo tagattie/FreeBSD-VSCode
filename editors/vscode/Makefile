@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vscode
-DISTVERSION=	1.36.1
+DISTVERSION=	1.37.0
 CATEGORIES=	editors
 MASTER_SITES=	https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
 		https://github.com/electron/electron/releases/download/v${ELECTRON_VER}/:electron_linux \
@@ -62,7 +62,7 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	2213894ea0415ee8c85c5eea0d0ff81ecc191529
+SOURCE_COMMIT_HASH=	036a6b1d3ac84e5ca96a17a44e63a87971f8fcc8
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -75,7 +75,7 @@ USE_LDCONFIG=	${DATADIR}
 
 ELECTRON_VER=	4.2.9	# keep in sync with devel/electron4
 NODE_VER=	10.11.0
-VSCODE_RIPGREP_VER=	1.2.5
+VSCODE_RIPGREP_VER=	1.5.5
 
 SHEBANG_FILES=	resources/linux/bin/code.sh \
 		scripts/test.sh
@@ -94,7 +94,7 @@ POUDRIERE_DISTFILES=	yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
 			vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
 POUDRIERE_EXTRACT_ONLY=	yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX} \
 			vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}
-POUDRIERE_EXTRA_PATCHES=	${FILESDIR}/extra-patch-build_lib_extensions.ts
+POUDRIERE_EXTRA_PATCHES=	${FILESDIR}/extra-patch-build_gulpfile.extensions.js
 
 post-extract:
 	${MKDIR} ${WRKDIR}/vscode-ripgrep
@@ -165,6 +165,8 @@ do-build:
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
 	${CP} ${FILESDIR}/package.json-remote-package ${WRKSRC}/remote/package.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-linux-x64-min
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-web-linux-x64-min
 
 post-build-POUDRIERE-on:
 	${MV} ${WRKDIR}/builtInExtensions/* ${WRKDIR}/VSCode-linux-x64/resources/app/extensions

@@ -1,4 +1,4 @@
---- build/npm/postinstall.js.orig	2019-07-02 17:42:48 UTC
+--- build/npm/postinstall.js.orig	2019-08-08 00:55:19 UTC
 +++ build/npm/postinstall.js
 @@ -20,7 +20,8 @@ function yarnInstall(location, opts) {
  	const raw = process.env['npm_config_argv'] || '{}';
@@ -10,7 +10,7 @@
  
  	console.log(`Installing dependencies in ${location}...`);
  	console.log(`$ yarn ${args.join(' ')}`);
-@@ -68,7 +69,7 @@ runtime "${runtime}"`;
+@@ -70,7 +71,7 @@ runtime "${runtime}"`;
  }
  
  yarnInstall(`build`); // node modules required for build
@@ -19,7 +19,7 @@
  yarnInstallBuildDependencies(); // node modules for watching, specific to host node version, not electron
  
  // Remove the windows process tree typings as this causes duplicate identifier errors in tsc builds
-@@ -76,4 +77,4 @@ const processTreeDts = path.join('node_modules', 'wind
+@@ -78,4 +79,4 @@ const processTreeDts = path.join('node_modules', 'wind
  if (fs.existsSync(processTreeDts)) {
  	console.log('Removing windows-process-tree.d.ts');
  	fs.unlinkSync(processTreeDts);
