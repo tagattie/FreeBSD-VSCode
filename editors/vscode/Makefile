@@ -101,15 +101,15 @@ post-extract:
 	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz \
 		--strip-components 1 -C ${WRKDIR}/vscode-ripgrep
 	# setup electron headers for node-gyp
-	${MKDIR} ${WRKDIR}/.node-gyp/${ELECTRON_VER}
+	${MKDIR} ${WRKDIR}/.cache/node-gyp/${ELECTRON_VER}
 	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/node-v${ELECTRON_VER}-headers${EXTRACT_SUFX} \
-		--strip-components 1 -C ${WRKDIR}/.node-gyp/${ELECTRON_VER}
-	${ECHO} 9 > ${WRKDIR}/.node-gyp/${ELECTRON_VER}/installVersion
+		--strip-components 1 -C ${WRKDIR}/.cache/node-gyp/${ELECTRON_VER}
+	${ECHO} 9 > ${WRKDIR}/.cache/node-gyp/${ELECTRON_VER}/installVersion
 	# setup node headers for node-gyp
-	${MKDIR} ${WRKDIR}/.node-gyp/${NODE_VER}
+	${MKDIR} ${WRKDIR}/.cache/node-gyp/${NODE_VER}
 	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/node-v${NODE_VER}-headers${EXTRACT_SUFX} \
-		--strip-components 1 -C ${WRKDIR}/.node-gyp/${NODE_VER}
-	${ECHO} 9 > ${WRKDIR}/.node-gyp/${NODE_VER}/installVersion
+		--strip-components 1 -C ${WRKDIR}/.cache/node-gyp/${NODE_VER}
+	${ECHO} 9 > ${WRKDIR}/.cache/node-gyp/${NODE_VER}/installVersion
 	# setup download cache for gulp-atom-electron
 	${MKDIR} ${WRKDIR}/gulp-electron-cache/atom/electron
 	${CP} ${DISTDIR}/${DIST_SUBDIR}/electron-v${ELECTRON_VER}-linux-x64.zip \
