@@ -1,4 +1,4 @@
---- build/npm/postinstall.js.orig	2019-08-08 00:55:19 UTC
+--- build/npm/postinstall.js.orig	2019-09-03 21:16:39 UTC
 +++ build/npm/postinstall.js
 @@ -20,7 +20,8 @@ function yarnInstall(location, opts) {
  	const raw = process.env['npm_config_argv'] || '{}';
@@ -19,10 +19,13 @@
  yarnInstallBuildDependencies(); // node modules for watching, specific to host node version, not electron
  
  // Remove the windows process tree typings as this causes duplicate identifier errors in tsc builds
-@@ -78,4 +79,4 @@ const processTreeDts = path.join('node_modules', 'wind
- if (fs.existsSync(processTreeDts)) {
- 	console.log('Removing windows-process-tree.d.ts');
- 	fs.unlinkSync(processTreeDts);
--}
-\ No newline at end of file
-+}
+@@ -110,8 +111,7 @@ const requireSameVersionsInRemote = [
+ 	'xterm',
+ 	'xterm-addon-search',
+ 	'xterm-addon-web-links',
+-	'node-pty',
+-	'vscode-ripgrep'
++	'node-pty'
+ ];
+ 
+ requireSameVersionsInRemote.forEach(packageName => {

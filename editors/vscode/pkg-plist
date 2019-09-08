@@ -374,6 +374,14 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/nls.bundle.json
 %%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/nls.metadata.header.json
 %%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/nls.metadata.json
+%%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/node/extension/autoAttach.nls.metadata.json
+%%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/node/extension/cluster.nls.metadata.json
+%%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/node/extension/configurationProvider.nls.metadata.json
+%%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/node/extension/loadedScripts.nls.metadata.json
+%%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/node/extension/processPicker.nls.metadata.json
+%%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/node/extension/protocolDetection.nls.metadata.json
+%%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/node/nodeDebug.nls.metadata.json
+%%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/node/nodeV8Protocol.nls.metadata.json
 %%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/nodeDebug.js
 %%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/dist/terminateProcess.sh
 %%DATADIR%%/resources/app/extensions/ms-vscode.node-debug/images/node-debug-icon.png
@@ -805,6 +813,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2017.string.d.ts
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2017.typedarrays.d.ts
+%%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2018.asynciterable.d.ts
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2018.d.ts
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2018.full.d.ts
@@ -1033,7 +1042,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/node_modules.asar
 %%DATADIR%%/resources/app/node_modules.asar.unpacked/keytar/build/Release/keytar.node
 %%DATADIR%%/resources/app/node_modules.asar.unpacked/keytar/build/Release/obj.target/keytar.node
-%%DATADIR%%/resources/app/node_modules.asar.unpacked/native-is-elevated/build/Release/is-elevated.node
+%%DATADIR%%/resources/app/node_modules.asar.unpacked/native-is-elevated/build/Release/iselevated.node
 %%DATADIR%%/resources/app/node_modules.asar.unpacked/native-keymap/build/Release/keymapping.node
 %%DATADIR%%/resources/app/node_modules.asar.unpacked/native-watchdog/build/Release/watchdog.node
 %%DATADIR%%/resources/app/node_modules.asar.unpacked/node-pty/build/Release/pty.node
@@ -1051,9 +1060,13 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/nls.metadata.json
 %%DATADIR%%/resources/app/out/paths.js
 %%DATADIR%%/resources/app/out/vs/base/browser/ui/octiconLabel/octicons/octicons-animations.css
+%%DATADIR%%/resources/app/out/vs/base/browser/ui/octiconLabel/octicons/octicons-main.css
 %%DATADIR%%/resources/app/out/vs/base/browser/ui/octiconLabel/octicons/octicons.css
 %%DATADIR%%/resources/app/out/vs/base/browser/ui/octiconLabel/octicons/octicons.svg
 %%DATADIR%%/resources/app/out/vs/base/browser/ui/octiconLabel/octicons/octicons.ttf
+%%DATADIR%%/resources/app/out/vs/base/browser/ui/octiconLabel/octicons/octicons2.css
+%%DATADIR%%/resources/app/out/vs/base/browser/ui/octiconLabel/octicons/octicons2.svg
+%%DATADIR%%/resources/app/out/vs/base/browser/ui/octiconLabel/octicons/octicons2.ttf
 %%DATADIR%%/resources/app/out/vs/base/common/performance.js
 %%DATADIR%%/resources/app/out/vs/base/node/cpuUsage.sh
 %%DATADIR%%/resources/app/out/vs/base/node/languagePacks.js
@@ -1179,7 +1192,6 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/browser/media/configure-light.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/browser/media/defaultIcon.png
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/browser/media/language-icon.svg
-%%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/browser/media/markdown.css
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/browser/media/profile-start-dark.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/browser/media/profile-start-light.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/browser/media/profile-stop-dark.svg
@@ -1245,9 +1257,9 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.nls.js
 %%DATADIR%%/resources/app/out/vs/workbench/services/search/node/searchApp.js
 %%DATADIR%%/resources/app/out/vs/workbench/services/search/node/searchApp.nls.js
-%%DATADIR%%/resources/app/out/vs/workbench/workbench.main.css
-%%DATADIR%%/resources/app/out/vs/workbench/workbench.main.js
-%%DATADIR%%/resources/app/out/vs/workbench/workbench.main.nls.js
+%%DATADIR%%/resources/app/out/vs/workbench/workbench.desktop.main.css
+%%DATADIR%%/resources/app/out/vs/workbench/workbench.desktop.main.js
+%%DATADIR%%/resources/app/out/vs/workbench/workbench.desktop.main.nls.js
 %%DATADIR%%/resources/app/package.json
 %%DATADIR%%/resources/app/product.json
 %%DATADIR%%/resources/app/resources/linux/code.png

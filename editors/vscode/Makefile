@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vscode
-DISTVERSION=	1.37.1
+DISTVERSION=	1.38.0
 CATEGORIES=	editors
 MASTER_SITES=	https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
 		https://github.com/electron/electron/releases/download/v${ELECTRON_VER}/:electron_linux \
@@ -62,7 +62,7 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	f06011ac164ae4dc8e753a3fe7f9549844d15e35
+SOURCE_COMMIT_HASH=	3db7e09f3b61f915d03bbfa58e258d6eee843f35
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -73,9 +73,9 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
-ELECTRON_VER=	4.2.9	# keep in sync with devel/electron4
+ELECTRON_VER=	4.2.10	# keep in sync with devel/electron4
 NODE_VER=	10.11.0
-VSCODE_RIPGREP_VER=	1.5.5
+VSCODE_RIPGREP_VER=	1.5.6
 
 SHEBANG_FILES=	resources/linux/bin/code.sh \
 		scripts/test.sh
@@ -84,6 +84,7 @@ DATADIR=	${PREFIX}/share/code-oss
 TMPDIR=		${WRKDIR}
 
 MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} \
+		PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 \
 		XDG_CACHE_HOME=${WRKDIR}/.cache
 
 OPTIONS_DEFINE=	POUDRIERE
