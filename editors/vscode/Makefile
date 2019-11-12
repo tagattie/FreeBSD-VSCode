@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vscode
-DISTVERSION=	1.38.1
+DISTVERSION=	1.39.2
 CATEGORIES=	editors
 MASTER_SITES=	https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
 		https://github.com/electron/electron/releases/download/v${ELECTRON_VER}/:electron_linux \
@@ -62,7 +62,7 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	b37e54c98e1a74ba89e03073e5a3761284e3ffb0
+SOURCE_COMMIT_HASH=	6ab598523be7a800d7f3eb4d92d7ab9a66069390
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -73,9 +73,9 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
-ELECTRON_VER=	4.2.10	# keep in sync with devel/electron4
+ELECTRON_VER=	4.2.12	# keep in sync with devel/electron4
 NODE_VER=	10.11.0
-VSCODE_RIPGREP_VER=	1.5.6
+VSCODE_RIPGREP_VER=	1.5.7
 
 SHEBANG_FILES=	resources/linux/bin/code.sh \
 		scripts/test.sh

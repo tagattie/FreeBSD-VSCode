@@ -1,4 +1,4 @@
---- src/vs/workbench/services/extensions/node/proxyResolver.ts.orig	2019-09-03 21:16:39 UTC
+--- src/vs/workbench/services/extensions/node/proxyResolver.ts.orig	2019-10-15 15:03:50 UTC
 +++ src/vs/workbench/services/extensions/node/proxyResolver.ts
 @@ -462,7 +462,7 @@ async function readCaCertificates() {
  	if (process.platform === 'darwin') {
@@ -9,7 +9,7 @@
  		return readLinuxCaCertificates();
  	}
  	return undefined;
-@@ -511,6 +511,8 @@ async function readMacCaCertificates() {
+@@ -509,6 +509,8 @@ async function readMacCaCertificates() {
  const linuxCaCertificatePaths = [
  	'/etc/ssl/certs/ca-certificates.crt',
  	'/etc/ssl/certs/ca-bundle.crt',

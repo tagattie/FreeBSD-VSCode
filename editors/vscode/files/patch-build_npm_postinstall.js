@@ -1,4 +1,4 @@
---- build/npm/postinstall.js.orig	2019-09-03 21:16:39 UTC
+--- build/npm/postinstall.js.orig	2019-10-15 15:03:50 UTC
 +++ build/npm/postinstall.js
 @@ -20,7 +20,8 @@ function yarnInstall(location, opts) {
  	const raw = process.env['npm_config_argv'] || '{}';
@@ -10,16 +10,7 @@
  
  	console.log(`Installing dependencies in ${location}...`);
  	console.log(`$ yarn ${args.join(' ')}`);
-@@ -70,7 +71,7 @@ runtime "${runtime}"`;
- }
- 
- yarnInstall(`build`); // node modules required for build
--yarnInstall('test/smoke'); // node modules required for smoketest
-+// yarnInstall('test/smoke'); // node modules required for smoketest
- yarnInstallBuildDependencies(); // node modules for watching, specific to host node version, not electron
- 
- // Remove the windows process tree typings as this causes duplicate identifier errors in tsc builds
-@@ -110,8 +111,7 @@ const requireSameVersionsInRemote = [
+@@ -111,8 +112,7 @@ const requireSameVersionsInRemote = [
  	'xterm',
  	'xterm-addon-search',
  	'xterm-addon-web-links',

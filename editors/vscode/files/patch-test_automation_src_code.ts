@@ -1,5 +1,5 @@
---- test/smoke/src/vscode/code.ts.orig	2019-09-03 21:16:39 UTC
-+++ test/smoke/src/vscode/code.ts
+--- test/automation/src/code.ts.orig	2019-11-12 08:07:42 UTC
++++ test/automation/src/code.ts
 @@ -25,6 +25,7 @@ function getDevElectronPath(): string {
  		case 'darwin':
  			return path.join(buildPath, 'electron', `${product.nameLong}.app`, 'Contents', 'MacOS', 'Electron');
