@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vscode
-DISTVERSION=	1.39.2
+DISTVERSION=	1.40.1
 CATEGORIES=	editors
 MASTER_SITES=	https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
 		https://github.com/electron/electron/releases/download/v${ELECTRON_VER}/:electron_linux \
@@ -24,7 +24,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 ONLY_FOR_ARCHS=	amd64
 
-BUILD_DEPENDS=	electron:devel/electron4 \
+BUILD_DEPENDS=	electron:devel/electron6 \
 		rg:textproc/ripgrep \
 		npm:www/npm-node10 \
 		yarn:www/yarn-node10
@@ -39,9 +39,11 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libpci.so:devel/libpci \
 		libnspr4.so:devel/nspr \
 		libpcre2-8.so:devel/pcre2 \
+		libre2.so:devel/re2 \
 		libdrm.so:graphics/libdrm \
 		libwebp.so:graphics/webp \
 		libavcodec.so:multimedia/ffmpeg \
+		libvpx.so:multimedia/libvpx \
 		libopenh264.so:multimedia/openh264 \
 		libcups.so:print/cups \
 		libfreetype.so:print/freetype2 \
@@ -53,7 +55,7 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins \
 		xdg-open:devel/xdg-utils \
 		bash:shells/bash
-TEST_DEPENDS=	electron:devel/electron4 \
+TEST_DEPENDS=	electron:devel/electron6 \
 		bash:shells/bash
 
 USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
@@ -62,7 +64,7 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	6ab598523be7a800d7f3eb4d92d7ab9a66069390
+SOURCE_COMMIT_HASH=	8795a9889db74563ddd43eb0a897a2384129a619
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -73,8 +75,8 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
-ELECTRON_VER=	4.2.12	# keep in sync with devel/electron4
-NODE_VER=	10.11.0
+ELECTRON_VER=	6.1.4	# keep in sync with devel/electron6
+NODE_VER=	12.4.0
 VSCODE_RIPGREP_VER=	1.5.7
 
 SHEBANG_FILES=	resources/linux/bin/code.sh \

@@ -1,6 +1,6 @@
---- src/bootstrap.js.orig	2019-09-03 21:16:39 UTC
+--- src/bootstrap.js.orig	2019-11-13 16:23:28 UTC
 +++ src/bootstrap.js
-@@ -261,7 +261,7 @@ exports.configurePortable = function () {
+@@ -263,7 +263,7 @@ exports.configurePortable = function () {
  			return process.env['VSCODE_PORTABLE'];
  		}
  

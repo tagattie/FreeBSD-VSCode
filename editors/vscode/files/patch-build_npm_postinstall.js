@@ -1,4 +1,4 @@
---- build/npm/postinstall.js.orig	2019-10-15 15:03:50 UTC
+--- build/npm/postinstall.js.orig	2019-11-13 16:23:28 UTC
 +++ build/npm/postinstall.js
 @@ -20,7 +20,8 @@ function yarnInstall(location, opts) {
  	const raw = process.env['npm_config_argv'] || '{}';
@@ -10,13 +10,3 @@
  
  	console.log(`Installing dependencies in ${location}...`);
  	console.log(`$ yarn ${args.join(' ')}`);
-@@ -111,8 +112,7 @@ const requireSameVersionsInRemote = [
- 	'xterm',
- 	'xterm-addon-search',
- 	'xterm-addon-web-links',
--	'node-pty',
--	'vscode-ripgrep'
-+	'node-pty'
- ];
- 
- requireSameVersionsInRemote.forEach(packageName => {
