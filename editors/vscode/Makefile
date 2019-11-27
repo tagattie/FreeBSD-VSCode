@@ -59,7 +59,7 @@ TEST_DEPENDS=	electron:devel/electron6 \
 		bash:shells/bash
 
 USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
-		python:2.7,build shebangfix
+		python:2.7,build shebangfix xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
