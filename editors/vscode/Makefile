@@ -137,6 +137,7 @@ post-patch:
 			s/@@NAME_SHORT@@/Code - OSS/; \
 			s/@@PRODNAME@@/Code - OSS/; \
 			s/@@NAME@@/code-oss/g; \
+			s|@@EXEC@@|${PREFIX}/bin/code-oss|; \
 			s/@@ICON@@/com.visualstudio.code.oss/; \
 			s/@@URLPROTOCOL@@/code-oss/; \
 			s/@@LICENSE@@/MIT/; \
