@@ -141,7 +141,10 @@ post-patch:
 			s/@@ICON@@/com.visualstudio.code.oss/; \
 			s/@@URLPROTOCOL@@/code-oss/; \
 			s/@@LICENSE@@/MIT/; \
+			s/@@APPNAME@@/code-oss/g; \
 			s|/usr/share|${PREFIX}/share|' \
+		${WRKSRC}/resources/completions/bash/code \
+		${WRKSRC}/resources/completions/zsh/_code \
 		${WRKSRC}/resources/linux/bin/code.sh \
 		${WRKSRC}/resources/linux/code.appdata.xml \
 		${WRKSRC}/resources/linux/code.desktop \
@@ -176,6 +179,12 @@ post-build-POUDRIERE-on:
 	${MV} ${WRKDIR}/builtInExtensions/* ${WRKDIR}/VSCode-linux-x64/resources/app/extensions
 
 do-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
+	${INSTALL_DATA} ${WRKSRC}/resources/completions/bash/code \
+		${STAGEDIR}${PREFIX}/etc/bash_completion.d/code-oss
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/zsh/site-functions
+	${INSTALL_DATA} ${WRKSRC}/resources/completions/zsh/_code \
+		${STAGEDIR}${PREFIX}/share/zsh/site-functions/_code-oss
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/appdata
 	${INSTALL_DATA} ${WRKSRC}/resources/linux/code.appdata.xml \
 		${STAGEDIR}${PREFIX}/share/appdata/code-oss.appdata.xml
