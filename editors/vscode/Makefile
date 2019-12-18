@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vscode
-DISTVERSION=	1.40.2
+DISTVERSION=	1.41.0
 CATEGORIES=	editors
 MASTER_SITES=	https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
 		https://github.com/electron/electron/releases/download/v${ELECTRON_VER}/:electron_linux \
@@ -64,7 +64,7 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	f359dd69833dd8800b54d458f6d37ab7c78df520
+SOURCE_COMMIT_HASH=	9579eda04fdb3a9bba2750f15193e5fafe16b959
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -75,11 +75,12 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
-ELECTRON_VER=	6.1.5	# keep in sync with devel/electron6
+ELECTRON_VER=	6.1.6	# keep in sync with devel/electron6
 NODE_VER=	12.4.0
 VSCODE_RIPGREP_VER=	1.5.7
 
-SHEBANG_FILES=	resources/linux/bin/code.sh \
+SHEBANG_FILES=	extensions/vscode-test-resolver/scripts/terminateProcess.sh \
+		resources/linux/bin/code.sh \
 		scripts/test.sh
 
 DATADIR=	${PREFIX}/share/code-oss
@@ -228,14 +229,14 @@ pre-test:
 	${MKDIR} ${WRKSRC}/.build
 	cd ${LOCALBASE}/share && \
 		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKSRC}/.build
-	cd ${WRKSRC}/.build/electron && ${MV} electron code-oss
+	cd ${WRKSRC}/.build/electron && ${MV} -f electron code-oss
 
 do-test:
 	# Note: Xvfb or something similar is necessary for headless testing
 	# unit tests
 	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} ./scripts/test.sh || ${TRUE}
 	# UI smoke tests
-	# cd ${WRKSRC} && ${SETENV} ${TEST_ENV} yarn smoketest
+	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} yarn smoketest
 
 ### targets for port maintainer(s)
 make-yarn-cache:

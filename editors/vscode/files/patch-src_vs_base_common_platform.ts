@@ -1,9 +1,9 @@
---- src/vs/base/common/platform.ts.orig	2019-08-08 00:55:19 UTC
+--- src/vs/base/common/platform.ts.orig	2019-12-10 21:16:00 UTC
 +++ src/vs/base/common/platform.ts
-@@ -52,14 +52,14 @@ if (typeof navigator === 'object' && !isElectronRender
- 	_userAgent = navigator.userAgent;
+@@ -55,14 +55,14 @@ if (typeof navigator === 'object' && !isElectronRender
  	_isWindows = _userAgent.indexOf('Windows') >= 0;
  	_isMacintosh = _userAgent.indexOf('Macintosh') >= 0;
+ 	_isIOS = _userAgent.indexOf('Macintosh') >= 0 && !!navigator.maxTouchPoints && navigator.maxTouchPoints > 0;
 -	_isLinux = _userAgent.indexOf('Linux') >= 0;
 +	_isLinux = _userAgent.indexOf('Linux') >= 0 || _userAgent.indexOf('FreeBSD') >= 0;
  	_isWeb = true;
