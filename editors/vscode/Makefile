@@ -16,7 +16,7 @@ DISTFILES=	node-v${ELECTRON_VER}-headers${EXTRACT_SUFX}:electron_headers \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	maintainer@example.com
+MAINTAINER=	tagattie@yandex.com
 COMMENT=	Visual Studio Code - Open Source ("Code - OSS")
 
 LICENSE=	MIT
