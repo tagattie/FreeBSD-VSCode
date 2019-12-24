@@ -156,6 +156,12 @@ post-patch:
 		${WRKSRC}/resources/linux/code.desktop \
 		${WRKSRC}/resources/linux/code-url-handler.desktop
 
+post-patch-POUDRIERE-on:
+	(cd ${WRKDIR}/builtInExtensions && \
+		${FIND} . -type f -name '*.sh' \
+			-exec ${SED} -i '' -e "s|/usr/bin/pgrep|/bin/pgrep|g" \
+					-e 's|#!/bin/bash|#!${LOCALBASE}/bin/bash|' {} ';')
+
 pre-build:
 	cd ${LOCALBASE}/share && \
 		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKDIR}
