@@ -1,4 +1,15 @@
 # Visual Studio Code port for FreeBSD
+
+## VSCode has become a part of the ports tree
+Visual Studio Code is now officially available in the FreeBSD ports tree. For more information, please see the following URL:
+
+- https://www.freshports.org/editors/vscode/
+
+This git repository will continue to serve as a pre-official development repository.
+
+
+---
+
 This repository contains an experimental port of Visual Studio Code for FreeBSD. The port is largely based on:
 
 - VS Code patches and build procedures by [@prash-wghats](https://github.com/prash-wghats/)
