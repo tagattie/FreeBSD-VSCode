@@ -228,8 +228,9 @@ do-install:
 .endfor
 	cd ${WRKDIR}/VSCode-linux-x64/bin && \
 		${COPYTREE_BIN} . ${STAGEDIR}${DATADIR}/bin
+	${MKDIR} ${STAGEDIR}${DATADIR}/resources/app
 	cd ${WRKDIR}/VSCode-linux-x64/resources/app && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/resources/app
+		${TAR} -cf - . | ${TAR} -xf - -C ${STAGEDIR}${DATADIR}/resources/app
 	cd ${STAGEDIR}${DATADIR}/resources/app/node_modules.asar.unpacked && \
 		${FIND} . -type f -exec ${STRIP_CMD} {} ';' \
 				-exec ${CHMOD} ${BINMODE} {} ';'
