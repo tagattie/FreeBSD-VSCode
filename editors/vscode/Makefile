@@ -79,9 +79,7 @@ ELECTRON_VER=	6.1.6	# keep in sync with devel/electron6
 NODE_VER=	12.4.0
 VSCODE_RIPGREP_VER=	1.5.7
 
-SHEBANG_FILES=	extensions/vscode-test-resolver/scripts/terminateProcess.sh \
-		resources/linux/bin/code.sh \
-		scripts/test.sh
+SHEBANG_REGEX=	./(extensions|resources|scripts|src)/.*\.sh$$
 
 DATADIR=	${PREFIX}/share/code-oss
 TMPDIR=		${WRKDIR}
