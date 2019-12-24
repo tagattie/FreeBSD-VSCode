@@ -80,6 +80,7 @@ NODE_VER=	12.4.0
 VSCODE_RIPGREP_VER=	1.5.7
 
 SHEBANG_REGEX=	./(extensions|resources|scripts|src)/.*\.sh$$
+PATHFIX_FILES=	src/vs/workbench/contrib/debug/node/terminals.ts
 
 DATADIR=	${PREFIX}/share/code-oss
 TMPDIR=		${WRKDIR}
@@ -132,6 +133,12 @@ post-patch:
 	# setup yarnrc for offline node_modules installation
 	${SED} -e 's|$${WRKDIR}|${WRKDIR}|' \
 		${FILESDIR}/yarnrc-offline-mirror >> ${WRKSRC}/.yarnrc
+	(cd ${WRKSRC} && \
+		${FIND} -E . -type f -iregex '${SHEBANG_REGEX}' \
+			-exec ${SED} -i '' -e "s|/usr/bin/pgrep|/bin/pgrep|g" {} ';')
+	(cd ${WRKSRC} && \
+		${FIND} ${PATHFIX_FILES} -type f \
+			-exec ${SED} -i '' -e "s|/usr/bin/pgrep|/bin/pgrep|g" {} ';')
 	${REINPLACE_CMD} -e 's/@@NAME_LONG@@/Code - OSS/; \
 			s/@@NAME_SHORT@@/Code - OSS/; \
 			s/@@PRODNAME@@/Code - OSS/; \
