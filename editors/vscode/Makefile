@@ -4,13 +4,10 @@ PORTNAME=	vscode
 DISTVERSION=	1.41.1
 CATEGORIES=	editors
 MASTER_SITES=	https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
-		https://github.com/electron/electron/releases/download/v${ELECTRON_VER}/:electron_linux \
 		https://nodejs.org/dist/v${NODE_VER}/:node_headers \
 		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep \
 		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
 DISTFILES=	node-v${ELECTRON_VER}-headers${EXTRACT_SUFX}:electron_headers \
-		electron-v${ELECTRON_VER}-linux-x64.zip:electron_linux \
-		ffmpeg-v${ELECTRON_VER}-linux-x64.zip:electron_linux \
 		node-v${NODE_VER}-headers${EXTRACT_SUFX}:node_headers \
 		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep
 DIST_SUBDIR=	${PORTNAME}
@@ -24,7 +21,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 ONLY_FOR_ARCHS=	amd64
 
-BUILD_DEPENDS=	electron:devel/electron6 \
+BUILD_DEPENDS=	zip:archivers/zip \
+		electron:devel/electron6 \
 		rg:textproc/ripgrep \
 		npm:www/npm-node10 \
 		yarn:www/yarn-node10
@@ -122,12 +120,6 @@ post-extract:
 	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/node-v${NODE_VER}-headers${EXTRACT_SUFX} \
 		--strip-components 1 -C ${WRKDIR}/.cache/node-gyp/${NODE_VER}
 	${ECHO} 9 > ${WRKDIR}/.cache/node-gyp/${NODE_VER}/installVersion
-	# setup download cache for gulp-atom-electron
-	${MKDIR} ${WRKDIR}/gulp-electron-cache/atom/electron
-	${CP} ${DISTDIR}/${DIST_SUBDIR}/electron-v${ELECTRON_VER}-linux-x64.zip \
-		${WRKDIR}/gulp-electron-cache/atom/electron
-	${CP} ${DISTDIR}/${DIST_SUBDIR}/ffmpeg-v${ELECTRON_VER}-linux-x64.zip \
-		${WRKDIR}/gulp-electron-cache/atom/electron
 	# setup electron download cache for UI smoke tests
 	# ${MKDIR} ${WRKDIR}/.cache/electron
 	# ${SED} -e 's/freebsd${OSREL:R}/freebsd/' ${DISTDIR}/${DIST_SUBDIR}/SHASUMS256.txt > \
@@ -172,8 +164,6 @@ post-patch-POUDRIERE-on:
 					-e 's|#!/bin/bash|#!${LOCALBASE}/bin/bash|' {} ';')
 
 pre-build:
-	cd ${LOCALBASE}/share && \
-		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKDIR}
 	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
 	${CP} ${FILESDIR}/package.json-remote-build ${WRKSRC}/remote/package.json
 
@@ -192,6 +182,13 @@ do-build:
 		${TAR} -cf - vscode-ripgrep | ${TAR} -xf - -C ${WRKSRC}/remote/node_modules
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
 	${CP} ${FILESDIR}/package.json-remote-package ${WRKSRC}/remote/package.json
+	# setup download cache for gulp-atom-electron
+	${MKDIR} ${WRKDIR}/gulp-electron-cache/atom/electron
+	cd ${LOCALBASE}/share/electron && \
+		zip -q -r ${WRKDIR}/gulp-electron-cache/atom/electron/electron-v${ELECTRON_VER}-linux-x64.zip .
+	cd ${WRKDIR}/gulp-electron-cache/atom/electron && \
+		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
+		${SED} -e 's/ / */' > SHASUMS256.txt-${ELECTRON_VER}
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-linux-x64-min
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-web-linux-x64-min
@@ -218,31 +215,14 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/resources/linux/code.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/com.visualstudio.code.oss.png
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_PROGRAM} ${WRKDIR}/electron/electron \
-		${STAGEDIR}${DATADIR}/code-oss
-.for f in libEGL.so libGLESv2.so
-	${INSTALL_LIB} ${WRKDIR}/electron/${f} ${STAGEDIR}${DATADIR}
-.endfor
-	${MKDIR} ${STAGEDIR}${DATADIR}/swiftshader
-.for f in libEGL.so libGLESv2.so
-	${INSTALL_LIB} ${WRKDIR}/electron/swiftshader/${f} \
-		${STAGEDIR}${DATADIR}/swiftshader
-.endfor
-.for f in chrome_100_percent.pak chrome_200_percent.pak icudtl.dat natives_blob.bin resources.pak snapshot_blob.bin v8_context_snapshot.bin
-	${INSTALL_DATA} ${WRKDIR}/electron/${f} ${STAGEDIR}${DATADIR}
-.endfor
-.for d in locales resources
-	cd ${WRKDIR}/electron/${d} && ${COPYTREE_SHARE} . \
-		${STAGEDIR}${DATADIR}/${d} "! -name default_app.asar"
-.endfor
-	cd ${WRKDIR}/VSCode-linux-x64/bin && \
-		${COPYTREE_BIN} . ${STAGEDIR}${DATADIR}/bin
-	${MKDIR} ${STAGEDIR}${DATADIR}/resources/app
-	cd ${WRKDIR}/VSCode-linux-x64/resources/app && \
-		${TAR} -cf - . | ${TAR} -xf - -C ${STAGEDIR}${DATADIR}/resources/app
+	cd ${WRKDIR}/VSCode-linux-x64 && \
+		${TAR} -cf - . | ${TAR} -xf - -C ${STAGEDIR}${DATADIR}
 	cd ${STAGEDIR}${DATADIR}/resources/app/node_modules.asar.unpacked && \
-		${FIND} . -type f -exec ${STRIP_CMD} {} ';' \
-				-exec ${CHMOD} ${BINMODE} {} ';'
+		${FIND} . -type f -exec ${STRIP_CMD} {} ';'
+.for f in chromedriver mksnapshot v8_context_snapshot_generator
+	${RM} ${STAGEDIR}${DATADIR}/${f}
+.endfor
+	${RM} -r ${STAGEDIR}${DATADIR}/resources/completions
 	${RLN} ${STAGEDIR}${DATADIR}/bin/code-oss ${STAGEDIR}${PREFIX}/bin
 
 pre-test:
