@@ -27,6 +27,7 @@ BUILD_DEPENDS=	zip:archivers/zip \
 		npm:www/npm-node10 \
 		yarn:www/yarn-node10
 LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
+		libatspi.so:accessibility/at-spi2-core \
 		libsnappy.so:archivers/snappy \
 		libasound.so:audio/alsa-lib \
 		libFLAC.so:audio/flac \
@@ -38,6 +39,7 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libnspr4.so:devel/nspr \
 		libpcre2-8.so:devel/pcre2 \
 		libre2.so:devel/re2 \
+		liblcms2.so:graphics/lcms2 \
 		libdrm.so:graphics/libdrm \
 		libwebp.so:graphics/webp \
 		libavcodec.so:multimedia/ffmpeg \
