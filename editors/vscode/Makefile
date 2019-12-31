@@ -164,6 +164,7 @@ post-patch-POUDRIERE-on:
 					-e 's|#!/bin/bash|#!${LOCALBASE}/bin/bash|' {} ';')
 
 pre-build:
+	# setup package.json files for node modules installation
 	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
 	${CP} ${FILESDIR}/package.json-remote-build ${WRKSRC}/remote/package.json
 
@@ -174,12 +175,14 @@ pre-build-POUDRIERE-off:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile # --no-progress
 
 do-build:
+	# setup vscode-ripgrep modules
 	${MKDIR} ${WRKDIR}/vscode-ripgrep/bin
 	${CP} ${LOCALBASE}/bin/rg ${WRKDIR}/vscode-ripgrep/bin
 	cd ${WRKDIR} && \
 		${TAR} -cf - vscode-ripgrep | ${TAR} -xf - -C ${WRKSRC}/node_modules
 	cd ${WRKDIR} && \
 		${TAR} -cf - vscode-ripgrep | ${TAR} -xf - -C ${WRKSRC}/remote/node_modules
+	# setup package.json files for vscode building and packaging
 	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
 	${CP} ${FILESDIR}/package.json-remote-package ${WRKSRC}/remote/package.json
 	# setup download cache for gulp-atom-electron
@@ -189,6 +192,7 @@ do-build:
 	cd ${WRKDIR}/gulp-electron-cache/atom/electron && \
 		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
 		${SED} -e 's/ / */' > SHASUMS256.txt-${ELECTRON_VER}
+	# build and package vscode
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-linux-x64-min
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-web-linux-x64-min
