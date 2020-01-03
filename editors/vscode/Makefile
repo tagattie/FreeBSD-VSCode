@@ -135,8 +135,8 @@ post-patch:
 	${REINPLACE_CMD} -E 's|^(target ").*(")$$|\1${ELECTRON_VER}\2|' \
 		${WRKSRC}/.yarnrc
 	# setup yarnrc for offline node_modules installation
-	${SED} -e 's|$${WRKDIR}|${WRKDIR}|' \
-		${FILESDIR}/yarnrc-offline-mirror >> ${WRKSRC}/.yarnrc
+	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' >> \
+		${WRKSRC}/.yarnrc
 	(cd ${WRKSRC} && \
 		${FIND} -E . -type f -iregex '${SHEBANG_REGEX}' \
 			-exec ${SED} -i '' -e "s|/usr/bin/pgrep|/bin/pgrep|g" {} ';')
