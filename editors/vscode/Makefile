@@ -3,10 +3,8 @@
 PORTNAME=	vscode
 DISTVERSION=	1.41.1
 CATEGORIES=	editors
-		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep \
 MASTER_SITES=	https://nodejs.org/dist/v${NODE_VER}/:node_headers \
 		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
-		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep
 DISTFILES=	node-v${NODE_VER}-headers${EXTRACT_SUFX}:node_headers \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
@@ -108,9 +106,6 @@ pre-everything::
 	@${ECHO_MSG} ""
 
 post-extract:
-	${MKDIR} ${WRKDIR}/vscode-ripgrep
-	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz \
-		--strip-components 1 -C ${WRKDIR}/vscode-ripgrep
 	# setup node headers for node-gyp
 	${MKDIR} ${WRKDIR}/.cache/node-gyp/${NODE_VER}
 	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/node-v${NODE_VER}-headers${EXTRACT_SUFX} \
@@ -163,27 +158,29 @@ post-patch-POUDRIERE-on:
 					-e 's|#!/bin/bash|#!${LOCALBASE}/bin/bash|' {} ';')
 
 pre-build:
-	# setup package.json files for node modules installation
-	${CP} ${FILESDIR}/package.json-build ${WRKSRC}/package.json
-	${CP} ${FILESDIR}/package.json-remote-build ${WRKSRC}/remote/package.json
-
 pre-build-POUDRIERE-on:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline # --no-progress
 
 pre-build-POUDRIERE-off:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile # --no-progress
+	# # install node_modules without executing post-installation scripts
+	# cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
+	# 	yarn --frozen-lockfile --ignore-scripts --offline
+	# # copy rg binary files to vscode-ripgrep module directory
+	# ${MKDIR} ${WRKSRC}/node_modules/vscode-ripgrep/bin
+	# ${CP} ${LOCALBASE}/bin/rg ${WRKSRC}/node_modules/vscode-ripgrep/bin
+	# ${MKDIR} ${WRKSRC}/remote/node_modules/vscode-ripgrep/bin
+	# ${CP} ${LOCALBASE}/bin/rg ${WRKSRC}/remote/node_modules/vscode-ripgrep/bin
+	# install node_modules
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
+		yarn --frozen-lockfile --offline
+	# copy rg binary files to vscode-ripgrep module directory
+	${MKDIR} ${WRKSRC}/node_modules/vscode-ripgrep/bin
+	${CP} ${LOCALBASE}/bin/rg ${WRKSRC}/node_modules/vscode-ripgrep/bin
+	${MKDIR} ${WRKSRC}/remote/node_modules/vscode-ripgrep/bin
+	${CP} ${LOCALBASE}/bin/rg ${WRKSRC}/remote/node_modules/vscode-ripgrep/bin
 
 do-build:
-	# setup vscode-ripgrep modules
-	${MKDIR} ${WRKDIR}/vscode-ripgrep/bin
-	${CP} ${LOCALBASE}/bin/rg ${WRKDIR}/vscode-ripgrep/bin
-	cd ${WRKDIR} && \
-		${TAR} -cf - vscode-ripgrep | ${TAR} -xf - -C ${WRKSRC}/node_modules
-	cd ${WRKDIR} && \
-		${TAR} -cf - vscode-ripgrep | ${TAR} -xf - -C ${WRKSRC}/remote/node_modules
-	# setup package.json files for vscode building and packaging
-	${CP} ${FILESDIR}/package.json-package ${WRKSRC}/package.json
-	${CP} ${FILESDIR}/package.json-remote-package ${WRKSRC}/remote/package.json
 	# setup download cache for gulp-atom-electron
 	${MKDIR} ${WRKDIR}/gulp-electron-cache/atom/electron
 	cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
