@@ -22,7 +22,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 ONLY_FOR_ARCHS=	amd64
 
 BUILD_DEPENDS=	zip:archivers/zip \
-		electron:devel/electron6 \
+		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
 		rg:textproc/ripgrep \
 		npm:www/npm-node10 \
 		yarn:www/yarn-node10
@@ -55,7 +55,7 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins \
 		xdg-open:devel/xdg-utils \
 		bash:shells/bash
-TEST_DEPENDS=	electron:devel/electron6 \
+TEST_DEPENDS=	electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
 		bash:shells/bash
 
 USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
@@ -76,6 +76,7 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 USE_LDCONFIG=	${DATADIR}
 
 ELECTRON_VER=	6.1.7	# keep in sync with devel/electron6
+ELECTRON_VER_MAJOR=	${ELECTRON_VER:C/^([0-9]+)\..+$$/\1/}
 NODE_VER=	12.4.0
 VSCODE_RIPGREP_VER=	1.5.7
 
@@ -189,7 +190,7 @@ do-build:
 	${CP} ${FILESDIR}/package.json-remote-package ${WRKSRC}/remote/package.json
 	# setup download cache for gulp-atom-electron
 	${MKDIR} ${WRKDIR}/gulp-electron-cache/atom/electron
-	cd ${LOCALBASE}/share/electron && \
+	cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
 		zip -q -r ${WRKDIR}/gulp-electron-cache/atom/electron/electron-v${ELECTRON_VER}-linux-x64.zip .
 	cd ${WRKDIR}/gulp-electron-cache/atom/electron && \
 		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
@@ -233,9 +234,9 @@ do-install:
 
 pre-test:
 	# setup electron dependency for unit tests
-	${MKDIR} ${WRKSRC}/.build
-	cd ${LOCALBASE}/share && \
-		${TAR} -cf - electron | ${TAR} -xf - -C ${WRKSRC}/.build
+	${MKDIR} ${WRKSRC}/.build/electron
+	cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
+		${TAR} -cf - . | ${TAR} -xf - -C ${WRKSRC}/.build/electron
 	cd ${WRKSRC}/.build/electron && ${MV} -f electron code-oss
 
 do-test:
