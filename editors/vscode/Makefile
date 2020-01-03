@@ -242,7 +242,12 @@ do-test:
 
 ### targets for port maintainer(s)
 make-yarn-cache:
-	# do "make build" before executing this target
+	# do "make configure" before executing this target
+	${RM} -r ${WRKDIR}/yarn-offline-cache
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
+		yarn --frozen-lockfile --ignore-scripts
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
+		yarn postinstall --frozen-lockfile --ignore-scripts
 	cd ${WRKDIR} && ${TAR} -czf \
 		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX} yarn-offline-cache
 
