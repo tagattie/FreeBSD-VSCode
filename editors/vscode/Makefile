@@ -104,7 +104,7 @@ post-extract:
 	${MKDIR} ${WRKDIR}/.cache/node-gyp/${NODE_VER}
 	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/node-v${NODE_VER}-headers${EXTRACT_SUFX} \
 		--strip-components 1 -C ${WRKDIR}/.cache/node-gyp/${NODE_VER}
-	${ECHO} 9 > ${WRKDIR}/.cache/node-gyp/${NODE_VER}/installVersion
+	${ECHO_CMD} 9 > ${WRKDIR}/.cache/node-gyp/${NODE_VER}/installVersion
 	# setup electron download cache for UI smoke tests
 	# ${MKDIR} ${WRKDIR}/.cache/electron
 	# ${SED} -e 's/freebsd${OSREL:R}/freebsd/' ${DISTDIR}/${DIST_SUBDIR}/SHASUMS256.txt > \
