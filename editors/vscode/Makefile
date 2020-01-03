@@ -3,13 +3,11 @@
 PORTNAME=	vscode
 DISTVERSION=	1.41.1
 CATEGORIES=	editors
-MASTER_SITES=	https://atom.io/download/electron/v${ELECTRON_VER}/:electron_headers \
-		https://nodejs.org/dist/v${NODE_VER}/:node_headers \
 		https://registry.yarnpkg.com/vscode-ripgrep/-/:vscode_ripgrep \
+MASTER_SITES=	https://nodejs.org/dist/v${NODE_VER}/:node_headers \
 		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
-DISTFILES=	node-v${ELECTRON_VER}-headers${EXTRACT_SUFX}:electron_headers \
-		node-v${NODE_VER}-headers${EXTRACT_SUFX}:node_headers \
 		vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz:vscode_ripgrep
+DISTFILES=	node-v${NODE_VER}-headers${EXTRACT_SUFX}:node_headers \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -113,11 +111,6 @@ post-extract:
 	${MKDIR} ${WRKDIR}/vscode-ripgrep
 	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/vscode-ripgrep-${VSCODE_RIPGREP_VER}.tgz \
 		--strip-components 1 -C ${WRKDIR}/vscode-ripgrep
-	# setup electron headers for node-gyp
-	${MKDIR} ${WRKDIR}/.cache/node-gyp/${ELECTRON_VER}
-	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/node-v${ELECTRON_VER}-headers${EXTRACT_SUFX} \
-		--strip-components 1 -C ${WRKDIR}/.cache/node-gyp/${ELECTRON_VER}
-	${ECHO} 9 > ${WRKDIR}/.cache/node-gyp/${ELECTRON_VER}/installVersion
 	# setup node headers for node-gyp
 	${MKDIR} ${WRKDIR}/.cache/node-gyp/${NODE_VER}
 	${TAR} -xzf ${DISTDIR}/${DIST_SUBDIR}/node-v${NODE_VER}-headers${EXTRACT_SUFX} \
@@ -133,6 +126,9 @@ post-extract:
 post-patch:
 	# force use of electron version matching port one
 	${REINPLACE_CMD} -E 's|^(target ").*(")$$|\1${ELECTRON_VER}\2|' \
+		${WRKSRC}/.yarnrc
+	# setup yarnrc for using local node headers
+	${ECHO_CMD} 'nodedir "${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers"' >> \
 		${WRKSRC}/.yarnrc
 	# setup yarnrc for offline node_modules installation
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' >> \
@@ -229,6 +225,7 @@ do-install:
 .for f in chromedriver mksnapshot v8_context_snapshot_generator
 	${RM} ${STAGEDIR}${DATADIR}/${f}
 .endfor
+	${RM} -r ${STAGEDIR}${DATADIR}/node_headers
 	${RM} -r ${STAGEDIR}${DATADIR}/resources/completions
 	${RLN} ${STAGEDIR}${DATADIR}/bin/code-oss ${STAGEDIR}${PREFIX}/bin
 
