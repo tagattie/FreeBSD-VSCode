@@ -6,8 +6,12 @@ CATEGORIES=	editors
 MASTER_SITES=	https://nodejs.org/dist/v${NODE_VER}/:node_headers \
 		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
 DISTFILES=	node-v${NODE_VER}-headers${EXTRACT_SUFX}:node_headers \
+		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache \
+		vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
 DIST_SUBDIR=	${PORTNAME}
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
+		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX} \
+		vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	tagattie@yandex.com
 COMMENT=	Visual Studio Code - Open Source ("Code - OSS")
@@ -86,16 +90,6 @@ MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} \
 		PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 \
 		XDG_CACHE_HOME=${WRKDIR}/.cache
 
-OPTIONS_DEFINE=	POUDRIERE
-POUDRIERE_DESC=	Support build with poudriere (KEEP THIS ON)
-OPTIONS_DEFAULT=	POUDRIERE
-
-POUDRIERE_DISTFILES=	yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache \
-			vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
-POUDRIERE_EXTRACT_ONLY=	yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX} \
-			vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}
-POUDRIERE_EXTRA_PATCHES=	${FILESDIR}/extra-patch-build_gulpfile.extensions.js
-
 pre-everything::
 	@${ECHO_MSG} ""
 	@${ECHO_MSG} "The limit imposed by poudriere(8) for the maximum number of files allowed to be"
@@ -150,19 +144,12 @@ post-patch:
 		${WRKSRC}/resources/linux/code.appdata.xml \
 		${WRKSRC}/resources/linux/code.desktop \
 		${WRKSRC}/resources/linux/code-url-handler.desktop
-
-post-patch-POUDRIERE-on:
 	(cd ${WRKDIR}/builtInExtensions && \
 		${FIND} . -type f -name '*.sh' \
 			-exec ${SED} -i '' -e "s|/usr/bin/pgrep|/bin/pgrep|g" \
 					-e 's|#!/bin/bash|#!${LOCALBASE}/bin/bash|' {} ';')
 
 pre-build:
-pre-build-POUDRIERE-on:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile --offline # --no-progress
-
-pre-build-POUDRIERE-off:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn --frozen-lockfile # --no-progress
 	# # install node_modules without executing post-installation scripts
 	# cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
 	# 	yarn --frozen-lockfile --ignore-scripts --offline
@@ -192,8 +179,6 @@ do-build:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-linux-x64-min
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-web-linux-x64-min
-
-post-build-POUDRIERE-on:
 	${MV} ${WRKDIR}/builtInExtensions/* ${WRKDIR}/VSCode-linux-x64/resources/app/extensions
 
 do-install:
