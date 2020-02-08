@@ -75,10 +75,7 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
-ELECTRON_VER=	6.1.7	# keep in sync with devel/electron6
-ELECTRON_VER_MAJOR=	${ELECTRON_VER:C/^([0-9]+)\..+$$/\1/}
 NODE_VER=	12.4.0
-VSCODE_RIPGREP_VER=	1.5.7
 
 SHEBANG_REGEX=	./(extensions|resources|scripts|src)/.*\.sh$$
 PATHFIX_FILES=	src/vs/workbench/contrib/debug/node/terminals.ts
@@ -89,6 +86,9 @@ TMPDIR=		${WRKDIR}
 MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} \
 		PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 \
 		XDG_CACHE_HOME=${WRKDIR}/.cache
+
+ELECTRON_DIR=	${.CURDIR}/../../devel/electron6
+.include	"${ELECTRON_DIR}/Makefile.version"
 
 pre-everything::
 	@${ECHO_MSG} ""
