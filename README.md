@@ -43,6 +43,13 @@ cd FreeBSD-VSCode/editors/vscode
 make install clean
 ```
 
+### Note for Poudriere users
+If you would like to build the port using Poudriere, you need to raise the limit for the maximum number of open files allowed for a jail (default is `1024`) by adding the following line to `poudriere.conf`:
+
+``` shell
+MAX_FILES_vscode=4096
+```
+
 ## Platform
 - Built on FreeBSD 11 and 12 amd64.
 
