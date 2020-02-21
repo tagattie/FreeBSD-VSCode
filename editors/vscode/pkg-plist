@@ -1,4 +1,5 @@
 bin/code-oss
+bin/vscode
 etc/bash_completion.d/code-oss
 share/appdata/code-oss.appdata.xml
 share/applications/code-oss-url-handler.desktop
