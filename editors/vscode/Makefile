@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	vscode
-DISTVERSION=	1.42.1
+DISTVERSION=	1.43.0
 CATEGORIES=	editors
 MASTER_SITES=	https://nodejs.org/dist/v${NODE_VER}/:node_headers \
 		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
@@ -61,7 +61,7 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	c47d83b293181d9be64f27ff093689e8e7aed054
+SOURCE_COMMIT_HASH=	ffbb280a36607e3fea73577e616d006a92f6fb5b
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -86,7 +86,7 @@ MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} \
 		PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 \
 		XDG_CACHE_HOME=${WRKDIR}/.cache
 
-ELECTRON_DIR=	${.CURDIR}/../../devel/electron6
+ELECTRON_DIR=	${.CURDIR}/../../devel/electron7
 .include	"${ELECTRON_DIR}/Makefile.version"
 
 pre-everything::
