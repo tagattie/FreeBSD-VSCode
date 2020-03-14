@@ -404,12 +404,6 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/merge-conflict/package.json
 %%DATADIR%%/resources/app/extensions/merge-conflict/package.nls.json
 %%DATADIR%%/resources/app/extensions/merge-conflict/resources/icons/merge-conflict.png
-%%DATADIR%%/resources/app/extensions/ms-vscode.js-debug-companion/LICENSE.txt
-%%DATADIR%%/resources/app/extensions/ms-vscode.js-debug-companion/README.md
-%%DATADIR%%/resources/app/extensions/ms-vscode.js-debug-companion/SECURITY.md
-%%DATADIR%%/resources/app/extensions/ms-vscode.js-debug-companion/out/extension.js
-%%DATADIR%%/resources/app/extensions/ms-vscode.js-debug-companion/package.json
-%%DATADIR%%/resources/app/extensions/ms-vscode.js-debug-companion/webpack.config.js
 %%DATADIR%%/resources/app/extensions/ms-vscode.js-debug-nightly/LICENSE.txt
 %%DATADIR%%/resources/app/extensions/ms-vscode.js-debug-nightly/README.md
 %%DATADIR%%/resources/app/extensions/ms-vscode.js-debug-nightly/package.json
@@ -1018,6 +1012,16 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/npm/images/npm_icon.png
 %%DATADIR%%/resources/app/extensions/npm/package.json
 %%DATADIR%%/resources/app/extensions/npm/package.nls.json
+%%DATADIR%%/resources/app/extensions/npm/resources/dark/continue.svg
+%%DATADIR%%/resources/app/extensions/npm/resources/dark/debug.svg
+%%DATADIR%%/resources/app/extensions/npm/resources/dark/prepostscript.svg
+%%DATADIR%%/resources/app/extensions/npm/resources/dark/refresh.svg
+%%DATADIR%%/resources/app/extensions/npm/resources/dark/script.svg
+%%DATADIR%%/resources/app/extensions/npm/resources/light/continue.svg
+%%DATADIR%%/resources/app/extensions/npm/resources/light/debug.svg
+%%DATADIR%%/resources/app/extensions/npm/resources/light/prepostscript.svg
+%%DATADIR%%/resources/app/extensions/npm/resources/light/refresh.svg
+%%DATADIR%%/resources/app/extensions/npm/resources/light/script.svg
 %%DATADIR%%/resources/app/extensions/objective-c/build/update-grammars.js
 %%DATADIR%%/resources/app/extensions/objective-c/language-configuration.json
 %%DATADIR%%/resources/app/extensions/objective-c/package.json
@@ -1240,7 +1244,6 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/vs/base/browser/ui/breadcrumbs/tree-collapsed-hc.svg
 %%DATADIR%%/resources/app/out/vs/base/browser/ui/breadcrumbs/tree-collapsed-light.svg
 %%DATADIR%%/resources/app/out/vs/base/browser/ui/codiconLabel/codicon/codicon-animations.css
-%%DATADIR%%/resources/app/out/vs/base/browser/ui/codiconLabel/codicon/codicon-modifications.css
 %%DATADIR%%/resources/app/out/vs/base/browser/ui/codiconLabel/codicon/codicon.css
 %%DATADIR%%/resources/app/out/vs/base/browser/ui/codiconLabel/codicon/codicon.ttf
 %%DATADIR%%/resources/app/out/vs/base/browser/ui/menu/menu.svg

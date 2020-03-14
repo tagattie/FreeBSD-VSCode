@@ -61,7 +61,7 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	ffbb280a36607e3fea73577e616d006a92f6fb5b
+SOURCE_COMMIT_HASH=	78a4c91400152c0f27ba4d363eb56d2835f9903a
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
