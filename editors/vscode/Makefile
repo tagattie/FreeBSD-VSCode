@@ -85,6 +85,9 @@ MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} \
 		ELECTRON_SKIP_BINARY_DOWNLOAD=1 \
 		PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 \
 		XDG_CACHE_HOME=${WRKDIR}/.cache
+# Don't create __pycache__ directory when executing node-gyp
+# This is a workaround to avoid filesystem violations during poudriere build
+MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
 ELECTRON_DIR=	${.CURDIR}/../../devel/electron7
 .include	"${ELECTRON_DIR}/Makefile.version"
