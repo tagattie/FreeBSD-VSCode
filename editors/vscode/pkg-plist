@@ -527,6 +527,8 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/ms-vscode.js-debug/src/ui/configuration/nodeDebugConfigurationResolver.nls.metadata.json
 %%DATADIR%%/resources/app/extensions/ms-vscode.js-debug/src/ui/debugLinkUI.nls.metadata.json
 %%DATADIR%%/resources/app/extensions/ms-vscode.js-debug/src/ui/debugNpmScript.nls.metadata.json
+%%DATADIR%%/resources/app/extensions/ms-vscode.js-debug/src/ui/debugTerminalUI.nls.metadata.json
+%%DATADIR%%/resources/app/extensions/ms-vscode.js-debug/src/ui/disableSourceMapUI.nls.metadata.json
 %%DATADIR%%/resources/app/extensions/ms-vscode.js-debug/src/ui/experimentEnlist.nls.metadata.json
 %%DATADIR%%/resources/app/extensions/ms-vscode.js-debug/src/ui/longPredictionUI.nls.metadata.json
 %%DATADIR%%/resources/app/extensions/ms-vscode.js-debug/src/ui/npmScriptLens.nls.metadata.json
@@ -922,15 +924,8 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/README.md
 %%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/out/client.bundle.js
 %%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/out/extension.js
-%%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/out/extension.js.map
 %%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/package.json
-%%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/src/client/client.css
-%%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/src/client/client.tsx
-%%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/src/client/time-view.css
-%%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/src/client/time-view.tsx
-%%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/src/extension.ts
 %%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/tsconfig.browser.json
-%%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/tsconfig.json
 %%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/webpack.client.js
 %%DATADIR%%/resources/app/extensions/ms-vscode.vscode-js-profile-table/webpack.extension.js
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/README.md

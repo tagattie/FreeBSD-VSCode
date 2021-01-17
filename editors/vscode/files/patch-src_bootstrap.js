@@ -1,6 +1,6 @@
---- src/bootstrap.js.orig	2020-08-25 09:40:01 UTC
+--- src/bootstrap.js.orig	2020-10-13 14:05:48 UTC
 +++ src/bootstrap.js
-@@ -185,7 +185,7 @@
+@@ -208,7 +208,7 @@
  				return process.env['VSCODE_PORTABLE'];
  			}
  
