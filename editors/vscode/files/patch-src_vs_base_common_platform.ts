@@ -1,4 +1,4 @@
---- src/vs/base/common/platform.ts.orig	2020-10-13 14:05:48 UTC
+--- src/vs/base/common/platform.ts.orig	2020-12-16 14:57:12 UTC
 +++ src/vs/base/common/platform.ts
 @@ -27,7 +27,7 @@ export interface IProcessEnvironment {
  }
@@ -9,7 +9,7 @@
  	env: IProcessEnvironment;
  	nextTick: Function;
  	versions?: {
-@@ -67,7 +67,7 @@ if (typeof navigator === 'object' && !isElectronRender
+@@ -68,7 +68,7 @@ if (typeof navigator === 'object' && !isElectronRender
  	_isWindows = _userAgent.indexOf('Windows') >= 0;
  	_isMacintosh = _userAgent.indexOf('Macintosh') >= 0;
  	_isIOS = (_userAgent.indexOf('Macintosh') >= 0 || _userAgent.indexOf('iPad') >= 0 || _userAgent.indexOf('iPhone') >= 0) && !!navigator.maxTouchPoints && navigator.maxTouchPoints > 0;
@@ -18,7 +18,7 @@
  	_isWeb = true;
  	_locale = navigator.language;
  	_language = _locale;
-@@ -77,7 +77,7 @@ if (typeof navigator === 'object' && !isElectronRender
+@@ -78,7 +78,7 @@ if (typeof navigator === 'object' && !isElectronRender
  else if (typeof nodeProcess === 'object') {
  	_isWindows = (nodeProcess.platform === 'win32');
  	_isMacintosh = (nodeProcess.platform === 'darwin');
