@@ -3,9 +3,11 @@
 PORTNAME=	vscode
 DISTVERSION=	1.53.0
 CATEGORIES=	editors
-MASTER_SITES=	https://nodejs.org/dist/v${NODE_VER}/:node_headers \
+MASTER_SITES=	https://registry.npmjs.org/esbuild-freebsd-64/-/:esbuild_binary \
+		https://nodejs.org/dist/v${NODE_VER}/:node_headers \
 		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
-DISTFILES=	node-v${NODE_VER}-headers${EXTRACT_SUFX}:node_headers \
+DISTFILES=	esbuild-freebsd-64-${ESBUILD_VER}.tgz:esbuild_binary \
+		node-v${NODE_VER}-headers${EXTRACT_SUFX}:node_headers \
 		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache \
 		vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
 DIST_SUBDIR=	${PORTNAME}
@@ -77,6 +79,8 @@ USE_LDCONFIG=	${DATADIR}
 # See ${WRKSRC}/remote/.yarnrc for NODE_VER
 NODE_VER=	12.18.3
 NODE_VER_MAJOR=	${NODE_VER:C/\..*$//}
+# See ${WRKSRC}/build/package.json for ESBUILD_VER
+ESBUILD_VER=	0.8.30
 
 SHEBANG_REGEX=	./(extensions|resources|scripts|src)/.*\.sh$$
 PATHFIX_FILES=	src/vs/workbench/contrib/debug/node/terminals.ts
@@ -106,6 +110,12 @@ pre-everything::
 	@${ECHO_MSG} "line to poudriere.conf:"
 	@${ECHO_MSG} "MAX_FILES_${PORTNAME}=4096"
 	@${ECHO_MSG} ""
+
+post-extract:
+	# setup download cache for esbuild binary
+	${MKDIR} ${WRKDIR}/.cache/esbuild/bin
+	${MV} ${WRKDIR}/package/bin/esbuild \
+		${WRKDIR}/.cache/esbuild/bin/esbuild-freebsd-64@${ESBUILD_VER}
 
 post-patch:
 	# force use of electron version matching port one

@@ -1,4 +1,6 @@
-TIMESTAMP = 1612665136
+TIMESTAMP = 1612772218
+SHA256 (vscode/esbuild-freebsd-64-0.8.30.tgz) = 6411afe1826beb7b1fc47c7f55fb5799d86a5b9a0abd8b60b02c9a9f4e21d6d8
+SIZE (vscode/esbuild-freebsd-64-0.8.30.tgz) = 2924493
 SHA256 (vscode/node-v12.18.3-headers.tar.gz) = 164edc71e46cf86ac5d9fcac00dc69c09bb09614b767c4c775aa7747b42e8188
 SIZE (vscode/node-v12.18.3-headers.tar.gz) = 555440
 SHA256 (vscode/yarn-offline-cache-1.53.0.tar.gz) = 8940a604702589964234639d18dcdeea870133b1ef41b458fa00f44f1b08e062
