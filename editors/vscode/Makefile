@@ -1,5 +1,3 @@
-# $FreeBSD$
-
 PORTNAME=	vscode
 DISTVERSION=	1.55.0
 CATEGORIES=	editors
