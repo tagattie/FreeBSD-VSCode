@@ -215,7 +215,7 @@ do-install:
 	cd ${WRKDIR}/VSCode-linux-x64 && \
 		${TAR} -cf - . | ${TAR} -xf - -C ${STAGEDIR}${DATADIR}
 	cd ${STAGEDIR}${DATADIR}/resources/app/node_modules.asar.unpacked && \
-		${FIND} . -type f -exec ${STRIP_CMD} {} ';'
+		${FIND} . -type f -name '*.node' -exec ${STRIP_CMD} {} ';'
 .for f in chromedriver mksnapshot v8_context_snapshot_generator
 	${RM} ${STAGEDIR}${DATADIR}/${f}
 .endfor
