@@ -1,5 +1,5 @@
 PORTNAME=	vscode
-DISTVERSION=	1.58.2
+DISTVERSION=	1.59.1
 CATEGORIES=	editors
 MASTER_SITES=	https://registry.npmjs.org/esbuild-freebsd-64/-/:esbuild_binary \
 		https://nodejs.org/dist/v${NODE_VER}/:node_headers \
@@ -21,7 +21,7 @@ COMMENT=	Visual Studio Code - Open Source ("Code - OSS")
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-DEPRECATED=	Uses EOL Python 2.7 via devel/electron12
+DEPRECATED=	Uses EOL Python 2.7 via devel/electron13
 EXPIRATION_DATE=2021-06-23
 
 ONLY_FOR_ARCHS=	amd64
@@ -72,7 +72,7 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	c3f126316369cd610563c75b1b1725e0679adfb3
+SOURCE_COMMIT_HASH=	3866c3553be8b268c8a7f8c0482c0c0177aa8bfa
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -107,7 +107,7 @@ MAKE_ENV+=	PLAYWRIGHT_BROWSERS_PATH=${WRKDIR}/pw-browsers \
 # This is a workaround to avoid filesystem violations during poudriere build
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
-ELECTRON_DIR=	${.CURDIR}/../../devel/electron12
+ELECTRON_DIR=	${.CURDIR}/../../devel/electron13
 .include	"${ELECTRON_DIR}/Makefile.version"
 
 ELECTRON_DOWNLOAD_URL=	https://github.com/electron/electron/releases/download/v${ELECTRON_VER}

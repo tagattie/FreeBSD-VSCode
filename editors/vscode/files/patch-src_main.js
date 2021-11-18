@@ -1,6 +1,6 @@
---- src/main.js.orig	2021-05-04 21:42:00 UTC
+--- src/main.js.orig	2021-08-18 23:34:31 UTC
 +++ src/main.js
-@@ -152,7 +152,7 @@ function configureCommandlineSwitchesSync(cliArgs) {
+@@ -163,7 +163,7 @@ function configureCommandlineSwitchesSync(cliArgs) {
  		'force-color-profile'
  	];
  
@@ -9,3 +9,12 @@
  
  		// Force enable screen readers on Linux via this flag
  		SUPPORTED_ELECTRON_SWITCHES.push('force-renderer-accessibility');
+@@ -428,7 +428,7 @@ function configureCrashReporter() {
+ 			companyName: companyName,
+ 			productName: productName,
+ 			submitURL,
+-			uploadToServer: !crashReporterDirectory,
++			uploadToServer: false, // always disable crash reporter upload
+ 			compress: true
+ 		});
+ 	}
