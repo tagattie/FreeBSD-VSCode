@@ -148,7 +148,6 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/emmet/images/icon.png
 %%DATADIR%%/resources/app/extensions/emmet/package.json
 %%DATADIR%%/resources/app/extensions/emmet/package.nls.json
-%%DATADIR%%/resources/app/extensions/emmet/test-workspace/.vscode/settings.json
 %%DATADIR%%/resources/app/extensions/extension-editing/dist/extensionEditingMain.js
 %%DATADIR%%/resources/app/extensions/extension-editing/dist/nls.metadata.header.json
 %%DATADIR%%/resources/app/extensions/extension-editing/dist/nls.metadata.json
@@ -655,6 +654,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/search-result/dist/extension.js
 %%DATADIR%%/resources/app/extensions/search-result/dist/media/refresh-dark.svg
 %%DATADIR%%/resources/app/extensions/search-result/dist/media/refresh-light.svg
+%%DATADIR%%/resources/app/extensions/search-result/images/icon.png
 %%DATADIR%%/resources/app/extensions/search-result/package.json
 %%DATADIR%%/resources/app/extensions/search-result/package.nls.json
 %%DATADIR%%/resources/app/extensions/search-result/syntaxes/generateTMLanguage.js
@@ -784,6 +784,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/yaml/package.nls.json
 %%DATADIR%%/resources/app/extensions/yaml/syntaxes/yaml.tmLanguage.json
 %%DATADIR%%/resources/app/node_modules.asar
+%%DATADIR%%/resources/app/node_modules.asar.unpacked/@parcel/watcher/build/Release/watcher.node
 %%DATADIR%%/resources/app/node_modules.asar.unpacked/@vscode/sqlite3/build/Release/sqlite.node
 %%DATADIR%%/resources/app/node_modules.asar.unpacked/keytar/build/Release/keytar.node
 %%DATADIR%%/resources/app/node_modules.asar.unpacked/keytar/build/Release/obj.target/keytar.node
@@ -846,10 +847,12 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/vs/platform/extensionManagement/common/media/defaultIcon.png
 %%DATADIR%%/resources/app/out/vs/platform/files/node/watcher/nsfw/watcherApp.js
 %%DATADIR%%/resources/app/out/vs/platform/files/node/watcher/nsfw/watcherApp.nls.js
+%%DATADIR%%/resources/app/out/vs/platform/files/node/watcher/parcel/watcherApp.js
+%%DATADIR%%/resources/app/out/vs/platform/files/node/watcher/parcel/watcherApp.nls.js
 %%DATADIR%%/resources/app/out/vs/platform/files/node/watcher/unix/watcherApp.js
 %%DATADIR%%/resources/app/out/vs/platform/files/node/watcher/unix/watcherApp.nls.js
-%%DATADIR%%/resources/app/out/vs/platform/files/node/watcher/win32/CodeHelper.exe
-%%DATADIR%%/resources/app/out/vs/platform/files/node/watcher/win32/CodeHelper.md
+%%DATADIR%%/resources/app/out/vs/platform/sharedProcess/electron-browser/sharedProcessWorkerMain.js
+%%DATADIR%%/resources/app/out/vs/platform/sharedProcess/electron-browser/sharedProcessWorkerMain.nls.js
 %%DATADIR%%/resources/app/out/vs/platform/terminal/node/ptyHostMain.js
 %%DATADIR%%/resources/app/out/vs/platform/terminal/node/ptyHostMain.nls.js
 %%DATADIR%%/resources/app/out/vs/vscode.d.ts

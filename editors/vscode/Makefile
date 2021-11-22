@@ -1,5 +1,5 @@
 PORTNAME=	vscode
-DISTVERSION=	1.61.2
+DISTVERSION=	1.62.3
 CATEGORIES=	editors
 MASTER_SITES=	https://registry.npmjs.org/esbuild-freebsd-64/-/:esbuild_binary \
 		https://nodejs.org/dist/v${NODE_VER}/:node_headers \
@@ -72,7 +72,7 @@ USES=		desktop-file-utils gl gmake gnome jpeg pkgconfig \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	6cba118ac49a1b88332f312a8f67186f7f3c1643
+SOURCE_COMMIT_HASH=	ccbaa2d27e38e5afa3e5c21c1c7bef4657064247
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 

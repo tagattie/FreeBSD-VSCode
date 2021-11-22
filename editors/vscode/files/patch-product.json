@@ -1,6 +1,6 @@
---- product.json.orig	2021-09-22 11:45:58 UTC
+--- product.json.orig	2021-11-16 15:42:03 UTC
 +++ product.json
-@@ -31,6 +31,17 @@
+@@ -32,6 +32,17 @@
  		"GitHub.remotehub",
  		"GitHub.remotehub-insiders"
  	],
