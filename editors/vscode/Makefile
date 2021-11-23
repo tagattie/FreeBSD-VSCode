@@ -89,7 +89,7 @@ NODE_VER_MAJOR=	${NODE_VER:C/\..*$//}
 # See ${WRKSRC}/build/package.json for ESBUILD_VER_BUILD
 ESBUILD_VER_BUILD=	0.12.6
 # See ${WRKSRC}/extensions/package.json for ESBUILD_VER_EXTENSIONS
-ESBUILD_VER_EXTENSIONS=	0.11.12
+ESBUILD_VER_EXTENSIONS=	0.11.23
 
 SHEBANG_REGEX=	./(extensions|resources|scripts|src)/.*\.sh$$
 PATHFIX_FILES=	src/vs/workbench/contrib/debug/node/terminals.ts
