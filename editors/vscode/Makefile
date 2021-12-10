@@ -21,7 +21,6 @@ COMMENT=	Visual Studio Code - Open Source ("Code - OSS")
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BROKEN_FreeBSD_12=	../src/keymapping.h:40:3: error: unknown type name 'pthread_t'
 DEPRECATED=	Uses EOL Python 2.7 via devel/electron13
 EXPIRATION_DATE=2021-06-23
 
