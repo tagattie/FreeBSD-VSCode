@@ -14,6 +14,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/libffmpeg.so
 %%DATADIR%%/libvk_swiftshader.so
 %%DATADIR%%/libvulkan.so
+%%DATADIR%%/locales/af.pak
 %%DATADIR%%/locales/am.pak
 %%DATADIR%%/locales/ar.pak
 %%DATADIR%%/locales/bg.pak
@@ -64,6 +65,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/locales/th.pak
 %%DATADIR%%/locales/tr.pak
 %%DATADIR%%/locales/uk.pak
+%%DATADIR%%/locales/ur.pak
 %%DATADIR%%/locales/vi.pak
 %%DATADIR%%/locales/zh-CN.pak
 %%DATADIR%%/locales/zh-TW.pak
@@ -587,6 +589,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/cancellationToken.js
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/cs/diagnosticMessages.generated.json
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/de/diagnosticMessages.generated.json
+%%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/dynamicImportCompat.js
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/es/diagnosticMessages.generated.json
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/fr/diagnosticMessages.generated.json
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/it/diagnosticMessages.generated.json
@@ -650,6 +653,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2022.full.d.ts
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2022.intl.d.ts
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2022.object.d.ts
+%%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2022.sharedmemory.d.ts
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es2022.string.d.ts
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es5.d.ts
 %%DATADIR%%/resources/app/extensions/node_modules/typescript/lib/lib.es6.d.ts
@@ -968,11 +972,11 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/vs/workbench/browser/parts/editor/media/letterpress-hcDark.svg
 %%DATADIR%%/resources/app/out/vs/workbench/browser/parts/editor/media/letterpress-hcLight.svg
 %%DATADIR%%/resources/app/out/vs/workbench/browser/parts/editor/media/letterpress-light.svg
-%%DATADIR%%/resources/app/out/vs/workbench/contrib/audioCues/browser/media/break.opus
-%%DATADIR%%/resources/app/out/vs/workbench/contrib/audioCues/browser/media/error.opus
-%%DATADIR%%/resources/app/out/vs/workbench/contrib/audioCues/browser/media/foldedAreas.opus
-%%DATADIR%%/resources/app/out/vs/workbench/contrib/audioCues/browser/media/quickFixes.opus
-%%DATADIR%%/resources/app/out/vs/workbench/contrib/audioCues/browser/media/warning.opus
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/audioCues/browser/media/break.mp3
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/audioCues/browser/media/error.mp3
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/audioCues/browser/media/foldedAreas.mp3
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/audioCues/browser/media/quickFixes.mp3
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/audioCues/browser/media/warning.mp3
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/debug/browser/media/continue-tb.png
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/debug/browser/media/pause-tb.png
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/debug/browser/media/restart-tb.png
@@ -987,7 +991,8 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/extensions/browser/media/theme-icon.png
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/externalTerminal/node/TerminalHelper.scpt
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/externalTerminal/node/iTermHelper.scpt
-%%DATADIR%%/resources/app/out/vs/workbench/contrib/interactive/browser/docs/interactive.drawio.svg
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/interactive/browser/docs/interactive.editor.drawio.svg
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/interactive/browser/docs/interactive.eh.drawio.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/notebook/browser/docs/cell-resize-above-viewport.drawio.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/notebook/browser/docs/hybrid-find.drawio.svg
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/notebook/browser/docs/viewport-rendering.drawio.svg
@@ -998,6 +1003,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/terminal/browser/media/shellIntegration-login.zsh
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/terminal/browser/media/shellIntegration-profile.zsh
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/terminal/browser/media/shellIntegration-rc.zsh
+%%DATADIR%%/resources/app/out/vs/workbench/contrib/terminal/browser/media/shellIntegration.fish
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/terminal/browser/media/shellIntegration.ps1
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/webview/browser/pre/fake.html
 %%DATADIR%%/resources/app/out/vs/workbench/contrib/webview/browser/pre/index-no-csp.html
@@ -1049,8 +1055,6 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/product.json
 %%DATADIR%%/resources/app/resources/linux/code.png
 %%DATADIR%%/snapshot_blob.bin
-%%DATADIR%%/swiftshader/libEGL.so
-%%DATADIR%%/swiftshader/libGLESv2.so
 %%DATADIR%%/v8_context_snapshot.bin
 %%DATADIR%%/vk_swiftshader_icd.json
 share/pixmaps/com.visualstudio.code.oss.png
