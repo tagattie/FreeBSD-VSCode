@@ -1,6 +1,6 @@
---- build/gulpfile.extensions.js.orig	2022-10-12 10:08:52 UTC
+--- build/gulpfile.extensions.js.orig	2022-11-09 00:04:34 UTC
 +++ build/gulpfile.extensions.js
-@@ -234,7 +234,7 @@ exports.compileExtensionMediaBuildTask = compileExtens
+@@ -235,7 +235,7 @@ exports.compileExtensionMediaBuildTask = compileExtens
  const cleanExtensionsBuildTask = task.define('clean-extensions-build', util.rimraf('.build/extensions'));
  const compileExtensionsBuildTask = task.define('compile-extensions-build', task.series(
  	cleanExtensionsBuildTask,
