@@ -126,6 +126,8 @@ post-patch:
 	# setup yarnrc for offline node_modules installation
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' >> \
 		${WRKSRC}/.yarnrc
+	${ECHO_CMD} 'yarn-offline-mirror "../../yarn-offline-cache"' >> \
+		${WRKSRC}/remote/.yarnrc
 	(cd ${WRKSRC} && \
 		${FIND} -E . -type f -iregex '${SHEBANG_REGEX}' \
 			-exec ${SED} -i '' -e "s|/usr/bin/pgrep|/bin/pgrep|g" {} ';')
