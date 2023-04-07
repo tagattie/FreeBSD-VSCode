@@ -1,10 +1,8 @@
 PORTNAME=	vscode
 DISTVERSION=	1.77.1
 CATEGORIES=	editors
-MASTER_SITES=	https://nodejs.org/dist/v${NODE_VER}/:node_headers \
-		https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
-DISTFILES=	node-v${NODE_VER}-headers${EXTRACT_SUFX}:node_headers \
-		yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache \
+MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:yarn_cache
+DISTFILES=	yarn-offline-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache \
 		vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
 DIST_SUBDIR=	${PORTNAME}
 
@@ -58,8 +56,8 @@ RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-pl
 TEST_DEPENDS=	electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
 		bash:shells/bash
 
-USES=		desktop-file-utils gl gmake gnome iconv jpeg pkgconfig \
-		python:build shebangfix xorg
+USES=		desktop-file-utils gl gmake gnome iconv jpeg localbase:ldflags \
+		pkgconfig python:build shebangfix xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
@@ -75,8 +73,8 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
-# See ${WRKSRC}/remote/.yarnrc for NODE_VER
-NODE_VER=	16.14.2
+# Keep NODE_VER in sync with www/node16 DISTVERSION
+NODE_VER=	16.20.0
 NODE_VER_MAJOR=	${NODE_VER:C/\..*$//}
 # See ${WRKSRC}/build/package.json for ESBUILD_VER_BUILD
 ESBUILD_VER_BUILD=	0.15.5
@@ -118,10 +116,13 @@ post-patch:
 	# force use of electron version matching port one
 	${REINPLACE_CMD} -E 's|^(target ").*(")$$|\1${ELECTRON_VER}\2|' \
 		${WRKSRC}/.yarnrc
+	# force use of node version matching port one
+	${REINPLACE_CMD} -E 's|^(target ").*(")$$|\1${NODE_VER}\2|' \
+		${WRKSRC}/remote/.yarnrc
 	# setup yarnrc for using local node headers
 	${ECHO_CMD} 'nodedir "${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers"' >> \
 		${WRKSRC}/.yarnrc
-	${ECHO_CMD} 'nodedir "${WRKDIR}/node-v${NODE_VER}"' >> \
+	${ECHO_CMD} 'nodedir "${LOCALBASE}"' >> \
 		${WRKSRC}/remote/.yarnrc
 	# setup yarnrc for offline node_modules installation
 	${ECHO_CMD} 'yarn-offline-mirror "../yarn-offline-cache"' >> \
