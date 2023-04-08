@@ -97,6 +97,10 @@ MAKE_ENV+=	PLAYWRIGHT_BROWSERS_PATH=${WRKDIR}/pw-browsers \
 # This is a workaround to avoid filesystem violations during poudriere build
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 
+OPTIONS_DEFINE=	REH
+OPTIONS_DEFAULT=# none
+REH_DESC=	Build remote extension host
+
 ELECTRON_DIR=	${.CURDIR}/../../devel/electron19
 .include	"${ELECTRON_DIR}/Makefile.version"
 
@@ -182,16 +186,24 @@ do-build:
 	cd ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH} && \
 		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
 		${SED} -e 's/ / */' > SHASUMS256.txt
-	# setup download cache for node
-	${MKDIR} ${WRKSRC}/.build/node/v${NODE_VER}/linux-x64
-	${CP} ${LOCALBASE}/bin/node ${WRKSRC}/.build/node/v${NODE_VER}/linux-x64
 	# build and package vscode
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn run tsc -p build/tsconfig.build.json
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-linux-x64-min
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-linux-x64-min
-	# cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-web-linux-x64-min
 	# copy marketplace extensions
 	${MV} ${WRKDIR}/builtInExtensions/* ${WRKDIR}/VSCode-linux-x64/resources/app/extensions
+
+do-build-REH-on:
+	# setup download cache for node
+	${MKDIR} ${WRKSRC}/.build/node/v${NODE_VER}/linux-x64
+	${CP} ${LOCALBASE}/bin/node ${WRKSRC}/.build/node/v${NODE_VER}/linux-x64
+	# build vscode remote extension host
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-linux-x64-min
+	${MKDIR} ${WRKDIR}/vscode-reh/bin/${SOURCE_COMMIT_HASH}
+	cd ${WRKDIR}/vscode-reh-linux-x64 && ${TAR} -cf - . | \
+		${TAR} -xf - -C ${WRKDIR}/vscode-reh/bin/${SOURCE_COMMIT_HASH}
+	cd ${WRKDIR}/vscode-reh && \
+		${TAR} -czf ../vscode-reh-${DISTVERSION}-${OPSYS:tl}${OSREL:R}-${ARCH}.tar.gz .
+	# cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} yarn gulp vscode-reh-web-linux-x64-min
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
