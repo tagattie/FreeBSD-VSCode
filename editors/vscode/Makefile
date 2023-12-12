@@ -113,7 +113,7 @@ pre-everything::
 	@${ECHO_MSG} "opened by a jail (default 1024) is exceeded during the build of ${PORTNAME}."
 	@${ECHO_MSG} "To successfully build ${PORTNAME} with poudriere(8), you must add the following"
 	@${ECHO_MSG} "line to poudriere.conf:"
-	@${ECHO_MSG} "MAX_FILES_${PORTNAME}=4096"
+	@${ECHO_MSG} "MAX_FILES_${PORTNAME}=8192"
 	@${ECHO_MSG} ""
 
 post-extract:
