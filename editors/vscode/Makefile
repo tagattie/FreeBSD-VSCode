@@ -98,7 +98,7 @@ OPTIONS_DEFINE=	REH
 OPTIONS_DEFAULT=# none
 REH_DESC=	Build remote extension host
 
-NODEJS_DIR=	${.CURDIR:H:H}/www/node${NODEJS_VERSION}
+NODEJS_DIR=	${.CURDIR:H:H}/www/node20
 .include "${NODEJS_DIR}/Makefile.version"
 ELECTRON_DIR=	${.CURDIR:H:H}/devel/electron29
 .include "${ELECTRON_DIR}/Makefile.version"
