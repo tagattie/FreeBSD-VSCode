@@ -68,9 +68,8 @@ USES=		desktop-file-utils gl gmake gnome iconv:wchar_t jpeg \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
-GH_TAGNAME=	1b22d602fec7a7151e72eb1664a84530737db54e
 
-SOURCE_COMMIT_HASH=	1b22d602fec7a7151e72eb1664a84530737db54e
+SOURCE_COMMIT_HASH=	d78a74bcdfad14d5d3b1b782f87255d802b57511
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
@@ -81,7 +80,7 @@ USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
 USE_LDCONFIG=	${DATADIR}
 
-SHEBANG_REGEX=	./(extensions|resources|scripts|src)/.*\.sh$$
+SHEBANG_REGEX=	./(extensions|node_modules|resources|scripts|src)/.*\.sh$$
 PATHFIX_FILES=	src/vs/workbench/contrib/debug/node/terminals.ts
 
 DATADIR=	${PREFIX}/share/code-oss
@@ -104,6 +103,7 @@ ELECTRON_DIR=	${.CURDIR:H:H}/devel/electron30
 
 ELECTRON_DOWNLOAD_URL=	https://github.com/electron/electron/releases/download/v${ELECTRON_VER}
 ELECTRON_DOWNLOAD_URL_HASH!=	/sbin/sha256 -q -s ${ELECTRON_DOWNLOAD_URL}
+ELECTRON_ARCH=		${ARCH:S/aarch64/arm64/:S/amd64/x64/:S/i386/ia32/}
 
 pre-everything::
 	@${ECHO_MSG} ""
@@ -120,11 +120,17 @@ post-extract:
 	@${ECHO_MSG} "===>  Installing node modules in ${WRKSRC}"
 	@${TAR} -xzf ${WRKDIR}/vscode-.-node-modules${EXTRACT_SUFX} -C ${WRKSRC}
 	@for dir in `node -p "JSON.stringify(require('${WRKSRC}/build/npm/dirs').dirs)" | jq -r '.[]'`; do \
-		${ECHO_MSG} "===>  Installing node modules in ${WRKSRC}/$${dir}"; \
-		${TAR} -xzf ${WRKDIR}/vscode-`echo $${dir} | tr _ __ | tr / _`-node-modules${EXTRACT_SUFX} -C ${WRKSRC}/$${dir}; \
+		if [ -f ${WRKDIR}/vscode-`echo $${dir} | tr _ __ | tr / _`-node-modules${EXTRACT_SUFX} ]; then \
+			${ECHO_MSG} "===>  Installing node modules in ${WRKSRC}/$${dir}"; \
+			${TAR} -xzf ${WRKDIR}/vscode-`echo $${dir} | tr _ __ | tr / _`-node-modules${EXTRACT_SUFX} -C ${WRKSRC}/$${dir}; \
+		fi; \
 	done
 
 post-patch:
+	@${REINPLACE_CMD} -E 's|^(target=").*(")$$|\1${ELECTRON_VER}\2|' \
+		${WRKSRC}/.npmrc
+	@${REINPLACE_CMD} -E 's|^(target=").*(")$$|\1${NODEJS_PORTVERSION}\2|' \
+		${WRKSRC}/remote/.npmrc
 	@(cd ${WRKSRC} && \
 		${FIND} -E . -type f -iregex '${SHEBANG_REGEX}' \
 			-exec ${SED} -i '' -e "s|/usr/bin/pgrep|/bin/pgrep|g" {} ';')
@@ -156,7 +162,7 @@ pre-build:
 # rebuild native node modules in top directory
 	@for subdir in `${FIND} ${WRKSRC}/node_modules -type f -name binding.gyp -exec ${DIRNAME} {} ';'`; do \
 		${ECHO_MSG} "===>   Rebuilding native modules in $${subdir}"; \
-	 	cd $${subdir} && \
+		cd $${subdir} && \
 		${SETENV} ${MAKE_ENV} \
 			npm_config_runtime=electron \
 			npm_config_target=${ELECTRON_VER} \
@@ -201,7 +207,7 @@ do-build:
 # setup download cache for gulp-atom-electron
 	@${MKDIR} ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH}
 	@cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
-		zip -q -r ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH}/electron-v${ELECTRON_VER}-linux-x64.zip .
+		zip -q -r ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH}/electron-v${ELECTRON_VER}-linux-${ELECTRON_ARCH}.zip .
 	@cd ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH} && \
 		${SHA256} -r *-v${ELECTRON_VER}-linux-*.zip | \
 		${SED} -e 's/ / */' > SHASUMS256.txt
@@ -215,9 +221,13 @@ do-build:
 		${SED} -e 's/ / */' >> ${WRKSRC}/build/checksums/electron.txt
 # build and package vscode
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} npx tsc -p build/tsconfig.build.json
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} npm run gulp vscode-linux-x64-min
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
+		npm_config_runtime=electron \
+		npm_config_target=${ELECTRON_VER} \
+		npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers \
+		npm --userconfig=${WRKSRC}/.npmrc run gulp vscode-linux-${ELECTRON_ARCH}-min
 # move marketplace extensions
-	@${MV} ${WRKDIR}/builtInExtensions/* ${WRKDIR}/VSCode-linux-x64/resources/app/extensions
+	@${MV} ${WRKDIR}/builtInExtensions/* ${WRKDIR}/VSCode-linux-${ELECTRON_ARCH}/resources/app/extensions
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
@@ -238,9 +248,9 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/resources/linux/code.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/com.visualstudio.code.oss.png
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	cd ${WRKDIR}/VSCode-linux-x64 && \
+	cd ${WRKDIR}/VSCode-linux-${ELECTRON_ARCH} && \
 		${TAR} -cf - . | ${TAR} -xf - -C ${STAGEDIR}${DATADIR}
-	${FIND} ${STAGEDIR}${DATADIR}/resources/app/node_modules.asar.unpacked -type f -exec ${FILE} {} ';' | \
+	@${FIND} ${STAGEDIR}${DATADIR}/resources/app -type f -exec ${FILE} {} ';' | \
 		${GREP} 'ELF.*FreeBSD' | ${AWK} -F ': ' '{print $$1}' | ${XARGS} ${STRIP_CMD}
 .for f in chromedriver mksnapshot v8_context_snapshot_generator
 	@${RM} ${STAGEDIR}${DATADIR}/${f}
@@ -265,18 +275,24 @@ do-test:
 # UI smoke tests
 	cd ${WRKSRC} && ${SETENV} ${TEST_ENV} yarn smoketest
 
-build-remote-extension-host: configure
+build-remote-extension-host: configure pre-build
 # setup download cache for node
-	@${MKDIR} ${WRKSRC}/.build/node/v${NODEJS_PORTVERSION}/linux-x64
-	@${CP} ${LOCALBASE}/bin/node ${WRKSRC}/.build/node/v${NODEJS_PORTVERSION}/linux-x64
+	@${MKDIR} ${WRKSRC}/.build/node/v${NODEJS_PORTVERSION}/linux-${ELECTRON_ARCH}
+	@${CP} ${LOCALBASE}/bin/node ${WRKSRC}/.build/node/v${NODEJS_PORTVERSION}/linux-${ELECTRON_ARCH}
 # build vscode remote extension host
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} npm run gulp vscode-reh-linux-x64-min
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
+		npm_config_runtime=node \
+		npm_config_target=${NODEJS_PORTVERSION} \
+		npm_config_nodedir=${LOCALBASE} \
+		npm --userconfig=${WRKSRC}/remote/.npmrc run gulp vscode-reh-linux-${ELECTRON_ARCH}-min
 	@${MKDIR} ${WRKDIR}/vscode-reh/bin/${SOURCE_COMMIT_HASH}
-	@cd ${WRKDIR}/vscode-reh-linux-x64 && ${TAR} -cf - . | \
+	cd ${WRKDIR}/vscode-reh-linux-${ELECTRON_ARCH} && ${TAR} -cf - . | \
 		${TAR} -xf - -C ${WRKDIR}/vscode-reh/bin/${SOURCE_COMMIT_HASH}
-	@cd ${WRKDIR}/vscode-reh && \
+	@${FIND} ${WRKDIR}/vscode-reh -type f -exec ${FILE} {} ';' | \
+		${GREP} 'ELF.*FreeBSD' | ${AWK} -F ': ' '{print $$1}' | ${XARGS} ${STRIP_CMD}
+	cd ${WRKDIR}/vscode-reh && \
 		${TAR} -czf ../vscode-reh-${DISTVERSION}-${OPSYS:tl}${OSREL:R}-${ARCH}.tar.gz .
-	# cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} npm run gulp vscode-reh-web-linux-x64-min
+	# cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} npm run gulp vscode-reh-web-linux-${ELECTRON_ARCH}-min
 
 ### targets for port maintainer(s)
 make-node-modules-archive: extract
