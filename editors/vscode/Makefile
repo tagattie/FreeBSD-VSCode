@@ -79,13 +79,12 @@ USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
 USE_GL=		gbm gl glesv2
 USE_GNOME=	atk cairo pango gdkpixbuf2 gtk30 libxml2 libxslt
 
-USE_LDCONFIG=	${DATADIR}
-
 SHEBANG_REGEX=	./(extensions|node_modules|resources|scripts|src)/.*\.sh$$
 PATHFIX_FILES=	src/vs/workbench/contrib/debug/node/terminals.ts
 
 DATADIR=	${PREFIX}/share/code-oss
 TMPDIR=		${WRKDIR}
+BUNDLE_LIBS=	yes
 
 MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH}
 # Don't download electron binary distribution on electron node_modules installation
