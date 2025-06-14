@@ -9,12 +9,11 @@
  						reject(err || new Error(stderr.toString()));
  					} else {
  						const cmd = JSON.stringify(FileAccess.asFileUri('vs/base/node/ps.sh').fsPath);
-@@ -225,7 +225,8 @@ export function listProcesses(rootPid: number): Promis
+@@ -225,7 +225,7 @@ export function listProcesses(rootPid: number): Promis
  					}
  				} else {
  					const ps = stdout.toString().trim();
 -					const args = '-ax -o pid=,ppid=,pcpu=,pmem=,command=';
-+					// const args = '-ax -o pid=,ppid=,pcpu=,pmem=,command=';
 +					const args = '-ax -o pid= -o ppid= -o pcpu= -o pmem= -o command=';
  
  					// Set numeric locale to ensure '.' is used as the decimal separator
