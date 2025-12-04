@@ -110,9 +110,9 @@ pre-build:
 
 do-build:
 # setup download cache for node
-	@${MKDIR} ${WRKSRC}/.build/node/v${NODEJS_PORTVERSION}/linux-${ELECTRON_ARCH}
+	@${MKDIR} ${WRKSRC}/.build/node/v${NODEJS_PORTVERSION}/linux-${NODEJS_ARCH}
 	@${CP} ${LOCALBASE}/bin/node \
-		${WRKSRC}/.build/node/v${NODEJS_PORTVERSION}/linux-${ELECTRON_ARCH}
+		${WRKSRC}/.build/node/v${NODEJS_PORTVERSION}/linux-${NODEJS_ARCH}
 # remove backup files so that they are not included in the package
 	@${FIND} ${WRKSRC} -type f \( -name '*.orig' -o -name '*~' \) -delete
 # build vscode remote extension host
@@ -126,7 +126,7 @@ do-build:
 		npm_config_target=${NODEJS_PORTVERSION} \
 		npm_config_nodedir=${LOCALBASE} \
 		npm --userconfig=${WRKSRC}/remote/.npmrc run \
-			gulp vscode-reh-linux-${ELECTRON_ARCH}-min
+			gulp vscode-reh-linux-${NODEJS_ARCH}-min
 	${TAR} -czf ${WRKDIR}/vscode-reh-${OPSYS:tl}-${NODEJS_ARCH}-${DISTVERSION}.tar.gz \
 		-C ${WRKDIR}/vscode-reh-linux-${NODEJS_ARCH} .
 
