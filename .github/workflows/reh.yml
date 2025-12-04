@@ -34,6 +34,7 @@ jobs:
         with:
           envs: 'PORTSDIR NODEJS_VERSION PYTHON_VERSION'
           usesh: true
+          mem: 16384
           release: '13.5' # lowest supported release
           run: |
             sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
