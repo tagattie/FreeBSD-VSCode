@@ -38,12 +38,14 @@ jobs:
           run: |
             sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
 
-            pkg install -y node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
-            pkg install -y jq pkgconf ripgrep python${PYTHON_VERSION} \
+            pkg update
+            pkg upgrade -U
+            pkg install -Uy node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
+            pkg install -Uy jq pkgconf ripgrep python${PYTHON_VERSION} \
               typescript-go
-            pkg install -y brotli c-ares icu llhttp libnghttp2 libnghttp3 \
+            pkg install -Uy brotli c-ares icu llhttp libnghttp2 libnghttp3 \
               libngtcp2 simdjson libuv zstd sqlite3 krb5 libsecret
-            pkg install -y ca_root_nss
+            pkg install -Uy ca_root_nss
 
             cd FreeBSD-VSCode/editors/vscode
             env PORTSDIR=${PORTSDIR} make -f Makefile.reh build
