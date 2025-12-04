@@ -2,6 +2,7 @@ name: Build remote extension host
 env:
   PORTSDIR: ${{ github.workspace }}/ports
   NODEJS_VERSION: '22'
+  PYTHON_VERSION: '311'
 
 on:
   workflow_dispatch:
@@ -30,7 +31,8 @@ jobs:
             sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
 
             pkg install -y node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
-            pkg install -y jq ripgrep typescript-go
+            pkg install -y jq pkgconf ripgrep python${PYTHON_VERSION} \
+              typescript-go
             pkg install -y brotli c-ares icu llhttp libnghttp2 libnghttp3 \
               libngtcp2 simdjson libuv zstd sqlite3
             pkg install -y ca_root_nss
