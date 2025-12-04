@@ -17,6 +17,14 @@ jobs:
         with:
           repository: freebsd/freebsd-ports
           path: ports
+          sparse-checkout: |
+            .
+            Keywords
+            Mk
+            Templates
+            Tools
+            lang/python311
+            www/node22
       - name: Checkout FreeBSD-VSCode repository
         uses: actions/checkout@v6
         with:
