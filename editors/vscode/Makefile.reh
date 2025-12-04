@@ -20,7 +20,6 @@ EXTRACT_DEPENDS=jq:textproc/jq \
 BUILD_DEPENDS=	tsgo:lang/typescript-go \
 		jq:textproc/jq \
 		rg:textproc/ripgrep \
-		node${NODEJS_VERSION}>0:www/node${NODEJS_VERSION} \
 		npm${NODEJS_SUFFIX}>0:www/npm${NODEJS_SUFFIX}
 LIB_DEPENDS=	libbrotlidec.so:archivers/brotli \
 		libcares.so:dns/c-ares \
