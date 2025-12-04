@@ -1,5 +1,5 @@
 PORTNAME=	vscode
-DISTVERSION=	1.106.3
+DISTVERSION=	${VSCODE_VERSION}
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:node_modules
 DISTFILES=	vscode-node-modules-${DISTVERSION}${EXTRACT_SUFX}:node_modules \
@@ -68,8 +68,6 @@ USES=		desktop-file-utils display:test gl gmake gnome gssapi:mit \
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
 
-SOURCE_COMMIT_HASH=	bf9252a2fb45be6893dd8870c0bf37e2e1766d61
-
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
 USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xkbfile \
@@ -94,6 +92,8 @@ MAKE_ENV+=	PLAYWRIGHT_BROWSERS_PATH=${WRKDIR}/pw-browsers \
 # This is a workaround to avoid filesystem violations during poudriere build
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 TEST_ENV=	${MAKE_ENV:C/TMPDIR=.*//}
+
+.include "Makefile.version"
 
 NODEJS_DIR=	${.CURDIR:H:H}/www/node22
 .include "${NODEJS_DIR}/Makefile.version"
