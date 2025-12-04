@@ -1,0 +1,50 @@
+name: Build remote extension host
+env:
+  PORTSDIR: ${{ github.workspace }}/ports
+  NODEJS_VERSION: '22'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build remote extension host
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout FreeBSD ports repository
+        uses: actions/checkout@v6
+        with:
+          repository: freebsd/freebsd-ports
+          path: ports
+          sparse-checkout: |
+            .
+            Keywords
+            Mk
+            Templates
+            Tools
+      - name: Checkout FreeBSD-VSCode repository
+        uses: actions/checkout@v6
+        with:
+          path: FreeBSD-VSCode
+      - name: Build remote extension host (for amd64)
+        uses: vmactions/freebsd-vm@v1
+        with:
+          envs: 'PORTSDIR NODEJS_VERSION'
+          usesh: true
+          release: '13.5' # lowest supported release
+          run: |
+            sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
+
+            pkg install -y node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
+            pkg install -y jq ripgrep typescript-go
+            pkg install -y brotli c-ares icu llhttp libnghttp2 libnghttp3 \
+              libngtcp2 simdjson libuv zstd sqlite3
+            pkg install -y ca_root_nss
+
+            cd FreeBSD-VSCode/editors/vscode
+            env PORTSDIR=${PORTSDIR} make -f Makefile.reh build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: vscode-reh-freebsd-x64
+          path: FreeBSD-VSCode/editors/vscode/work/vscode-reh-freebsd-x64-*.tar.gz
