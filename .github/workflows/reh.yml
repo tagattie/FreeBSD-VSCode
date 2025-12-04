@@ -42,7 +42,7 @@ jobs:
             pkg install -y jq pkgconf ripgrep python${PYTHON_VERSION} \
               typescript-go
             pkg install -y brotli c-ares icu llhttp libnghttp2 libnghttp3 \
-              libngtcp2 simdjson libuv zstd sqlite3
+              libngtcp2 simdjson libuv zstd sqlite3 libsecret
             pkg install -y ca_root_nss
 
             cd FreeBSD-VSCode/editors/vscode
