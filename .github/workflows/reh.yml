@@ -39,7 +39,7 @@ jobs:
             sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
 
             pkg update
-            pkg upgrade -U
+            pkg upgrade -Uy
             pkg install -Uy node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
             pkg install -Uy jq pkgconf ripgrep python${PYTHON_VERSION} \
               typescript-go
