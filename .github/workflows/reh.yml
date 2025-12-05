@@ -58,7 +58,7 @@ jobs:
           shell: sh
           environment_variables: PORTSDIR NODEJS_VERSION PYTHON_VERSION
           memory: 12G
-          cpu_count: 4
+          cpu_count: 2
           run: |
             sudo sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
 
