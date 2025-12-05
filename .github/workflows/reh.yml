@@ -96,6 +96,7 @@ jobs:
           name: ${{ env.APPNAME }}-freebsd-x64
           path: .
       - name: Install GitHub CLI
+        # https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
         run: |
           type -p wget > /dev/null || (sudo apt update && sudo apt install -y wget)
           sudo mkdir -p -m 755 /etc/apt/keyrings
