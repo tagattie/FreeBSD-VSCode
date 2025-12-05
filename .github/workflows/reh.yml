@@ -109,8 +109,15 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 22
-      - name: Install libkrb5-dev
-        run: sudo apt update -y && sudo apt install -y libkrb5-dev
+      - name: Install necessary packages
+        run: |
+          sudo apt update -y
+          sudo apt install -y \
+            build-essential \
+            pkg-config \
+            libkrb5-dev \
+            libx11-dev \
+            libxkbfile-dev
       - name: Patch
         run: |
           cd vscode
