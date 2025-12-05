@@ -93,7 +93,7 @@ jobs:
   build-linux:
     name: Build remote extension host (linux)
     if: ${{ inputs.build-linux }}
-    runs-on: unbuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout specified tag of vscode repository
         uses: actions/checkout@v6
