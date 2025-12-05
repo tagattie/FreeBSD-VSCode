@@ -108,7 +108,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version-file: '.nvmrc'
       - name: Install necessary packages
         run: |
           sudo apt update -y
@@ -133,6 +133,15 @@ jobs:
         run: |
           cd vscode
           npm run gulp vscode-reh-linux-x64-min
+          cd ..
+          tar -czf vscode-reh-linux-x64-${{ inputs.tag }}.tar.gz \
+            -C vscode-reh-linux-x64 .
+      - name: Upload artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ env.APPNAME }}-linux-x64
+          path: ${{ env.APPNAME }}-linux-x64-*.tar.gz
+          if-no-files-found: error
 
   publish:
     name: Publish remote extension host
