@@ -124,6 +124,7 @@ jobs:
           for p in ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/patch-*.json; do
             patch -s -p0 < $p
           done
+          patch -s -p0 < ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/patch-build_gulpfile.reh.js
       - name: Install dependencies
         run: |
           cd vscode
