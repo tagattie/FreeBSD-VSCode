@@ -49,7 +49,7 @@ jobs:
           usesh: true
           mem: 12288
           release: '13.5' # lowest supported release
-          arch: $${{ matrix.settings.vmactions_arch }}
+          arch: ${{ matrix.settings.vmactions_arch }}
           run: |
             sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
 
