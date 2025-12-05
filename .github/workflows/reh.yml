@@ -50,6 +50,9 @@ jobs:
 
             cd FreeBSD-VSCode/editors/vscode
             env PORTSDIR=${PORTSDIR} make -f Makefile.reh build
+
+            mv work/vscode-reh-freebsd-x64-*.tar.gz .
+            rm -rf work
       # - name: Build remote extension host (for amd64)
       #   uses: cross-platform-actions/action@v0.30.0
       #   with:
