@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: vscode-reh-freebsd-x64
-          path: FreeBSD-VSCode/editors/vscode/work/vscode-reh-freebsd-x64-*.tar.gz
+          path: FreeBSD-VSCode/editors/vscode/vscode-reh-freebsd-x64-*.tar.gz
 
   release:
     name: Release remote extension host
