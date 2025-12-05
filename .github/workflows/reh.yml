@@ -91,9 +91,19 @@ jobs:
           if-no-files-found: error
 
   build-linux:
-    name: Build remote extension host (linux)
+    strategy:
+      fail-fast: false
+      matrix:
+        settings:
+          - name: linux
+            runner: ubuntu-latest
+            node_arch: x64
+          # - name: linux
+          #   runner: ubuntu-24.04-arm
+          #   node_arch: arm64
+    name: Build remote extension host (${{ matrix.settings.name }} ${{ matrix.settings.node_arch }})
     if: ${{ inputs.build-linux }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.settings.runner }}
     steps:
       - name: Get latest release tag
         id: get_latest_release_tag
@@ -145,17 +155,17 @@ jobs:
       - name: Build remote extension host
         run: |
           cd vscode
-          npm run gulp vscode-reh-linux-x64-min
+          npm run gulp vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-min
           cd ..
-          tar -czf vscode-reh-linux-x64-${{ github.event_name == 'workflow_dispatch'
+          tar -czf vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-${{ github.event_name == 'workflow_dispatch'
                 && github.event.inputs.tag
                 || steps.get_latest_release_tag.outputs.tag }}.tar.gz \
-            -C vscode-reh-linux-x64 .
+            -C vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }} .
       - name: Upload artifact
         uses: actions/upload-artifact@v5
         with:
-          name: ${{ env.APPNAME }}-linux-x64
-          path: ${{ env.APPNAME }}-linux-x64-*.tar.gz
+          name: ${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}
+          path: ${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-*.tar.gz
           if-no-files-found: error
 
   publish:
