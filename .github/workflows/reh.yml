@@ -106,13 +106,13 @@ jobs:
             sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
           sudo apt update
           sudo apt install -y gh
-      - name: Get latest tag of FreeBSD-VSCode
+      - name: Get latest tag
         id: get_latest_tag
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           tag=$(gh release view --json tagName --jq .tagName)
-          echo "tag=${tag}" >> $GITHUB_OUTPUT
+          echo "tag=${tag}" >> ${GITHUB_OUTPUT}
       - name: Upload artifact to release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
