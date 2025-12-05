@@ -7,6 +7,11 @@ env:
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag'
+        required: true
+        type: string
 
 jobs:
   build-freebsd:
@@ -74,10 +79,39 @@ jobs:
           path: FreeBSD-VSCode/editors/vscode/${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-*.tar.gz
           if-no-files-found: error
 
+  build-linux:
+    name: Build remote extension host (linux)
+    runs-on: unbuntu-latest
+    steps:
+      - name: Checkout specified tag of vscode repository
+        uses: actions/checkout@v6
+        with:
+          repository: microsoft/vscode
+          ref: ${{ inputs.tag }}
+          path: vscode
+      - name: Checkout FreeBSD-VSCode repository
+        uses: actions/checkout@v6
+        with:
+          path: FreeBSD-VSCode
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Patch
+        run: |
+          cd vscode
+          for p in ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/patch-*; do
+            patch -s -p0 < $p
+          done
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run gulp vscode-reh-linux-x64-min
+
   publish:
     name: Publish remote extension host
     runs-on: ubuntu-latest
-    needs: build-freebsd
+    needs: [build-freebsd, build-linux]
     steps:
       - name: Checkout FreeBSD-VSCode repository
         uses: actions/checkout@v6
