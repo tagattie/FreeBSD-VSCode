@@ -116,9 +116,13 @@ jobs:
             patch -s -p0 < $p
           done
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd vscode
+          npm install
       - name: Build
-        run: npm run gulp vscode-reh-linux-x64-min
+        run: |
+          cd vscode
+          npm run gulp vscode-reh-linux-x64-min
 
   publish:
     name: Publish remote extension host
