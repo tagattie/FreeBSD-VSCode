@@ -6,6 +6,8 @@ env:
   PYTHON_VERSION: '311'
 
 on:
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       build-freebsd:
@@ -38,7 +40,8 @@ jobs:
           #   vmactions_arch: aarch64
           #   node_arch: arm64
     name: Build remote extension host (${{ matrix.settings.name }} ${{ matrix.settings.freebsd_arch }})
-    if: ${{ inputs.build-freebsd }}
+    if: ${{ github.event_name == 'release'
+            || (github.event_name == 'workflow_dispatch' && github.event.inputs.build-freebsd) }}
     runs-on: ubuntu-latest
     steps:
       - name: Get latest release tag
@@ -114,7 +117,8 @@ jobs:
             runner: ubuntu-22.04-arm
             node_arch: arm64
     name: Build remote extension host (${{ matrix.settings.name }} ${{ matrix.settings.node_arch }})
-    if: ${{ inputs.build-linux }}
+    if: ${{ github.event_name == 'release'
+            || (github.event_name == 'workflow_dispatch' && github.event.inputs.build-linux) }}
     runs-on: ${{ matrix.settings.runner }}
     steps:
       - name: Get latest release tag
