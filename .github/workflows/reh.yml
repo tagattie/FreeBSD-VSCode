@@ -112,7 +112,7 @@ jobs:
       - name: Patch
         run: |
           cd vscode
-          for p in ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/patch-*; do
+          for p in ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/patch-*.json; do
             patch -s -p0 < $p
           done
       - name: Install dependencies
