@@ -55,10 +55,10 @@ jobs:
       - name: Checkout FreeBSD-VSCode repository
         uses: actions/checkout@v6
         with:
-          # ref: |
-          #   ${{ github.event_name == 'workflow_dispatch'
-          #       && github.event.inputs.tag
-          #       || steps.get_latest_release_tag.outputs.tag }}
+          ref: |
+            ${{ github.event_name == 'workflow_dispatch'
+                && github.event.inputs.tag
+                || steps.get_latest_release_tag.outputs.tag }}
           path: FreeBSD-VSCode
       - name: Checkout FreeBSD ports repository
         uses: actions/checkout@v6
@@ -132,10 +132,10 @@ jobs:
       - name: Checkout FreeBSD-VSCode repository
         uses: actions/checkout@v6
         with:
-          # ref: |
-          #   ${{ github.event_name == 'workflow_dispatch'
-          #       && github.event.inputs.tag
-          #       || steps.get_latest_release_tag.outputs.tag }}
+          ref: |
+            ${{ github.event_name == 'workflow_dispatch'
+                && github.event.inputs.tag
+                || steps.get_latest_release_tag.outputs.tag }}
           path: FreeBSD-VSCode
       - name: Checkout specified tag of vscode repository
         uses: actions/checkout@v6
