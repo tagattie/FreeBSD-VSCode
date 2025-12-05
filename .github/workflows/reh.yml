@@ -29,50 +29,49 @@ jobs:
         uses: actions/checkout@v6
         with:
           path: FreeBSD-VSCode
-      # - name: Build remote extension host (for amd64)
-      #   uses: vmactions/freebsd-vm@v1
-      #   with:
-      #     envs: 'PORTSDIR NODEJS_VERSION PYTHON_VERSION'
-      #     usesh: true
-      #     mem: 12288
-      #     release: '13.5' # lowest supported release
-      #     run: |
-      #       sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
-
-      #       pkg update
-      #       pkg upgrade -Uy
-      #       pkg install -Uy node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
-      #       pkg install -Uy jq pkgconf ripgrep python${PYTHON_VERSION} \
-      #         typescript-go
-      #       pkg install -Uy brotli c-ares icu llhttp libnghttp2 libnghttp3 \
-      #         libngtcp2 simdjson libuv zstd sqlite3 krb5 libsecret
-      #       pkg install -Uy ca_root_nss
-
-      #       cd FreeBSD-VSCode/editors/vscode
-      #       env PORTSDIR=${PORTSDIR} make -f Makefile.reh build
       - name: Build remote extension host (for amd64)
-        uses: cross-platform-actions/action@v0.30.0
+        uses: vmactions/freebsd-vm@v1
         with:
-          operating_system: freebsd
-          version: '13.5' # lowest supported release
-          shell: sh
-          environment_variables: PORTSDIR NODEJS_VERSION PYTHON_VERSION
-          memory: 12G
-          cpu_count: 1
+          envs: 'PORTSDIR NODEJS_VERSION PYTHON_VERSION'
+          usesh: true
+          mem: 12288
+          release: '13.5' # lowest supported release
           run: |
-            sudo sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
+            sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
 
-            sudo pkg update
-            sudo pkg upgrade -Uy
-            sudo pkg install -Uy node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
-            sudo pkg install -Uy jq pkgconf ripgrep python${PYTHON_VERSION} \
+            pkg update
+            pkg upgrade -Uy
+            pkg install -Uy node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
+            pkg install -Uy jq pkgconf ripgrep python${PYTHON_VERSION} \
               typescript-go
-            sudo pkg install -Uy brotli c-ares icu llhttp libnghttp2 libnghttp3 \
+            pkg install -Uy brotli c-ares icu llhttp libnghttp2 libnghttp3 \
               libngtcp2 simdjson libuv zstd sqlite3 krb5 libsecret
-            sudo pkg install -Uy ca_root_nss
+            pkg install -Uy ca_root_nss
 
             cd FreeBSD-VSCode/editors/vscode
             env PORTSDIR=${PORTSDIR} make -f Makefile.reh build
+      # - name: Build remote extension host (for amd64)
+      #   uses: cross-platform-actions/action@v0.30.0
+      #   with:
+      #     operating_system: freebsd
+      #     version: '13.5' # lowest supported release
+      #     shell: sh
+      #     environment_variables: PORTSDIR NODEJS_VERSION PYTHON_VERSION
+      #     memory: 12G
+      #     run: |
+      #       sudo sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
+
+      #       sudo pkg update
+      #       sudo pkg upgrade -Uy
+      #       sudo pkg install -Uy node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
+      #       sudo pkg install -Uy jq pkgconf ripgrep python${PYTHON_VERSION} \
+      #         typescript-go
+      #       sudo pkg install -Uy brotli c-ares icu llhttp libnghttp2 libnghttp3 \
+      #         libngtcp2 simdjson libuv zstd sqlite3 krb5 libsecret
+      #       sudo pkg install -Uy ca_root_nss
+
+      #       cd FreeBSD-VSCode/editors/vscode
+      #       env PORTSDIR=${PORTSDIR} make -f Makefile.reh build
       - name: Upload artifact
         uses: actions/upload-artifact@v5
         with:
