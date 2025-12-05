@@ -1,5 +1,6 @@
 name: Build remote extension host
 env:
+  APPNAME: vscode-reh
   PORTSDIR: ${{ github.workspace }}/ports
   NODEJS_VERSION: '22'
   PYTHON_VERSION: '311'
@@ -32,7 +33,7 @@ jobs:
       - name: Build remote extension host (for amd64)
         uses: vmactions/freebsd-vm@v1
         with:
-          envs: 'PORTSDIR NODEJS_VERSION PYTHON_VERSION'
+          envs: 'APPNAME PORTSDIR NODEJS_VERSION PYTHON_VERSION'
           usesh: true
           mem: 12288
           release: '13.5' # lowest supported release
@@ -51,7 +52,7 @@ jobs:
             cd FreeBSD-VSCode/editors/vscode
             env PORTSDIR=${PORTSDIR} make -f Makefile.reh build
 
-            mv work/vscode-reh-freebsd-x64-*.tar.gz .
+            mv work/${APPNAME}-freebsd-x64-*.tar.gz .
             rm -rf work
       # - name: Build remote extension host (for amd64)
       #   uses: cross-platform-actions/action@v0.30.0
@@ -78,8 +79,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v5
         with:
-          name: vscode-reh-freebsd-x64
-          path: FreeBSD-VSCode/editors/vscode/vscode-reh-freebsd-x64-*.tar.gz
+          name: ${{ env.APPNAME }}-freebsd-x64
+          path: FreeBSD-VSCode/editors/vscode/${{ env.APPNAME }}-freebsd-x64-*.tar.gz
 
   release:
     name: Release remote extension host
@@ -91,7 +92,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v6
         with:
-          name: vscode-reh-freebsd-x64
+          name: ${{ env.APPNAME }}-freebsd-x64
           path: .
       - name: Install GitHub CLI
         run: |
@@ -117,4 +118,4 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           tag=${{ steps.get_latest_tag.outputs.tag }}
-          gh release upload ${tag} vscode-reh-freebsd-x64-*.tar.gz --clobber
+          gh release upload ${tag} ${{ env.APPNAME }}-freebsd-x64-${tag}.tar.gz --clobber
