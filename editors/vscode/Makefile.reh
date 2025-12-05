@@ -120,13 +120,14 @@ do-build:
 	${SETENV} ${MAKE_ENV} npm run prebuild-ts
 	cd ${WRKSRC} && \
 	${SETENV} ${MAKE_ENV} tsgo -p build/tsconfig.build.json
-	cd ${WRKSRC} && \
+	# cd ${WRKSRC} && \
 	# ${SETENV} ${MAKE_ENV} \
 	# 	npm_config_runtime=node \
 	# 	npm_config_target=${NODEJS_PORTVERSION} \
 	# 	npm_config_nodedir=${LOCALBASE} \
 	# 	npm --userconfig=${WRKSRC}/remote/.npmrc run \
 	# 		gulp vscode-reh-linux-${NODEJS_ARCH}-min
+	cd ${WRKSRC} && \
 	${SETENV} ${MAKE_ENV} \
 		npm_config_runtime=node \
 		npm_config_target=${NODEJS_PORTVERSION} \
