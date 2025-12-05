@@ -41,6 +41,22 @@ jobs:
     if: ${{ inputs.build-freebsd }}
     runs-on: ubuntu-latest
     steps:
+      - name: Get latest release tag
+        id: get_latest_release_tag
+        run: |
+          tag=$(curl -s \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/releases/latest \
+            | jq -r '.tag_name')
+          echo "tag=${tag}" >> ${GITHUB_OUTPUT}
+      - name: Checkout FreeBSD-VSCode repository
+        uses: actions/checkout@v6
+        with:
+          # ref: |
+          #   ${{ github.event_name == 'workflow_dispatch'
+          #       && github.event.inputs.tag
+          #       || steps.get_latest_release_tag.outputs.tag }}
+          path: FreeBSD-VSCode
       - name: Checkout FreeBSD ports repository
         uses: actions/checkout@v6
         with:
@@ -54,11 +70,7 @@ jobs:
             Tools
             lang/python311
             www/node22
-      - name: Checkout FreeBSD-VSCode repository
-        uses: actions/checkout@v6
-        with:
-          path: FreeBSD-VSCode
-      - name: Build remote extension host (${{ matrix.settings.name }} ${{ matrix.settings.freebsd_arch }})
+      - name: Build remote extension host
         uses: vmactions/freebsd-vm@v1
         with:
           envs: 'APPNAME PORTSDIR NODEJS_VERSION PYTHON_VERSION'
