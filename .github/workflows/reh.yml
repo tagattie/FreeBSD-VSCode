@@ -19,7 +19,7 @@ on:
         type: boolean
         default: true
       tag:
-        description: 'Tag'
+        description: 'Release Tag'
         required: true
         type: string
 
@@ -109,6 +109,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 22
+      - name: Install libkrb5-dev
+        run: sudo apt update -y && sudo apt install -y libkrb5-dev
       - name: Patch
         run: |
           cd vscode
