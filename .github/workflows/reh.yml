@@ -60,16 +60,16 @@ jobs:
           memory: 12G
           cpu_count: 4
           run: |
-            sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
+            sudo sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
 
-            pkg update
-            pkg upgrade -Uy
-            pkg install -Uy node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
-            pkg install -Uy jq pkgconf ripgrep python${PYTHON_VERSION} \
+            sudo pkg update
+            sudo pkg upgrade -Uy
+            sudo pkg install -Uy node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
+            sudo pkg install -Uy jq pkgconf ripgrep python${PYTHON_VERSION} \
               typescript-go
-            pkg install -Uy brotli c-ares icu llhttp libnghttp2 libnghttp3 \
+            sudo pkg install -Uy brotli c-ares icu llhttp libnghttp2 libnghttp3 \
               libngtcp2 simdjson libuv zstd sqlite3 krb5 libsecret
-            pkg install -Uy ca_root_nss
+            sudo pkg install -Uy ca_root_nss
 
             cd FreeBSD-VSCode/editors/vscode
             env PORTSDIR=${PORTSDIR} make -f Makefile.reh build
