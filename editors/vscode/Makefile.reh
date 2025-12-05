@@ -133,7 +133,7 @@ do-build:
 		npm_config_target=${NODEJS_PORTVERSION} \
 		npm_config_nodedir=${LOCALBASE} \
 		npm --userconfig=${WRKSRC}/remote/.npmrc run \
-			gulp compile-build-with-mangling
+			gulp compile-build-without-mangling
 	${TAR} -czf ${WRKDIR}/vscode-reh-${OPSYS:tl}-${NODEJS_ARCH}-${DISTVERSION}.tar.gz \
 		-C ${WRKDIR}/vscode-reh-linux-${NODEJS_ARCH} .
 
