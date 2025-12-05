@@ -67,28 +67,6 @@ jobs:
 
             mv work/${APPNAME}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-*.tar.gz .
             rm -rf work
-      # - name: Build remote extension host (for amd64)
-      #   uses: cross-platform-actions/action@v0.30.0
-      #   with:
-      #     operating_system: freebsd
-      #     version: '13.5' # lowest supported release
-      #     shell: sh
-      #     environment_variables: PORTSDIR NODEJS_VERSION PYTHON_VERSION
-      #     memory: 12G
-      #     run: |
-      #       sudo sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
-
-      #       sudo pkg update
-      #       sudo pkg upgrade -Uy
-      #       sudo pkg install -Uy node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
-      #       sudo pkg install -Uy jq pkgconf ripgrep python${PYTHON_VERSION} \
-      #         typescript-go
-      #       sudo pkg install -Uy brotli c-ares icu llhttp libnghttp2 libnghttp3 \
-      #         libngtcp2 simdjson libuv zstd sqlite3 krb5 libsecret
-      #       sudo pkg install -Uy ca_root_nss
-
-      #       cd FreeBSD-VSCode/editors/vscode
-      #       env PORTSDIR=${PORTSDIR} make -f Makefile.reh build
       - name: Upload artifact
         uses: actions/upload-artifact@v5
         with:
