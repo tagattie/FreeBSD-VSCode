@@ -95,21 +95,36 @@ jobs:
     if: ${{ inputs.build-linux }}
     runs-on: ubuntu-latest
     steps:
+      - name: Get latest release tag
+        id: get_latest_release_tag
+        run: |
+          tag=$(curl -s \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/releases/latest \
+            | jq -r '.tag_name')
+          echo "tag=${tag}" >> ${GITHUB_OUTPUT}
+      - name: Checkout FreeBSD-VSCode repository
+        uses: actions/checkout@v6
+        with:
+          # ref: |
+          #   ${{ github.event_name == 'workflow_dispatch'
+          #       && github.event.inputs.tag
+          #       || steps.get_latest_release_tag.outputs.tag }}
+          path: FreeBSD-VSCode
       - name: Checkout specified tag of vscode repository
         uses: actions/checkout@v6
         with:
           repository: microsoft/vscode
-          ref: ${{ inputs.tag }}
+          ref: |
+            ${{ github.event_name == 'workflow_dispatch'
+                && github.event.inputs.tag
+                || steps.get_latest_release_tag.outputs.tag }}
           path: vscode
-      - name: Checkout FreeBSD-VSCode repository
-        uses: actions/checkout@v6
-        with:
-          path: FreeBSD-VSCode
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
-      - name: Install necessary packages
+      - name: Install necessary Ubuntu packages
         run: |
           sudo apt update -y
           sudo apt install -y \
@@ -118,23 +133,23 @@ jobs:
             libkrb5-dev \
             libx11-dev \
             libxkbfile-dev
-      - name: Patch
+      - name: Apply some of FreeBSD patches to vscode repository
         run: |
           cd vscode
           for p in ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/patch-*.json; do
             patch -s -p0 < $p
           done
           patch -s -p0 < ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/patch-build_gulpfile.reh.js
-      - name: Install dependencies
-        run: |
-          cd vscode
-          npm install
-      - name: Build
+      - name: Install necessary node modules
+        run: cd vscode && npm install
+      - name: Build remote extension host
         run: |
           cd vscode
           npm run gulp vscode-reh-linux-x64-min
           cd ..
-          tar -czf vscode-reh-linux-x64-${{ inputs.tag }}.tar.gz \
+          tar -czf vscode-reh-linux-x64-${{ github.event_name == 'workflow_dispatch'
+                && github.event.inputs.tag
+                || steps.get_latest_release_tag.outputs.tag }}.tar.gz \
             -C vscode-reh-linux-x64 .
       - name: Upload artifact
         uses: actions/upload-artifact@v5
