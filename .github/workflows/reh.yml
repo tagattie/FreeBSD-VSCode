@@ -96,10 +96,10 @@ jobs:
       matrix:
         settings:
           - name: linux
-            runner: ubuntu-latest
+            runner: ubuntu-22.04
             node_arch: x64
           # - name: linux
-          #   runner: ubuntu-24.04-arm
+          #   runner: ubuntu-22.04-arm
           #   node_arch: arm64
     name: Build remote extension host (${{ matrix.settings.name }} ${{ matrix.settings.node_arch }})
     if: ${{ inputs.build-linux }}
