@@ -195,6 +195,7 @@ jobs:
         uses: actions/download-artifact@v6
         with:
           path: artifacts
+          merge-multiple: true
       - name: Install GitHub CLI
         # https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
         run: |
