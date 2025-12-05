@@ -121,12 +121,18 @@ do-build:
 	cd ${WRKSRC} && \
 	${SETENV} ${MAKE_ENV} tsgo -p build/tsconfig.build.json
 	cd ${WRKSRC} && \
+	# ${SETENV} ${MAKE_ENV} \
+	# 	npm_config_runtime=node \
+	# 	npm_config_target=${NODEJS_PORTVERSION} \
+	# 	npm_config_nodedir=${LOCALBASE} \
+	# 	npm --userconfig=${WRKSRC}/remote/.npmrc run \
+	# 		gulp vscode-reh-linux-${NODEJS_ARCH}-min
 	${SETENV} ${MAKE_ENV} \
 		npm_config_runtime=node \
 		npm_config_target=${NODEJS_PORTVERSION} \
 		npm_config_nodedir=${LOCALBASE} \
 		npm --userconfig=${WRKSRC}/remote/.npmrc run \
-			gulp vscode-reh-linux-${NODEJS_ARCH}-min
+			gulp compile-build-with-mangling
 	${TAR} -czf ${WRKDIR}/vscode-reh-${OPSYS:tl}-${NODEJS_ARCH}-${DISTVERSION}.tar.gz \
 		-C ${WRKDIR}/vscode-reh-linux-${NODEJS_ARCH} .
 
