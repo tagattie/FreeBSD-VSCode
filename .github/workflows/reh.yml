@@ -71,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: ${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}
-          path: FreeBSD-VSCode/editors/vscode/${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}freebsd-x64-*.tar.gz
+          path: FreeBSD-VSCode/editors/vscode/${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-*.tar.gz
           if-no-files-found: error
 
   publish:
