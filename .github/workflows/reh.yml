@@ -81,6 +81,7 @@ jobs:
         with:
           name: ${{ env.APPNAME }}-freebsd-x64
           path: FreeBSD-VSCode/editors/vscode/${{ env.APPNAME }}-freebsd-x64-*.tar.gz
+          if-no-files-found: error
 
   release:
     name: Release remote extension host
