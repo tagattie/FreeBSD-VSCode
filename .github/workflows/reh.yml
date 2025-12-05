@@ -96,18 +96,17 @@ jobs:
           path: FreeBSD-VSCode/editors/vscode/${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}freebsd-x64-*.tar.gz
           if-no-files-found: error
 
-  release:
-    name: Release remote extension host
+  publish:
+    name: Publish remote extension host
     runs-on: ubuntu-latest
     needs: build-freebsd
     steps:
       - name: Checkout FreeBSD-VSCode repository
         uses: actions/checkout@v6
-      - name: Download artifact
+      - name: Download all artifacts
         uses: actions/download-artifact@v6
         with:
-          name: ${{ env.APPNAME }}-freebsd-x64
-          path: .
+          path: artifacts
       - name: Install GitHub CLI
         # https://github.com/cli/cli/blob/trunk/docs/install_linux.md#debian
         run: |
@@ -133,4 +132,4 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           tag=${{ steps.get_latest_tag.outputs.tag }}
-          gh release upload ${tag} ${{ env.APPNAME }}-freebsd-x64-${tag}.tar.gz --clobber
+          gh release upload ${tag} artifacts/* --clobber
