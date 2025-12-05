@@ -38,7 +38,7 @@ jobs:
           #   vmactions_arch: aarch64
           #   node_arch: arm64
     name: Build remote extension host (${{ matrix.settings.name }} ${{ matrix.settings.freebsd_arch }})
-    if: ${{ inputs.build-freebsd }} == true
+    if: ${{ inputs.build-freebsd }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout FreeBSD ports repository
@@ -92,7 +92,7 @@ jobs:
 
   build-linux:
     name: Build remote extension host (linux)
-    if: ${{ inputs.build-linux }} == true
+    if: ${{ inputs.build-linux }}
     runs-on: unbuntu-latest
     steps:
       - name: Checkout specified tag of vscode repository
