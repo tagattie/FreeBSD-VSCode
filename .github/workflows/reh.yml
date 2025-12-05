@@ -18,10 +18,10 @@ jobs:
             freebsd_arch: amd64
             vmactions_arch: x86_64
             node_arch: x64
-          - name: freebsd
-            freebsd_arch: aarch64
-            vmactions_arch: aarch64
-            node_arch: arm64
+          # - name: freebsd
+          #   freebsd_arch: aarch64
+          #   vmactions_arch: aarch64
+          #   node_arch: arm64
     name: Build remote extension host (${{ matrix.settings.name }} ${{ matrix.settings.freebsd_arch }})
     runs-on: ubuntu-latest
     steps:
