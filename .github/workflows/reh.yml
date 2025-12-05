@@ -8,6 +8,16 @@ env:
 on:
   workflow_dispatch:
     inputs:
+      build-freebsd:
+        description: 'Build for FreeBSD'
+        required: true
+        type: boolean
+        default: true
+      build-linux:
+        description: 'Build for Linux'
+        required: true
+        type: boolean
+        default: true
       tag:
         description: 'Tag'
         required: true
