@@ -196,11 +196,27 @@ jobs:
 
   publish:
     name: Publish remote extension host
+    if: ${{ github.event_name == 'release'
+            || (github.event_name == 'workflow_dispatch' && github.event.inputs.port_tag) }}
     runs-on: ubuntu-latest
     needs: [build-freebsd, build-linux]
     steps:
+      - name: Decide which ref to checkout
+        id: checkout_ref
+        run: |
+          if [ "${{ github.event_name }}"" = "workflow_dispatch" ]; then
+            if [ -n "${{ inputs.port_tag }}" ]; then
+              echo "port_ref=${{ inputs.port_tag }}" >> ${GITHUB_OUTPUT}
+            else
+              echo "port_ref=refs/heads/master" >> ${GITHUB_OUTPUT}
+            fi
+          else
+            echo "port_ref=${{ github.event.release.tag_name }}" >> ${GITHUB_OUTPUT}
+          fi
       - name: Checkout FreeBSD-VSCode repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.checkout_ref.outputs.port_ref }}
       - name: Download all artifacts
         uses: actions/download-artifact@v6
         with:
@@ -219,18 +235,9 @@ jobs:
             sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
           sudo apt update
           sudo apt install -y gh
-      - name: Get latest release tag
-        id: get_latest_release_tag
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          tag=$(gh release view --json tagName --jq .tagName)
-          echo "tag=${tag}" >> ${GITHUB_OUTPUT}
       - name: Publish artifact to releases
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          tag=${{ github.event_name == 'workflow_dispatch'
-                && github.event.inputs.tag
-                || steps.get_latest_release_tag.outputs.tag }}
+          tag=${{ steps.checkout_ref.outputs.port_ref }}
           gh release upload ${tag} artifacts/* --clobber
