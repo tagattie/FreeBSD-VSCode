@@ -20,9 +20,11 @@ on:
         required: true
         type: boolean
         default: true
-      tag:
-        description: 'Release Tag'
-        required: true
+      port_tag:
+        description: 'VSCode Port Release Tag'
+        type: string
+      upstream_tag:
+        description: 'VSCode Upstream Release Tag'
         type: string
 
 jobs:
@@ -44,21 +46,22 @@ jobs:
             || (github.event_name == 'workflow_dispatch' && github.event.inputs.build-freebsd) }}
     runs-on: ubuntu-latest
     steps:
-      - name: Get latest release tag
-        id: get_latest_release_tag
+      - name: Decide which ref to checkout
+        id: checkout_ref
         run: |
-          tag=$(curl -s \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/releases/latest \
-            | jq -r '.tag_name')
-          echo "tag=${tag}" >> ${GITHUB_OUTPUT}
+          if [ "${{ github.event_name }}"" = "workflow_dispatch" ]; then
+            if [ -n "${{ inputs.port_tag }}" ]; then
+              echo "port_ref=${{ inputs.port_tag }}" >> ${GITHUB_OUTPUT}
+            else
+              echo "port_ref=refs/heads/master" >> ${GITHUB_OUTPUT}
+            fi
+          else
+            echo "port_ref=${{ github.event.release.tag_name }}" >> ${GITHUB_OUTPUT}
+          fi
       - name: Checkout FreeBSD-VSCode repository
         uses: actions/checkout@v6
         with:
-          ref: |
-            ${{ github.event_name == 'workflow_dispatch'
-                && github.event.inputs.tag
-                || steps.get_latest_release_tag.outputs.tag }}
+          ref: ${{ steps.checkout_ref.outputs.port_ref }}
           path: FreeBSD-VSCode
       - name: Checkout FreeBSD ports repository
         uses: actions/checkout@v6
@@ -121,30 +124,37 @@ jobs:
             || (github.event_name == 'workflow_dispatch' && github.event.inputs.build-linux) }}
     runs-on: ${{ matrix.settings.runner }}
     steps:
-      - name: Get latest release tag
-        id: get_latest_release_tag
+      - name: Decide which ref to checkout
+        id: checkout_ref
         run: |
-          tag=$(curl -s \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/releases/latest \
-            | jq -r '.tag_name')
-          echo "tag=${tag}" >> ${GITHUB_OUTPUT}
+          if [ "${{ github.event_name }}"" = "workflow_dispatch" ]; then
+            if [ -n "${{ inputs.port_tag }}" ]; then
+              echo "port_ref=${{ inputs.port_tag }}" >> ${GITHUB_OUTPUT}
+            else
+              echo "port_ref=refs/heads/master" >> ${GITHUB_OUTPUT}
+            fi
+          else
+            echo "port_ref=${{ github.event.release.tag_name }}" >> ${GITHUB_OUTPUT}
+          fi
+          if [ "${{ github.event_name }}"" = "workflow_dispatch" ]; then
+            if [ -n "${{ inputs.upstream_tag }}" ]; then
+              echo "upstream_ref=${{ inputs.upstream_tag }}" >> ${GITHUB_OUTPUT}
+            else
+              echo "upstream_ref=refs/heads/main" >> ${GITHUB_OUTPUT}
+            fi
+          else
+            echo "upstream_ref=${{ github.event.release.tag_name }}" >> ${GITHUB_OUTPUT}
+          fi
       - name: Checkout FreeBSD-VSCode repository
         uses: actions/checkout@v6
         with:
-          ref: |
-            ${{ github.event_name == 'workflow_dispatch'
-                && github.event.inputs.tag
-                || steps.get_latest_release_tag.outputs.tag }}
+          ref: ${{ steps.checkout_ref.outputs.port_ref }}
           path: FreeBSD-VSCode
       - name: Checkout specified tag of vscode repository
         uses: actions/checkout@v6
         with:
           repository: microsoft/vscode
-          ref: |
-            ${{ github.event_name == 'workflow_dispatch'
-                && github.event.inputs.tag
-                || steps.get_latest_release_tag.outputs.tag }}
+          ref: ${{ steps.checkout_ref.outputs.upstream_ref }}
           path: vscode
       - name: Setup Node.js
         uses: actions/setup-node@v6
