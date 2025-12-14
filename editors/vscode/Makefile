@@ -156,6 +156,8 @@ post-patch:
 		${FIND} . -type f -name '*.sh' \
 			-exec ${SED} -i '' -e "s|/usr/bin/pgrep|/bin/pgrep|g" \
 					-e 's|#!/bin/bash|#!${LOCALBASE}/bin/bash|' {} ';')
+	@${SETENV} FILESDIR=${FILESDIR} \
+		${SH} ${FILESDIR}/update-product-json.sh ${WRKSRC}
 
 pre-build:
 # rebuild native node modules in top directory

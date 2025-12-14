@@ -77,6 +77,8 @@ post-patch:
 	@(cd ${WRKSRC} && \
 	${FIND} ${PATHFIX_FILES} -type f \
 		-exec ${SED} -i '' -e "s|/usr/bin/pgrep|/bin/pgrep|g" {} ';')
+	@${SETENV} FILESDIR=${FILESDIR} \
+		${SH} ${FILESDIR}/update-product-json.sh ${WRKSRC}
 
 pre-build:
 # rebuild native node modules in subdirectories
