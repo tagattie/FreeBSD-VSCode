@@ -20,10 +20,10 @@ on:
         required: true
         type: boolean
         default: true
-      port_tag:
+      port-tag:
         description: 'VSCode Port Release Tag'
         type: string
-      upstream_tag:
+      upstream-tag:
         description: 'VSCode Upstream Release Tag'
         type: string
 
@@ -50,8 +50,8 @@ jobs:
         id: checkout_ref
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            if [ -n "${{ inputs.port_tag }}" ]; then
-              echo "port_ref=${{ inputs.port_tag }}" >> ${GITHUB_OUTPUT}
+            if [ -n "${{ inputs.port-tag }}" ]; then
+              echo "port_ref=${{ inputs.port-tag }}" >> ${GITHUB_OUTPUT}
             else
               echo "port_ref=refs/heads/master" >> ${GITHUB_OUTPUT}
             fi
@@ -128,8 +128,8 @@ jobs:
         id: checkout_ref
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            if [ -n "${{ inputs.port_tag }}" ]; then
-              echo "port_ref=${{ inputs.port_tag }}" >> ${GITHUB_OUTPUT}
+            if [ -n "${{ inputs.port-tag }}" ]; then
+              echo "port_ref=${{ inputs.port-tag }}" >> ${GITHUB_OUTPUT}
             else
               echo "port_ref=refs/heads/master" >> ${GITHUB_OUTPUT}
             fi
@@ -137,8 +137,8 @@ jobs:
             echo "port_ref=${{ github.event.release.tag_name }}" >> ${GITHUB_OUTPUT}
           fi
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            if [ -n "${{ inputs.upstream_tag }}" ]; then
-              echo "upstream_ref=${{ inputs.upstream_tag }}" >> ${GITHUB_OUTPUT}
+            if [ -n "${{ inputs.upstream-tag }}" ]; then
+              echo "upstream_ref=${{ inputs.upstream-tag }}" >> ${GITHUB_OUTPUT}
             else
               echo "upstream_ref=refs/heads/main" >> ${GITHUB_OUTPUT}
             fi
@@ -204,7 +204,7 @@ jobs:
   publish:
     name: Publish remote extension host
     if: ${{ github.event_name == 'release'
-            || (github.event_name == 'workflow_dispatch' && github.event.inputs.port_tag) }}
+            || (github.event_name == 'workflow_dispatch' && github.event.inputs.port-tag) }}
     runs-on: ubuntu-latest
     needs: [build-freebsd, build-linux]
     steps:
@@ -212,8 +212,8 @@ jobs:
         id: checkout_ref
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            if [ -n "${{ inputs.port_tag }}" ]; then
-              echo "port_ref=${{ inputs.port_tag }}" >> ${GITHUB_OUTPUT}
+            if [ -n "${{ inputs.port-tag }}" ]; then
+              echo "port_ref=${{ inputs.port-tag }}" >> ${GITHUB_OUTPUT}
             else
               echo "port_ref=refs/heads/master" >> ${GITHUB_OUTPUT}
             fi
