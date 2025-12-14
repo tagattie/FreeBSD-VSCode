@@ -178,7 +178,7 @@ jobs:
           for p in ${PATCHES}; do
             patch -s -p0 < ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/${p}
           done
-          sed -e 's/%%DISTVERSION%%/${{ steps.checkout_ref.outputs.upstream_ref }}' \
+          sed -e 's/%%DISTVERSION%%/${{ steps.checkout_ref.outputs.upstream_ref }}/g' \
             build/gulpfile.reh.ts \
             build/gulpfile.vscode.ts
           env FILESDIR=${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files \
