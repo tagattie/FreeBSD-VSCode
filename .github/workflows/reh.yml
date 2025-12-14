@@ -182,7 +182,7 @@ jobs:
             build/gulpfile.reh.ts \
             build/gulpfile.vscode.ts
           env FILESDIR=${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files \
-            ${SH} ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/update-product-json.sh .
+            bash ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/update-product-json.sh .
       - name: Install necessary node modules
         run: cd vscode && npm install
       - name: Build remote extension host
