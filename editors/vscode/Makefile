@@ -19,7 +19,6 @@ EXTRACT_DEPENDS=jq:textproc/jq \
 		node${NODEJS_VERSION}>0:www/node${NODEJS_VERSION}
 BUILD_DEPENDS=	zip:archivers/zip \
 		electron${ELECTRON_VER_MAJOR}:devel/electron${ELECTRON_VER_MAJOR} \
-		tsgo:lang/typescript-go \
 		jq:textproc/jq \
 		rg:textproc/ripgrep \
 		npm${NODEJS_SUFFIX}>0:www/npm${NODEJS_SUFFIX}
@@ -94,10 +93,11 @@ MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1
 TEST_ENV=	${MAKE_ENV:C/TMPDIR=.*//}
 
 .include "Makefile.version"
+.include <bsd.port.pre.mk>
 
-NODEJS_DIR=	${.CURDIR:H:H}/www/node22
+NODEJS_DIR=	${.CURDIR:H:H}/www/node${NODEJS_VERSION}
 .include "${NODEJS_DIR}/Makefile.version"
-ELECTRON_DIR=	${.CURDIR:H:H}/devel/electron37
+ELECTRON_DIR=	${.CURDIR:H:H}/devel/electron39
 .include "${ELECTRON_DIR}/Makefile.version"
 
 ELECTRON_DOWNLOAD_URL=	https://github.com/electron/electron/releases/download/v${ELECTRON_VER}
@@ -118,7 +118,7 @@ post-extract:
 		${WRKSRC}/build/.moduleignore.freebsd
 	@${ECHO_MSG} "===>  Installing node modules in ${WRKSRC}"
 	@${TAR} -xzf ${WRKDIR}/vscode-.-node-modules${EXTRACT_SUFX} -C ${WRKSRC}
-	@for dir in `node -p "JSON.stringify(require('${WRKSRC}/build/npm/dirs').dirs)" | jq -r '.[]'`; do \
+	@for dir in `node --input-type=module -e "console.log(JSON.stringify((await import('${WRKSRC}/build/npm/dirs.ts')).dirs))" | jq -r '.[]'`; do \
 		if [ -f ${WRKDIR}/vscode-`echo $${dir} | tr _ __ | tr / _`-node-modules${EXTRACT_SUFX} ]; then \
 			${ECHO_MSG} "===>  Installing node modules in ${WRKSRC}/$${dir}"; \
 			${TAR} -xzf ${WRKDIR}/vscode-`echo $${dir} | tr _ __ | tr / _`-node-modules${EXTRACT_SUFX} -C ${WRKSRC}/$${dir}; \
@@ -131,8 +131,8 @@ post-patch:
 	@${REINPLACE_CMD} -E 's|^(target=").*(")$$|\1${NODEJS_PORTVERSION}\2|' \
 		${WRKSRC}/remote/.npmrc
 	@${REINPLACE_CMD} -e 's/%%DISTVERSION%%/${DISTVERSION}/g' \
-		${WRKSRC}/build/gulpfile.reh.js \
-		${WRKSRC}/build/gulpfile.vscode.js
+		${WRKSRC}/build/gulpfile.reh.ts \
+		${WRKSRC}/build/gulpfile.vscode.ts
 	@(cd ${WRKSRC} && \
 		${FIND} -E . -type f -iregex '${SHEBANG_REGEX}' \
 			-exec ${SED} -i '' -e "s|/usr/bin/pgrep|/bin/pgrep|g" {} ';')
@@ -174,7 +174,7 @@ pre-build:
 			node-gyp --userconfig=${WRKSRC}/.npmrc rebuild; \
 	done
 # rebuild native node modules in subdirectories
-	@for dir in `node -p "JSON.stringify(require('${WRKSRC}/build/npm/dirs').dirs)" | jq -r '.[]'`; do \
+	@for dir in `node --input-type=module -e "console.log(JSON.stringify((await import('${WRKSRC}/build/npm/dirs.ts')).dirs))" | jq -r '.[]'`; do \
 		for subdir in `${FIND} ${WRKSRC}/$${dir}/node_modules -type f -name binding.gyp -exec ${DIRNAME} {} ';' 2> /dev/null`; do \
 			${ECHO_MSG} "===>   Rebuilding native modules in $${subdir}"; \
 			if [ "`${ECHO_CMD} $${subdir} | ${GREP} /build/`" ]; then \
@@ -215,12 +215,8 @@ do-build:
 	@cd ${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR} && \
 		zip -q -r ${WRKDIR}/.cache/electron/${ELECTRON_DOWNLOAD_URL_HASH}/electron-v${ELECTRON_VER}-linux-${ELECTRON_ARCH}.zip .
 # remove backup files so that they are not included in the package
-	@${FIND} ${WRKSRC} -type f \( -name '*.orig' -o -name '*~' \) -delete
+	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -o -name '*.orig' -o -name '*~' \) -delete
 # build and package vscode
-	cd ${WRKSRC}/build && \
-		${SETENV} ${MAKE_ENV} npm run prebuild-ts
-	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} tsgo -p build/tsconfig.build.json
 	cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} \
 			npm_config_runtime=electron \
@@ -304,7 +300,7 @@ make-node-modules-archive: extract patch-package-json
 	${SETENV} ${MAKE_ENV} npm install \
 		--ignore-scripts --no-progress --no-audit --no-fund --no-update-notifier && \
 	${TAR} -czf ${WRKDIR}/vscode-.-node-modules${EXTRACT_SUFX} node_modules
-	@for dir in `node -p "JSON.stringify(require('${WRKSRC}/build/npm/dirs').dirs)" | jq -r '.[]'`; do \
+	@for dir in `node --input-type=module -e "console.log(JSON.stringify((await import('${WRKSRC}/build/npm/dirs.ts')).dirs))" | jq -r '.[]'`; do \
 		cd ${WRKSRC}/$${dir} && \
 		${ECHO_MSG} "===>  Fetching and installing node modules in ${WRKSRC}/$${dir}" && \
 		${SETENV} ${MAKE_ENV} npm install \
@@ -322,4 +318,4 @@ make-marketplace-exts-archive: extract
 	${SETENV} ${MAKE_ENV} npm run download-builtin-extensions
 	@${TAR} -czf ${WRKDIR}/vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX} -C ${WRKSRC}/.build builtInExtensions
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>
