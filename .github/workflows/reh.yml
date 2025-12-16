@@ -68,14 +68,6 @@ jobs:
         with:
           repository: freebsd/freebsd-ports
           path: ports
-          sparse-checkout: |
-            .
-            Keywords
-            Mk
-            Templates
-            Tools
-            lang/python311
-            www/node22
       - name: Build remote extension host
         uses: vmactions/freebsd-vm@v1
         with:
@@ -89,12 +81,23 @@ jobs:
 
             pkg update
             pkg upgrade -Uy
-            pkg install -Uy node${NODEJS_VERSION} npm-node${NODEJS_VERSION}
-            pkg install -Uy jq pkgconf ripgrep python${PYTHON_VERSION} \
-              typescript-go
-            pkg install -Uy brotli c-ares icu llhttp libnghttp2 libnghttp3 \
-              libngtcp2 simdjson libuv zstd sqlite3 krb5 libsecret
-            pkg install -Uy ca_root_nss
+
+            DEPENDENCIES="www/node${NODEJS_VERSION} www/npm-node${NODEJS_VERSION}"
+            DEPENDENCIES="${DEPENDENCIES} devel/pkgconf lang/python${PYTHON_VERSION} textproc/jq"
+            DEPENDENCIES="${DEPENDENCIES} security/krb5 textproc/ripgrep"
+
+            for dep in ${DEPENDENCIES}; do
+              if ! pkg rquery '%o' ${dep} > /dev/null; then
+                NEEDS_BUILD="${NEEDS_BUILD} ${dep}"
+              fi
+            done
+
+            if [ -n "${NEEDS_BUILD}" ]; then
+              for i in ${NEEDS_BUILD}; do
+                cd ${PORTSDIR}/${i} && \
+                env BATCH=yes make install-missing-packages install
+              done
+            fi
 
             cd FreeBSD-VSCode/editors/vscode
             env PORTSDIR=${PORTSDIR} make -f Makefile.reh build
