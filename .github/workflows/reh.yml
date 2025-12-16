@@ -86,14 +86,17 @@ jobs:
             DEPENDENCIES="${DEPENDENCIES} devel/pkgconf lang/python${PYTHON_VERSION} textproc/jq"
             DEPENDENCIES="${DEPENDENCIES} security/krb5 textproc/ripgrep"
 
+            echo "===> Depenencies: ${DEPENDENCIES}"
             for dep in ${DEPENDENCIES}; do
               if ! pkg rquery '%o' ${dep} > /dev/null; then
                 NEEDS_BUILD="${NEEDS_BUILD} ${dep}"
               fi
             done
 
+            echo "===> Ports build: ${NEEDS_BUILD}"
             if [ -n "${NEEDS_BUILD}" ]; then
               for i in ${NEEDS_BUILD}; do
+                echo "===> Building ${i}"
                 cd ${PORTSDIR}/${i}
                 DEPS=$(make build-depends-list run-depends-list | sed -e "s|${PORTSDIR}/||" | sort -u)
                 pkg install -UMy ${DEPS} || true
@@ -101,6 +104,7 @@ jobs:
               done
             fi
 
+            echo "===> Building remote extension host"
             cd FreeBSD-VSCode/editors/vscode
             env PORTSDIR=${PORTSDIR} make -f Makefile.reh build
 
