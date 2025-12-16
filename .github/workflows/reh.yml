@@ -94,9 +94,10 @@ jobs:
 
             if [ -n "${NEEDS_BUILD}" ]; then
               for i in ${NEEDS_BUILD}; do
-                cd ${PORTSDIR}/${i} && \
-                env ASSUME_ALWAYS_YES=yes BATCH=yes \
-                  make install-missing-packages install
+                cd ${PORTSDIR}/${i}
+                DEPS=$(make build-depends-list run-depends-list | sed -e "s|${PORTSDIR}/||" | sort -u)
+                pkg install -Uy ${DEPS}
+                env BATCH=yes make install
               done
             fi
 
