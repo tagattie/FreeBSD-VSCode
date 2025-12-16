@@ -96,7 +96,7 @@ jobs:
               for i in ${NEEDS_BUILD}; do
                 cd ${PORTSDIR}/${i}
                 DEPS=$(make build-depends-list run-depends-list | sed -e "s|${PORTSDIR}/||" | sort -u)
-                pkg install -Uy ${DEPS}
+                pkg install -UMy ${DEPS} || true
                 env BATCH=yes make install
               done
             fi
