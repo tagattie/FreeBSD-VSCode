@@ -91,12 +91,12 @@ jobs:
               if ! pkg rquery '%o' ${dep} > /dev/null; then
                 NEEDS_BUILD="${NEEDS_BUILD} ${dep}"
               else
-                PACKAGE_AVAILABLE="${PACKAGE_AVAILABLE} ${dep}"
+                AVAILABLE_PACKAGES="${AVAILABLE_PACKAGES} ${dep}"
               fi
             done
 
-            echo "===> Installing available packages: ${AVAILABLE_PACKAGE}"
-            pkg install -Uy ${PACKAGE_AVAILABLE}
+            echo "===> Installing available packages: ${AVAILABLE_PACKAGES}"
+            pkg install -Uy ${AVAILABLE_PACKAGES}
 
             echo "===> Ports build: ${NEEDS_BUILD}"
             if [ -n "${NEEDS_BUILD}" ]; then
