@@ -43,7 +43,8 @@ jobs:
           #   node_arch: arm64
     name: Build remote extension host (${{ matrix.settings.name }} ${{ matrix.settings.freebsd_arch }})
     if: ${{ github.event_name == 'release'
-            || (github.event_name == 'workflow_dispatch' && github.event.inputs.build-freebsd) }}
+            || (github.event_name == 'workflow_dispatch' &&
+                github.event.inputs.build-freebsd == 'true') }}
     runs-on: ubuntu-latest
     steps:
       - name: Decide which ref to checkout
@@ -135,7 +136,8 @@ jobs:
             node_arch: arm64
     name: Build remote extension host (${{ matrix.settings.name }} ${{ matrix.settings.node_arch }})
     if: ${{ github.event_name == 'release'
-            || (github.event_name == 'workflow_dispatch' && github.event.inputs.build-linux) }}
+            || (github.event_name == 'workflow_dispatch' &&
+                github.event.inputs.build-linux == 'true') }}
     runs-on: ${{ matrix.settings.runner }}
     steps:
       - name: Decide which ref to checkout
@@ -218,7 +220,8 @@ jobs:
   publish:
     name: Publish remote extension host
     if: ${{ github.event_name == 'release'
-            || (github.event_name == 'workflow_dispatch' && github.event.inputs.port-tag) }}
+            || (github.event_name == 'workflow_dispatch' &&
+                github.event.inputs.port-tag != '') }}
     runs-on: ubuntu-latest
     needs: [build-freebsd, build-linux]
     steps:
