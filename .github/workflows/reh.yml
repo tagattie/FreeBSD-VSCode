@@ -86,7 +86,7 @@ jobs:
 
             DEPENDENCIES="www/node${NODEJS_VERSION} www/npm-node${NODEJS_VERSION}"
             DEPENDENCIES="${DEPENDENCIES} devel/pkgconf lang/python${PYTHON_VERSION} textproc/jq"
-            DEPENDENCIES="${DEPENDENCIES} security/ca_root_nss security/krb5 security/libsecret textproc/ripgrep"
+            DEPENDENCIES="${DEPENDENCIES} security/krb5 security/libsecret textproc/ripgrep"
 
             echo "===> Depenencies: ${DEPENDENCIES}"
             for dep in ${DEPENDENCIES}; do
