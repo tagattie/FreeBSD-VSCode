@@ -88,6 +88,8 @@ jobs:
             DEPENDENCIES="${DEPENDENCIES} devel/pkgconf lang/python${PYTHON_VERSION} textproc/jq"
             DEPENDENCIES="${DEPENDENCIES} security/krb5 security/libsecret textproc/ripgrep"
 
+            : "${NEEDS_BUILD:=}"
+            : "${AVAILABLE_PACKAGES:=}"
             echo "===> Depenencies: ${DEPENDENCIES}"
             for dep in ${DEPENDENCIES}; do
               if ! pkg rquery '%o' ${dep} > /dev/null; then
