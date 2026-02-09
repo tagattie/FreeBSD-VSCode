@@ -98,7 +98,9 @@ jobs:
             done
 
             echo "===> Installing available packages: ${AVAILABLE_PACKAGES}"
-            pkg install -Uy ${AVAILABLE_PACKAGES}
+            if [ -n "${AVAILABLE_PACKAGES}" ]; then
+              pkg install -Uy ${AVAILABLE_PACKAGES}
+            fi
 
             echo "===> Ports build: ${NEEDS_BUILD}"
             if [ -n "${NEEDS_BUILD}" ]; then
