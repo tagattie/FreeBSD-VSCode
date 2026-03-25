@@ -107,6 +107,7 @@ jobs:
                 else
                   NEEDS_BUILD="${NEEDS_BUILD} ${dep_o}"
                 fi
+              fi
             done
 
             echo "===> Installing available packages: ${AVAILABLE_PACKAGES}"
