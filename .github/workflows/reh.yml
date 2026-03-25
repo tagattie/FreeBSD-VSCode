@@ -74,7 +74,7 @@ jobs:
       - name: Build remote extension host
         uses: vmactions/freebsd-vm@v1
         with:
-          envs: 'APPNAME PORTSDIR NODEJS_VERSION PYTHON_VERSION'
+          envs: 'APPNAME PORTSDIR NODEJS_VERSION PYTHON_VERSION TYPESCRIPT_GO_VERSION'
           usesh: true
           mem: 12288
           release: '13.5' # lowest supported release
