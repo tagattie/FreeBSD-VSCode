@@ -4,6 +4,7 @@ env:
   PORTSDIR: ${{ github.workspace }}/ports
   NODEJS_VERSION: '22'
   PYTHON_VERSION: '311'
+  TYPESCRIPT_GO_VERSION: '7.0.0.g20260306'
 
 on:
   release:
@@ -85,18 +86,27 @@ jobs:
             pkg upgrade -Uy
 
             DEPENDENCIES="www/node${NODEJS_VERSION} www/npm-node${NODEJS_VERSION}"
-            DEPENDENCIES="${DEPENDENCIES} devel/pkgconf lang/python${PYTHON_VERSION} lang/typescript-go textproc/jq"
+            DEPENDENCIES="${DEPENDENCIES} devel/pkgconf lang/python${PYTHON_VERSION} lang/typescript-go:${TYPESCRIPT_GO_VERSION} textproc/jq"
             DEPENDENCIES="${DEPENDENCIES} security/krb5 security/libsecret textproc/ripgrep"
 
             : "${NEEDS_BUILD:=}"
             : "${AVAILABLE_PACKAGES:=}"
             echo "===> Depenencies: ${DEPENDENCIES}"
             for dep in ${DEPENDENCIES}; do
-              if ! pkg rquery '%o' ${dep} > /dev/null; then
-                NEEDS_BUILD="${NEEDS_BUILD} ${dep}"
+              dep_o=$(echo ${dep} | awk -F ':' '{print $1}')
+              dep_v=$(echo ${dep} | awk -F ':' '{print $2}')
+              if [ -z "${dep_v}" ]; then
+                if pkg rquery '%o' ${dep} > /dev/null; then
+                  AVAILABLE_PACKAGES="${AVAILABLE_PACKAGES} ${dep_o}"
+                else
+                  NEEDS_BUILD="${NEEDS_BUILD} ${dep_o}"
+                fi
               else
-                AVAILABLE_PACKAGES="${AVAILABLE_PACKAGES} ${dep}"
-              fi
+                if [ "$(pkg version -t $(pkg rquery %v ${dep_o}) ${dep_v})" != "<" ]; then
+                  AVAILABLE_PACKAGES="${AVAILABLE_PACKAGES} ${dep_o}"
+                else
+                  NEEDS_BUILD="${NEEDS_BUILD} ${dep_o}"
+                fi
             done
 
             echo "===> Installing available packages: ${AVAILABLE_PACKAGES}"
