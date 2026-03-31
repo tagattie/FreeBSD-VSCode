@@ -86,7 +86,7 @@ jobs:
             pkg upgrade -Uy
 
             DEPENDENCIES="www/node${NODEJS_VERSION} www/npm-node${NODEJS_VERSION}"
-            DEPENDENCIES="${DEPENDENCIES} devel/pkgconf lang/python${PYTHON_VERSION} lang/typescript-go:${TYPESCRIPT_GO_VERSION} textproc/jq"
+            DEPENDENCIES="${DEPENDENCIES} devel/pkgconf lang/python${PYTHON_VERSION} lang/rust lang/typescript-go:${TYPESCRIPT_GO_VERSION} textproc/jq"
             DEPENDENCIES="${DEPENDENCIES} security/krb5 security/libsecret textproc/ripgrep"
 
             : "${NEEDS_BUILD:=}"
