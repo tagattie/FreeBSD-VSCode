@@ -77,7 +77,7 @@ jobs:
           envs: 'APPNAME PORTSDIR NODEJS_VERSION PYTHON_VERSION TYPESCRIPT_GO_VERSION'
           usesh: true
           mem: 12288
-          release: '13.5' # lowest supported release
+          release: '14.3' # lowest supported release
           arch: ${{ matrix.settings.vmactions_arch }}
           run: |
             sed -i '' -e 's|/quarterly|/latest|' /etc/pkg/FreeBSD.conf
