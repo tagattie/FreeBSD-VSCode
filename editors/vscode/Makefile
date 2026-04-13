@@ -64,10 +64,15 @@ USES=		cargo desktop-file-utils display:test electron:39,build,test \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
-GH_TUPLE=	Teddy-Zhu:node-clipboard-rs:v0.0.5:node_clipboard_rs/node-clipboard-rs
+GH_TUPLE=	Teddy-Zhu:node-clipboard-rs:v0.0.5:node_clipboard_rs/node-clipboard-rs \
+		web-infra-dev:rspack:v1.7.11:rspack/rspack
 
-CARGO_CARGOTOML=${WRKSRC}/node-clipboard-rs/Cargo.toml
-CARGO_CARGOLOCK=${WRKSRC}/node-clipboard-rs/Cargo.lock
+CARGO_CARGOTOML_CLIPBOARD=	${WRKSRC}/node-clipboard-rs/Cargo.toml
+CARGO_CARGOLOCK_CLIPBOARD=	${WRKSRC}/node-clipboard-rs/Cargo.lock
+CARGO_CARGOTOML_RSPACK=		${WRKSRC}/rspack/Cargo.toml
+CARGO_CARGOLOCK_RSPACK=		${WRKSRC}/rspack/Cargo.lock
+CARGO_CARGOTOML=		${CARGO_CARGOTOML_CLIPBOARD}
+CARGO_CARGOLOCK=		${CARGO_CARGOLOCK_CLIPBOARD}
 CARGO_BUILD=	no
 CARGO_INSTALL=	no
 CARGO_TEST=	no
@@ -203,15 +208,20 @@ pre-build:
 	done
 # build native node module for @teddyzhu/clipboard
 	@${CARGO_CARGO_RUN} build \
-		--manifest-path ${CARGO_CARGOTOML} \
+		--manifest-path ${CARGO_CARGOTOML_CLIPBOARD} \
 		--verbose --verbose \
 		${CARGO_BUILD_ARGS}
 	${CP} ${CARGO_TARGET_DIR}/*/libclipboard.so \
 		${WRKSRC}/node_modules/@github/copilot/clipboard/node_modules/@teddyzhu/clipboard/clipboard.freebsd-${ELECTRON_ARCH}.node
 	${CP} ${CARGO_TARGET_DIR}/*/libclipboard.so \
-		${WRKSRC}/node_modules/@github/copilot-sdk/node_modules/@github/copilot/clipboard/node_modules/@teddyzhu/clipboard/clipboard.freebsd-${ELECTRON_ARCH}.node
-	${CP} ${CARGO_TARGET_DIR}/*/libclipboard.so \
 		${WRKSRC}/remote/node_modules/@github/copilot/clipboard/node_modules/@teddyzhu/clipboard/clipboard.freebsd-${ELECTRON_ARCH}.node
+	# # build native node module for @rspack/binding
+	# @${CARGO_CARGO_RUN} build \
+	# 	--manifest-path ${CARGO_CARGOTOML_RSPACK} \
+	# 	--verbose --verbose \
+	# 	${CARGO_BUILD_ARGS}
+	# ${CP} ${CARGO_TARGET_DIR}/*/librspack.so \
+	# 	${WRKSRC}/build/rspack/node_modules/@rspack/binding/rspack.freebsd-${ELECTRON_ARCH}.node
 # copy rg binary file to @vscode/ripgrep node module directory
 	@${MKDIR} ${WRKSRC}/node_modules/@vscode/ripgrep/bin \
 		${WRKSRC}/build/node_modules/@vscode/ripgrep/bin \
@@ -252,11 +262,16 @@ do-build:
 	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -o -name '*.orig' -o -name '*~' \) -delete
 # build and package vscode
 	cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} \
-			npm_config_runtime=electron \
-			npm_config_target=${ELECTRON_VER} \
-			npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers \
-			npm --userconfig=${WRKSRC}/.npmrc run gulp vscode-linux-${ELECTRON_ARCH}-min
+	${SETENV} ${MAKE_ENV} \
+		npm_config_runtime=electron \
+		npm_config_target=${ELECTRON_VER} \
+		npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers \
+		npm --userconfig=${WRKSRC}/.npmrc run compile && \
+	${SETENV} ${MAKE_ENV} \
+		npm_config_runtime=electron \
+		npm_config_target=${ELECTRON_VER} \
+		npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers \
+		npm --userconfig=${WRKSRC}/.npmrc run gulp vscode-linux-${ELECTRON_ARCH}-min
 # move marketplace extensions
 	@${MV} ${WRKDIR}/builtInExtensions/* ${WRKDIR}/VSCode-linux-${ELECTRON_ARCH}/resources/app/extensions
 # rename linux directory to freebsd
@@ -354,5 +369,27 @@ make-marketplace-exts-archive: extract
 	@cd ${WRKSRC} && \
 	${SETENV} ${MAKE_ENV} npm run download-builtin-extensions
 	@${TAR} -czf ${WRKDIR}/vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX} -C ${WRKSRC}/.build builtInExtensions
+
+cargo-crates-from-multiple-lockfiles: extract
+	@set -- ${CARGO_CARGOTOML_CLIPBOARD} \
+		${CARGO_CARGOLOCK_CLIPBOARD} \
+		${CARGO_CARGOTOML_RSPACK} \
+		${CARGO_CARGOLOCK_RSPACK}; \
+	while [ $$# -gt 0 ]; do \
+		tf=$$1; \
+		lf=$$2; \
+		if [ ! -r $${lf} ]; then \
+			cd `${DIRNAME} $${lf}` && \
+			${_CARGO_RUN} generate-lockfile --manifest-path $${tf} --quiet; \
+		fi; \
+		shift 2; \
+	done
+	@for lf in ${CARGO_CARGOLOCK_CLIPBOARD} ${CARGO_CARGOLOCK_RSPACK}; do \
+		${_CARGO_AWK} ${SCRIPTSDIR}/cargo-crates.awk $${lf}; \
+	done | \
+	${SED} -E 's/^CARGO_CRATES=\t+/\t\t/; s/ \\$$//' | \
+	${SORT} -u | \
+	${SED} -e '1s/^\t\t/CARGO_CRATES=\t/; s/$$/ \\/' | \
+	${SED} -e '$$s/ \\//'
 
 .include <bsd.port.post.mk>
