@@ -3584,7 +3584,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/applyDecs2203R.js
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/applyDecs2301.js
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/applyDecs2305.js
-%%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/applyDecs2%%PYTHON_SUFFIX%%.js
+%%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/applyDecs2311.js
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/arrayLikeToArray.js
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/arrayWithHoles.js
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/arrayWithoutHoles.js
@@ -3642,7 +3642,7 @@ share/applications/code-oss.desktop
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/esm/applyDecs2203R.js
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/esm/applyDecs2301.js
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/esm/applyDecs2305.js
-%%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/esm/applyDecs2%%PYTHON_SUFFIX%%.js
+%%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/esm/applyDecs2311.js
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js
 %%DATADIR%%/resources/app/extensions/copilot/node_modules/@babel/runtime/helpers/esm/arrayWithoutHoles.js
