@@ -2,7 +2,7 @@ name: Build remote extension host
 env:
   APPNAME: vscode-reh
   PORTSDIR: ${{ github.workspace }}/ports
-  NODEJS_VERSION: '22'
+  NODEJS_VERSION: '24'
   PYTHON_VERSION: '311'
   TYPESCRIPT_GO_VERSION: '7.0.0.g20260506'
 
