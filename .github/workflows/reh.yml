@@ -4,7 +4,7 @@ env:
   PORTSDIR: ${{ github.workspace }}/ports
   NODEJS_VERSION: '24'
   PYTHON_VERSION: '311'
-  TYPESCRIPT_GO_VERSION: '7.0.0.g20260527'
+  TYPESCRIPT_GO_VERSION: '7.0.0.g20260609'
 
 on:
   release:
@@ -207,7 +207,8 @@ jobs:
           cd vscode
           PATCHES="patch-build_gulpfile.reh.ts \
                     patch-build_gulpfile.vscode.ts \
-                    patch-package.json"
+                    patch-package.json \
+                    patch-remote_package.json"
           for p in ${PATCHES}; do
             patch -s -p0 < ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/${p}
           done
