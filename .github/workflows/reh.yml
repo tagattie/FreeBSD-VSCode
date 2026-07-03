@@ -3,7 +3,7 @@ env:
   APPNAME: vscode-reh
   PORTSDIR: ${{ github.workspace }}/ports
   NODEJS_VERSION: '24'
-  PYTHON_VERSION: '311'
+  PYTHON_VERSION: '312'
   TYPESCRIPT_GO_VERSION: '7.0.0.g20260609'
 
 on:
@@ -87,7 +87,7 @@ jobs:
 
             DEPENDENCIES="www/node${NODEJS_VERSION} www/npm-node${NODEJS_VERSION}"
             DEPENDENCIES="${DEPENDENCIES} devel/pkgconf lang/python${PYTHON_VERSION} lang/rust lang/typescript-go:${TYPESCRIPT_GO_VERSION} textproc/jq"
-            DEPENDENCIES="${DEPENDENCIES} security/krb5 security/libsecret textproc/ripgrep"
+            DEPENDENCIES="${DEPENDENCIES} security/krb5 security/libsecret textproc/ripgrep textproc/tgrep"
 
             : "${NEEDS_BUILD:=}"
             : "${AVAILABLE_PACKAGES:=}"
@@ -208,7 +208,8 @@ jobs:
           PATCHES="patch-build_gulpfile.reh.ts \
                     patch-build_gulpfile.vscode.ts \
                     patch-package.json \
-                    patch-remote_package.json"
+                    patch-remote_package.json \
+                    patch-src_vs_platform_agentHost_node_copilot_copilotSessionWrapper.ts"
           for p in ${PATCHES}; do
             patch -s -p0 < ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/${p}
           done
