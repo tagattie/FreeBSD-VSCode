@@ -2,10 +2,10 @@ PORTNAME=	vscode
 DISTVERSION=	${VSCODE_VERSION}
 CATEGORIES=	editors
 MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:node_modules \
-		https://github.com/github/copilot-cli/releases/download/v${COPILOT_CLI_VER}/:copilot_cli
+		https://github.com/github/copilot-cli/releases/download/v${COPILOT_CLI_VERSION}/:copilot_cli
 DISTFILES=	vscode-node-modules-${DISTVERSION}${EXTRACT_SUFX}:node_modules \
 		vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}:node_modules \
-		github-copilot-${COPILOT_CLI_VER}-linux-${ELECTRON_ARCH}.tgz:copilot_cli
+		github-copilot-${COPILOT_CLI_VERSION}-linux-${ELECTRON_ARCH}.tgz:copilot_cli
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -67,8 +67,7 @@ USES=		cargo desktop-file-utils display:test electron:42,build,test \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	microsoft
-# See ${WRKSRC}/build/rspack/node_modules/@rspack/binding/package.json for rspack version
-GH_TUPLE=	web-infra-dev:rspack:v1.7.10:rspack/rspack
+GH_TUPLE=	web-infra-dev:rspack:v${RSPACK_VERSION}:rspack/rspack
 
 CARGO_CARGOTOML=${WRKSRC}/rspack/Cargo.toml
 CARGO_CARGOLOCK=${WRKSRC}/rspack/Cargo.lock
@@ -102,7 +101,6 @@ TEST_ENV=	${MAKE_ENV:C/TMPDIR=.*//} \
 		VSCODE_SKIP_PRELAUNCH=1
 
 UPSTREAM_ELECTRON_VER=	${ELECTRON_VER}
-COPILOT_CLI_VER=	1.0.65
 
 .include "Makefile.version"
 .include <bsd.port.pre.mk>
