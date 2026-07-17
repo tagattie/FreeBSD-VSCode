@@ -118,17 +118,21 @@ pre-build:
 			${ECHO_MSG} "===>   Rebuilding native modules in $${subdir}"; \
 			if [ "`${ECHO_CMD} $${subdir} | ${GREP} /build/`" ]; then \
 				cd $${subdir} && \
-				${SETENV} ${MAKE_ENV} \
-					npm_config_runtime=node \
+				npm_env="npm_config_runtime=node \
 					npm_config_target=${NODEJS_PORTVERSION} \
-					npm_config_nodedir=${LOCALBASE} \
+					npm_config_nodedir=${LOCALBASE}" && \
+				${SETENV} ${MAKE_ENV} $${npm_env} \
+					npm --userconfig=${WRKSRC}/build/.npmrc run install --if-present && \
+				${SETENV} ${MAKE_ENV} $${npm_env} \
 					node-gyp --userconfig=${WRKSRC}/build/.npmrc rebuild; \
 			elif [ "`${ECHO_CMD} $${subdir} | ${GREP} /remote/`" ]; then \
 				cd $${subdir} && \
-				${SETENV} ${MAKE_ENV} \
-					npm_config_runtime=node \
+				npm_env="npm_config_runtime=node \
 					npm_config_target=${NODEJS_PORTVERSION} \
-					npm_config_nodedir=${LOCALBASE} \
+					npm_config_nodedir=${LOCALBASE}" && \
+				${SETENV} ${MAKE_ENV} $${npm_env} \
+					npm --userconfig=${WRKSRC}/remote/.npmrc run install --if-present && \
+				${SETENV} ${MAKE_ENV} $${npm_env} \
 					node-gyp --userconfig=${WRKSRC}/remote/.npmrc rebuild; \
 			fi; \
 		done; \
@@ -163,15 +167,12 @@ do-build:
 	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -o -name '*.orig' -o -name '*~' \) -delete
 # build vscode remote extension host
 	cd ${WRKSRC} && \
-	${SETENV} ${MAKE_ENV} \
-		npm_config_runtime=node \
+	npm_env="npm_config_runtime=node \
 		npm_config_target=${NODEJS_PORTVERSION} \
-		npm_config_nodedir=${LOCALBASE} \
+		npm_config_nodedir=${LOCALBASE}" && \
+	${SETENV} ${MAKE_ENV} $${npm_env} \
 		npm --userconfig=${WRKSRC}/remote/.npmrc run compile && \
-	${SETENV} ${MAKE_ENV} \
-		npm_config_runtime=node \
-		npm_config_target=${NODEJS_PORTVERSION} \
-		npm_config_nodedir=${LOCALBASE} \
+	${SETENV} ${MAKE_ENV} $${npm_env} \
 		npm --userconfig=${WRKSRC}/remote/.npmrc run \
 			gulp vscode-reh-linux-${NODEJS_ARCH}-min
 # strip native node modules

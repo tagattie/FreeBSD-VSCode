@@ -187,10 +187,12 @@ pre-build:
 	@for subdir in `${FIND} ${WRKSRC}/node_modules -type f -name binding.gyp -exec ${DIRNAME} {} ';'`; do \
 		${ECHO_MSG} "===>   Rebuilding native modules in $${subdir}"; \
 		cd $${subdir} && \
-		${SETENV} ${MAKE_ENV} \
-			npm_config_runtime=electron \
+		npm_env="npm_config_runtime=electron \
 			npm_config_target=${ELECTRON_VER} \
-			npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers \
+			npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers" && \
+		${SETENV} ${MAKE_ENV} $${npm_env} \
+			npm --userconfig=${WRKSRC}/.npmrc run install --if-present && \
+		${SETENV} ${MAKE_ENV} $${npm_env} \
 			node-gyp --userconfig=${WRKSRC}/.npmrc rebuild; \
 	done
 # rebuild native node modules in subdirectories
@@ -199,24 +201,30 @@ pre-build:
 			${ECHO_MSG} "===>   Rebuilding native modules in $${subdir}"; \
 			if [ "`${ECHO_CMD} $${subdir} | ${GREP} /build/`" ]; then \
 				cd $${subdir} && \
-				${SETENV} ${MAKE_ENV} \
-					npm_config_runtime=node \
+				npm_env="npm_config_runtime=node \
 					npm_config_target=${NODEJS_PORTVERSION} \
-					npm_config_nodedir=${LOCALBASE} \
+					npm_config_nodedir=${LOCALBASE}" && \
+				${SETENV} ${MAKE_ENV} $${npm_env} \
+					npm --userconfig=${WRKSRC}/build/.npmrc run install --if-present && \
+				${SETENV} ${MAKE_ENV} $${npm_env} \
 					node-gyp --userconfig=${WRKSRC}/build/.npmrc rebuild; \
 			elif [ "`${ECHO_CMD} $${subdir} | ${GREP} /remote/`" ]; then \
 				cd $${subdir} && \
-				${SETENV} ${MAKE_ENV} \
-					npm_config_runtime=node \
+				npm_env="npm_config_runtime=node \
 					npm_config_target=${NODEJS_PORTVERSION} \
-					npm_config_nodedir=${LOCALBASE} \
+					npm_config_nodedir=${LOCALBASE}" && \
+				${SETENV} ${MAKE_ENV} $${npm_env} \
+					npm --userconfig=${WRKSRC}/remote/.npmrc run install --if-present && \
+				${SETENV} ${MAKE_ENV} $${npm_env} \
 					node-gyp --userconfig=${WRKSRC}/remote/.npmrc rebuild; \
 			else \
 				cd $${subdir} && \
-				${SETENV} ${MAKE_ENV} \
-					npm_config_runtime=electron \
+				npm_env="npm_config_runtime=electron \
 					npm_config_target=${ELECTRON_VER} \
-					npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers \
+					npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers" && \
+				${SETENV} ${MAKE_ENV} $${npm_env} \
+					npm --userconfig=${WRKSRC}/.npmrc run install --if-present && \
+				${SETENV} ${MAKE_ENV} $${npm_env} \
 					node-gyp --userconfig=${WRKSRC}/.npmrc rebuild; \
 			fi; \
 		done; \
@@ -252,15 +260,12 @@ do-build:
 	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -o -name '*.orig' -o -name '*~' \) -delete
 # build and package vscode
 	cd ${WRKSRC} && \
-	${SETENV} ${MAKE_ENV} \
-		npm_config_runtime=electron \
+	npm_env="npm_config_runtime=electron \
 		npm_config_target=${ELECTRON_VER} \
-		npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers \
+		npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers" && \
+	${SETENV} ${MAKE_ENV} $${npm_env} \
 		npm --userconfig=${WRKSRC}/.npmrc run compile && \
-	${SETENV} ${MAKE_ENV} \
-		npm_config_runtime=electron \
-		npm_config_target=${ELECTRON_VER} \
-		npm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers \
+	${SETENV} ${MAKE_ENV} $${npm_env} \
 		npm --userconfig=${WRKSRC}/.npmrc run gulp vscode-linux-${ELECTRON_ARCH}-min
 # move marketplace extensions
 	@${MV} ${WRKDIR}/builtInExtensions/* ${WRKDIR}/VSCode-linux-${ELECTRON_ARCH}/resources/app/extensions
