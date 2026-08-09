@@ -207,8 +207,7 @@ jobs:
           PATCHES="patch-build_gulpfile.reh.ts \
                     patch-build_gulpfile.vscode.ts \
                     patch-package.json \
-                    patch-remote_package.json \
-                    patch-src_vs_platform_agentHost_node_copilot_copilotSessionWrapper.ts"
+                    patch-remote_package.json"
           for p in ${PATCHES}; do
             patch -s -p0 < ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/${p}
           done
