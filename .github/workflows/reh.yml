@@ -204,7 +204,8 @@ jobs:
       - name: Apply some of FreeBSD patches to vscode repository
         run: |
           cd vscode
-          PATCHES="patch-build_gulpfile.reh.ts \
+          PATCHES="patch-build_gulpfile.extensions.ts \
+                    patch-build_gulpfile.reh.ts \
                     patch-build_gulpfile.vscode.ts \
                     patch-package.json \
                     patch-remote_package.json"
