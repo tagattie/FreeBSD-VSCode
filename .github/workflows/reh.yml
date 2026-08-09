@@ -61,17 +61,17 @@ jobs:
             echo "port_ref=${{ github.event.release.tag_name }}" >> ${GITHUB_OUTPUT}
           fi
       - name: Checkout FreeBSD-VSCode repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           ref: ${{ steps.checkout_ref.outputs.port_ref }}
           path: FreeBSD-VSCode
       - name: Checkout FreeBSD ports repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           repository: freebsd/freebsd-ports
           path: ports
       - name: Build remote extension host
-        uses: vmactions/freebsd-vm@v1
+        uses: vmactions/freebsd-vm@83b151f58c6047089f4c80eb5ba2039d158ce093 # v1.5.3
         with:
           envs: 'APPNAME PORTSDIR NODEJS_VERSION PYTHON_VERSION'
           usesh: true
@@ -132,7 +132,7 @@ jobs:
             mv work/${APPNAME}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-*.tar.gz .
             rm -rf work
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: ${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}
           path: FreeBSD-VSCode/editors/vscode/${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-*.tar.gz
@@ -178,18 +178,18 @@ jobs:
             echo "upstream_ref=${{ github.event.release.tag_name }}" >> ${GITHUB_OUTPUT}
           fi
       - name: Checkout FreeBSD-VSCode repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           ref: ${{ steps.checkout_ref.outputs.port_ref }}
           path: FreeBSD-VSCode
       - name: Checkout specified tag of vscode repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           repository: microsoft/vscode
           ref: ${{ steps.checkout_ref.outputs.upstream_ref }}
           path: vscode
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version-file: 'vscode/.nvmrc'
       - name: Install necessary Ubuntu packages
@@ -230,7 +230,7 @@ jobs:
                 || steps.checkout_ref.outputs.upstream_ref }}.tar.gz \
             -C vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }} .
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: ${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}
           path: ${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-*.tar.gz
@@ -258,11 +258,11 @@ jobs:
             echo "port_ref=${{ github.event.release.tag_name }}" >> ${GITHUB_OUTPUT}
           fi
       - name: Checkout FreeBSD-VSCode repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           ref: ${{ steps.checkout_ref.outputs.port_ref }}
       - name: Download all artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
           path: artifacts
           merge-multiple: true
