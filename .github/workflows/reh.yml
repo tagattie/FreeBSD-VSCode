@@ -222,6 +222,7 @@ jobs:
       - name: Build remote extension host
         run: |
           cd vscode
+          npm run compile
           npm run gulp vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-min
           cd ..
           tar -czf vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-${{ steps.checkout_ref.outputs.upstream_ref == 'ref/heads/main'
