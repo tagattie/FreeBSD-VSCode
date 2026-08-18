@@ -145,8 +145,9 @@ jobs:
             fi
 
             echo "===> Building remote extension host"
+            mkdir -p ${PORTSDIR}/distfiles/vscode
+            cp ${{ github.workspace }}/FreeBSD-VSCode/release-assets/*.tar.gz ${PORTSDIR}/distfiles/vscode
             cd ${{ github.workspace }}/FreeBSD-VSCode/editors/vscode
-            cp release-assets/*.tar.gz ${PORTSDIR}/distfiles/vscode
             env PORTSDIR=${PORTSDIR} BATCH=yes make -f Makefile.reh build
 
             mv work/${APPNAME}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-*.tar.gz .
