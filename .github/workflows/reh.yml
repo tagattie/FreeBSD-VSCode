@@ -244,7 +244,19 @@ jobs:
         run: |
           cd vscode
           npm run compile
-          npm run gulp vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-min
+
+          max_tries=3
+          count=0
+          while true; do
+            npm run gulp vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-min && break
+            count=$((count + 1))
+            if [ ${count} -ge ${max_tries} ]; then
+              echo "Failed to build after ${max_tries} attempts."
+              exit 1
+            fi
+            echo "Build failed, retrying... (attempt ${count})"
+          done
+
           cd ..
           tar -czf vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-${{ steps.checkout_ref.outputs.upstream_ref == 'ref/heads/main'
                 && 'main'
