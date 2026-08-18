@@ -76,6 +76,18 @@ jobs:
         run: |
           tag=${{ steps.checkout_ref.outputs.port_ref }}
           cd FreeBSD-VSCode
+          case ${tag} in
+            refs/heads/*)
+              DRAFT_TAG=$(gh release list --exclude-drafts=false --json tagName,isDraft --jq '.[] | select(.isDraft == true) | .tagName' | head -n 1)
+              if [ -z ${DRAFT_TAG} ]; then
+                echo "Error: No draft release found." >&2
+                exit 1
+              fi
+              tag=${DRAFT_TAG}
+              ;;
+            *)
+              ;;
+          esac
           gh release download ${tag} --dir release-assets --pattern '*.tar.gz'
       - name: Build remote extension host
         uses: vmactions/freebsd-vm@83b151f58c6047089f4c80eb5ba2039d158ce093 # v1.5.3
