@@ -68,9 +68,22 @@ NODEJS_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/:S/i386/ia32/}
 NODEJS_DIR=	${PORTSDIR}/www/node${NODEJS_VERSION}
 .include "${NODEJS_DIR}/Makefile.version"
 
+ELECTRON_VER_MAJOR=	42
+ELECTRON_DIR=		${PORTSDIR}/devel/electron${ELECTRON_VER_MAJOR}
+.include "${ELECTRON_DIR}/Makefile.version"
+
+post-fetch:
+	@if [ ! -r ${DISTDIR}/${DIST_SUBDIR}/electron.d.ts-${ELECTRON_VER} ]; then \
+		${SETENV} ${FETCH_ENV} ${FETCH_CMD} -o ${DISTDIR}/${DIST_SUBDIR}/electron.d.ts-${ELECTRON_VER} \
+			https://github.com/electron/electron/releases/download/v${ELECTRON_VER}/electron.d.ts; \
+	fi
+
 post-extract:
 	@${CP} ${WRKSRC}/build/.moduleignore.linux \
 		${WRKSRC}/build/.moduleignore.freebsd
+	@${MKDIR} ${WRKSRC}/.build/typings
+	@${CP} ${DISTDIR}/${DIST_SUBDIR}/electron.d.ts-${ELECTRON_VER} \
+		${WRKSRC}/.build/typings/electron.d.ts
 	@${ECHO_MSG} "===>  Installing node modules in ${WRKSRC}"
 	@${TAR} -xzf ${WRKDIR}/vscode-.-node-modules${EXTRACT_SUFX} -C ${WRKSRC}
 	@for dir in `node --input-type=module -e "console.log(JSON.stringify((await import('${WRKSRC}/build/npm/dirs.ts')).dirs))" | jq -r '.[]'`; do \
@@ -156,6 +169,7 @@ pre-build:
 		${WRKSRC}/extensions/copilot/node_modules/@github/copilot-freebsd-${NODEJS_ARCH}/tgrep/bin/freebsd-${NODEJS_ARCH}
 	${CP} ${LOCALBASE}/bin/tgrep ${WRKSRC}/remote/node_modules/@github/copilot-freebsd-${NODEJS_ARCH}/tgrep/bin/freebsd-${NODEJS_ARCH}
 	${CP} ${LOCALBASE}/bin/tgrep ${WRKSRC}/extensions/copilot/node_modules/@github/copilot-freebsd-${NODEJS_ARCH}/tgrep/bin/freebsd-${NODEJS_ARCH}
+
 do-build:
 # setup download cache for node
 	@${MKDIR} ${WRKSRC}/.build/node/v${NODEJS_PORTVERSION}/linux-${NODEJS_ARCH}
@@ -164,15 +178,23 @@ do-build:
 # remove backup files so that they are not included in the package
 	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -o -name '*.orig' -o -name '*~' \) -delete
 # build vscode remote extension host
-	cd ${WRKSRC} && \
+	@cd ${WRKSRC} && \
 	npm_env="npm_config_runtime=node \
 		npm_config_target=${NODEJS_PORTVERSION} \
-		npm_config_nodedir=${LOCALBASE}" && \
-	${SETENV} ${MAKE_ENV} $${npm_env} \
-		npm --userconfig=${WRKSRC}/remote/.npmrc run compile && \
-	${SETENV} ${MAKE_ENV} $${npm_env} \
-		npm --userconfig=${WRKSRC}/remote/.npmrc run \
-			gulp vscode-reh-linux-${NODEJS_ARCH}-min
+		npm_config_nodedir=${LOCALBASE}"; \
+	max_tries=3; \
+	count=0; \
+	while true; do \
+		${SETENV} ${MAKE_ENV} $${npm_env} \
+			npm --userconfig=${WRKSRC}/remote/.npmrc run \
+				gulp vscode-reh-linux-${NODEJS_ARCH}-min && break; \
+		count=$$((count + 1)); \
+		if [ $${count} -ge $${max_tries} ]; then \
+			${ECHO_MSG} "Failed to build after $${max_tries} attempts."; \
+			exit 1; \
+		fi; \
+		${ECHO_MSG} "Build failed, retrying... (attempt $${count})"; \
+	done
 # strip native node modules
 	@${FIND} ${WRKDIR}/vscode-reh-linux-${NODEJS_ARCH} -type f -exec ${FILE} {} ';' | \
 		${GREP} 'ELF.*FreeBSD' | ${AWK} -F ': ' '{print $$1}' | ${XARGS} ${STRIP_CMD}
