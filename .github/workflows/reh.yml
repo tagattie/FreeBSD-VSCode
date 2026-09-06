@@ -243,8 +243,6 @@ jobs:
       - name: Build remote extension host
         run: |
           cd vscode
-          npm run compile
-
           max_tries=3
           count=0
           while true; do
