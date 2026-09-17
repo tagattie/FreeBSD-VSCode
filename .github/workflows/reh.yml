@@ -229,7 +229,8 @@ jobs:
                     patch-build_gulpfile.reh.ts \
                     patch-build_gulpfile.vscode.ts \
                     patch-package.json \
-                    patch-remote_package.json"
+                    patch-remote_package.json \
+                    patch-src_vs_platform_agentHost_test_node_codex_codexProviderConfiguration.test.ts"
           for p in ${PATCHES}; do
             patch -s -p0 < ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/${p}
           done
