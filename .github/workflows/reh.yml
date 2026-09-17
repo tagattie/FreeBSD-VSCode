@@ -246,7 +246,7 @@ jobs:
           max_tries=3
           count=0
           while true; do
-            npm run gulp vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-min && break
+            npm run gulp vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }} && break
             count=$((count + 1))
             if [ ${count} -ge ${max_tries} ]; then
               echo "Failed to build after ${max_tries} attempts."
