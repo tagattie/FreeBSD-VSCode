@@ -175,13 +175,6 @@ do-build:
 		${WRKSRC}/.build/node/v${NODEJS_PORTVERSION}/linux-${NODEJS_ARCH}
 # remove backup files so that they are not included in the package
 	@${FIND} ${WRKSRC} -type f \( -name '*.bak' -o -name '*.orig' -o -name '*~' \) -delete
-# place npm wrapper script for preventing `npm pack` from accessing network
-	@${SED} -e 's/%%COPILOT_CLI_VERSION%%/${COPILOT_CLI_VERSION}/' \
-		-e 's|%%COPILOT_CLI_TGZ%%|${DISTDIR}/${DIST_SUBDIR}/copilot-linux-${ELECTRON_ARCH}-${COPILOT_CLI_VERSION}.tgz|' \
-		-e 's|%%ELECTRON_ARCH%%|${ELECTRON_ARCH}|' \
-		-e 's|%%NPM_REAL%%|${LOCALBASE}/bin/npm|' \
-		${FILESDIR}/npm-wrapper.sh.in > ${WRKDIR}/.bin/npm
-	@${CHMOD} +x ${WRKDIR}/.bin/npm
 # build vscode remote extension host
 	@cd ${WRKSRC} && \
 	npm_env="npm_config_runtime=node \
