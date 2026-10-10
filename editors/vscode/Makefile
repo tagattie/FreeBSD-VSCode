@@ -115,7 +115,8 @@ TMPDIR=		${WRKDIR}
 BUNDLE_LIBS=	yes
 
 MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} \
-		VSCODE_QUALITY=stable
+		VSCODE_QUALITY=stable \
+		NODE_OPTIONS="--max-old-space-size=8192"
 # Don't create __pycache__ directory when executing node-gyp
 # This is a workaround to avoid filesystem violations during poudriere build
 MAKE_ENV+=	PYTHONDONTWRITEBYTECODE=1

@@ -59,7 +59,8 @@ SHEBANG_REGEX=	./(extensions|node_modules|resources|scripts|src)/.*(\.(pl|py|sh)
 PATHFIX_FILES=	src/vs/workbench/contrib/debug/node/terminals.ts
 
 MAKE_ENV=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} \
-		VSCODE_QUALITY=stable
+		VSCODE_QUALITY=stable \
+		NODE_OPTIONS="--max-old-space-size=8192"
 
 BINARY_ALIAS=	python=${PYTHON_CMD}
 
