@@ -236,7 +236,8 @@ pre-build:
 		${SETENV} ${MAKE_ENV} $${npm_env} \
 			npm --userconfig=${WRKSRC}/.npmrc run install --if-present && \
 		${SETENV} ${MAKE_ENV} $${npm_env} \
-			node-gyp --userconfig=${WRKSRC}/.npmrc rebuild; \
+			node-gyp --userconfig=${WRKSRC}/.npmrc \
+			--jobs ${MAKE_JOBS_NUMBER} rebuild; \
 	done
 # rebuild native node modules in subdirectories
 	@for dir in `node --input-type=module -e "console.log(JSON.stringify((await import('${WRKSRC}/build/npm/dirs.ts')).dirs))" | jq -r '.[]'`; do \
@@ -250,7 +251,8 @@ pre-build:
 				${SETENV} ${MAKE_ENV} $${npm_env} \
 					npm --userconfig=${WRKSRC}/build/.npmrc run install --if-present && \
 				${SETENV} ${MAKE_ENV} $${npm_env} \
-					node-gyp --userconfig=${WRKSRC}/build/.npmrc rebuild; \
+					node-gyp --userconfig=${WRKSRC}/build/.npmrc \
+					--jobs ${MAKE_JOBS_NUMBER} rebuild; \
 			elif [ "`${ECHO_CMD} $${subdir} | ${GREP} /remote/`" ]; then \
 				cd $${subdir} && \
 				npm_env="npm_config_runtime=node \
@@ -259,7 +261,8 @@ pre-build:
 				${SETENV} ${MAKE_ENV} $${npm_env} \
 					npm --userconfig=${WRKSRC}/remote/.npmrc run install --if-present && \
 				${SETENV} ${MAKE_ENV} $${npm_env} \
-					node-gyp --userconfig=${WRKSRC}/remote/.npmrc rebuild; \
+					node-gyp --userconfig=${WRKSRC}/remote/.npmrc \
+					--jobs ${MAKE_JOBS_NUMBER} rebuild; \
 			else \
 				cd $${subdir} && \
 				npm_env="npm_config_runtime=electron \
@@ -268,7 +271,8 @@ pre-build:
 				${SETENV} ${MAKE_ENV} $${npm_env} \
 					npm --userconfig=${WRKSRC}/.npmrc run install --if-present && \
 				${SETENV} ${MAKE_ENV} $${npm_env} \
-					node-gyp --userconfig=${WRKSRC}/.npmrc rebuild; \
+					node-gyp --userconfig=${WRKSRC}/.npmrc \
+					--jobs ${MAKE_JOBS_NUMBER} rebuild; \
 			fi; \
 		done; \
 	done
