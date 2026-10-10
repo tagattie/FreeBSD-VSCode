@@ -55,7 +55,7 @@ jobs:
             if [ -n "${{ inputs.port-tag }}" ]; then
               echo "port_ref=${{ inputs.port-tag }}" >> ${GITHUB_OUTPUT}
             else
-              echo "port_ref=refs/heads/master" >> ${GITHUB_OUTPUT}
+              echo "port_ref=${{ github.ref }}" >> ${GITHUB_OUTPUT}
             fi
           else
             echo "port_ref=${{ github.event.release.tag_name }}" >> ${GITHUB_OUTPUT}
@@ -184,7 +184,7 @@ jobs:
             if [ -n "${{ inputs.port-tag }}" ]; then
               echo "port_ref=${{ inputs.port-tag }}" >> ${GITHUB_OUTPUT}
             else
-              echo "port_ref=refs/heads/master" >> ${GITHUB_OUTPUT}
+              echo "port_ref=${{ github.ref }}" >> ${GITHUB_OUTPUT}
             fi
           else
             echo "port_ref=${{ github.event.release.tag_name }}" >> ${GITHUB_OUTPUT}
@@ -285,7 +285,7 @@ jobs:
             if [ -n "${{ inputs.port-tag }}" ]; then
               echo "port_ref=${{ inputs.port-tag }}" >> ${GITHUB_OUTPUT}
             else
-              echo "port_ref=refs/heads/master" >> ${GITHUB_OUTPUT}
+              echo "port_ref=$${{ github.ref }}" >> ${GITHUB_OUTPUT}
             fi
           else
             echo "port_ref=${{ github.event.release.tag_name }}" >> ${GITHUB_OUTPUT}
