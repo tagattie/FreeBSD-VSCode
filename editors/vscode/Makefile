@@ -1,16 +1,31 @@
 PORTNAME=	vscode
 DISTVERSION=	${VSCODE_VERSION}
 CATEGORIES=	editors
-MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:node_modules \
-		https://registry.npmjs.org/@github/copilot-linux-${ELECTRON_ARCH}/-/:copilot_cli \
-		https://registry.npmjs.org/@github/copilot-sdk-linux-${ELECTRON_ARCH}/-/:copilot_sdk \
-		https://registry.npmjs.org/@vscode/os-proxy-resolver-linux-${ELECTRON_ARCH}-gnu/-/:os_proxy_resolver
-DISTFILES=	vscode-node-modules-${DISTVERSION}${EXTRACT_SUFX}:node_modules \
-		vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}:node_modules \
-		copilot-linux-${ELECTRON_ARCH}-${COPILOT_CLI_VERSION}.tgz:copilot_cli \
-		copilot-sdk-linux-${ELECTRON_ARCH}-${COPILOT_SDK_VERSION}.tgz:copilot_sdk \
-		os-proxy-resolver-linux-${ELECTRON_ARCH}-gnu-${OS_PROXY_RESOLVER_VERSION}.tgz:os_proxy_resolver
+MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DISTVERSION}/:node_modules
+DISTFILES=	vscode-marketplace-exts-${DISTVERSION}${EXTRACT_SUFX}:node_modules
 DIST_SUBDIR=	${PORTNAME}
+
+ONLY_FOR_ARCHS=	aarch64 amd64
+
+.if make(makesum)
+.   for arch in ${ONLY_FOR_ARCHS:S/aarch64/arm64/:S/amd64/x64/}
+MASTER_SITES+=	https://registry.npmjs.org/@github/copilot-linux-${arch}/-/:copilot_cli_${arch} \
+		https://registry.npmjs.org/@github/copilot-sdk-linux-${arch}/-/:copilot_sdk_${arch} \
+		https://registry.npmjs.org/@vscode/os-proxy-resolver-linux-${arch}-gnu/-/:os_proxy_resolver_${arch}
+DISTFILES+=	vscode-node-modules-${DISTVERSION}-${arch}${EXTRACT_SUFX}:node_modules \
+		copilot-linux-${arch}-${COPILOT_CLI_VERSION}.tgz:copilot_cli_${arch} \
+		copilot-sdk-linux-${arch}-${COPILOT_SDK_VERSION}.tgz:copilot_sdk_${arch} \
+		os-proxy-resolver-linux-${arch}-gnu-${OS_PROXY_RESOLVER_VERSION}.tgz:os_proxy_resolver_${arch}
+.   endfor
+.else
+MASTER_SITES+=	https://registry.npmjs.org/@github/copilot-linux-${ELECTRON_ARCH}/-/:copilot_cli_${ELECTRON_ARCH} \
+		https://registry.npmjs.org/@github/copilot-sdk-linux-${ELECTRON_ARCH}/-/:copilot_sdk_${ELECTRON_ARCH} \
+		https://registry.npmjs.org/@vscode/os-proxy-resolver-linux-${ELECTRON_ARCH}-gnu/-/:os_proxy_resolver_${ELECTRON_ARCH}
+DISTFILES+=	vscode-node-modules-${DISTVERSION}-${ELECTRON_ARCH}${EXTRACT_SUFX}:node_modules \
+		copilot-linux-${ELECTRON_ARCH}-${COPILOT_CLI_VERSION}.tgz:copilot_cli_${ELECTRON_ARCH} \
+		copilot-sdk-linux-${ELECTRON_ARCH}-${COPILOT_SDK_VERSION}.tgz:copilot_sdk_${ELECTRON_ARCH} \
+		os-proxy-resolver-linux-${ELECTRON_ARCH}-gnu-${OS_PROXY_RESOLVER_VERSION}.tgz:os_proxy_resolver_${ELECTRON_ARCH}
+.endif
 
 MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Visual Studio Code - Open Source ("Code - OSS")
@@ -18,8 +33,6 @@ WWW=		https://code.visualstudio.com/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
-
-ONLY_FOR_ARCHS=	amd64
 
 EXTRACT_DEPENDS=jq:textproc/jq \
 		node${NODEJS_VERSION}>0:www/node${NODEJS_VERSION}
@@ -101,9 +114,6 @@ DATADIR=	${PREFIX}/share/code-oss
 TMPDIR=		${WRKDIR}
 BUNDLE_LIBS=	yes
 
-# These patches are only required for vscode editor, not for REH
-EXTRA_PATCHES=	${PATCHDIR}/patches-os-proxy-resolver
-
 MAKE_ENV+=	BUILD_SOURCEVERSION=${SOURCE_COMMIT_HASH} \
 		VSCODE_QUALITY=stable
 # Don't create __pycache__ directory when executing node-gyp
@@ -116,6 +126,11 @@ UPSTREAM_ELECTRON_VER=	${ELECTRON_VER}
 
 .include "Makefile.version"
 .include <bsd.port.pre.mk>
+
+# These patches are only required for vscode editor, not for REH
+EXTRA_PATCHES=	${PATCHDIR}/patches-os-proxy-resolver-${ARCH}
+
+PLIST=		${.CURDIR}/pkg-plist.${ARCH}
 
 NODEJS_DIR=	${.CURDIR:H:H}/www/node${NODEJS_VERSION}
 .include "${NODEJS_DIR}/Makefile.version"
@@ -385,7 +400,7 @@ make-node-modules-archive: extract patch-package-json
 		fi; \
 	done
 	@cd ${WRKDIR} && \
-	${TAR} -czf vscode-node-modules-${DISTVERSION}${EXTRACT_SUFX} vscode-*-node-modules.tar.gz
+	${TAR} -czf vscode-node-modules-${DISTVERSION}-${ELECTRON_ARCH}${EXTRACT_SUFX} vscode-*-node-modules.tar.gz
 
 make-marketplace-exts-archive: extract
 	@${RM} -r ${WRKSRC}/.build/builtInExtensions

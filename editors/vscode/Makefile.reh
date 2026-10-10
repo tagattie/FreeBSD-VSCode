@@ -5,7 +5,7 @@ MASTER_SITES=	https://github.com/tagattie/FreeBSD-VSCode/releases/download/${DIS
 		https://registry.npmjs.org/@github/copilot-linux-${NODEJS_ARCH}/-/:copilot_cli \
 		https://registry.npmjs.org/@github/copilot-sdk-linux-${NODEJS_ARCH}/-/:copilot_sdk
 PKGNAMESUFFIX=	-reh
-DISTFILES=	vscode-node-modules-${DISTVERSION}${EXTRACT_SUFX}:node_modules \
+DISTFILES=	vscode-node-modules-${DISTVERSION}-${NODEJS_ARCH}${EXTRACT_SUFX}:node_modules \
 		copilot-linux-${NODEJS_ARCH}-${COPILOT_CLI_VERSION}.tgz:copilot_cli \
 		copilot-sdk-linux-${NODEJS_ARCH}-${COPILOT_SDK_VERSION}.tgz:copilot_sdk
 DIST_SUBDIR=	${PORTNAME}
@@ -66,7 +66,7 @@ BINARY_ALIAS=	python=${PYTHON_CMD}
 .include "Makefile.version"
 .include <bsd.port.pre.mk>
 
-NODEJS_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/:S/i386/ia32/}
+NODEJS_ARCH=	${ARCH:S/aarch64/arm64/:S/amd64/x64/}
 NODEJS_DIR=	${PORTSDIR}/www/node${NODEJS_VERSION}
 .include "${NODEJS_DIR}/Makefile.version"
 
