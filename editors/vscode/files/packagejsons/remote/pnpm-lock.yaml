@@ -1662,8 +1662,8 @@ packages:
   underscore@1.13.8:
     resolution: {integrity: sha512-DXtD3ZtEQzc7M8m4cXotyHR+FAS18C64asBYY5vqZexfYryNNnDc02W4hKg3rdQuqOYas1jkseX0+nZXjTXnvQ==}
 
-  undici@7.29.1:
-    resolution: {integrity: sha512-RYONW2MeafgYlkVOKYKkA/Ag7BmXqgIWCa8t1m0JcxrQg9pI9lEqRhAOruOBCbAohOa/gkCF+iPi9hrgvTzu6Q==}
+  undici@7.30.2:
+    resolution: {integrity: sha512-mLyPQnHwUxaM/rideoK/+KL8DaAJLRl4aBCfmX444aCSLnIaomqPLtNRe2jdCYcsk5wZzXrDIQC8ZeYNRAYyIA==}
     engines: {node: '>=20.18.1'}
 
   universalify@2.0.1:
@@ -2062,7 +2062,7 @@ snapshots:
       http-proxy-agent: 7.0.0
       https-proxy-agent: 7.0.2
       socks-proxy-agent: 8.0.4
-      undici: 7.29.1
+      undici: 7.30.2
     optionalDependencies:
       '@vscode/windows-ca-certs': 0.3.4
     transitivePeerDependencies:
@@ -2403,7 +2403,7 @@ snapshots:
       parse5: 7.3.0
       parse5-htmlparser2-tree-adapter: 7.1.0
       parse5-parser-stream: 7.1.2
-      undici: 7.29.1
+      undici: 7.30.2
       whatwg-mimetype: 4.0.0
 
   chownr@1.1.4: {}
@@ -3310,7 +3310,7 @@ snapshots:
 
   underscore@1.13.8: {}
 
-  undici@7.29.1: {}
+  undici@7.30.2: {}
 
   universalify@2.0.1: {}
 
