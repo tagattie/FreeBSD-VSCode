@@ -209,10 +209,12 @@ jobs:
           repository: microsoft/vscode
           ref: ${{ steps.checkout_ref.outputs.upstream_ref }}
           path: vscode
-      - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - name: Setup pnpm
+        uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0
         with:
-          node-version-file: 'vscode/.nvmrc'
+          node-version-file: .nvmrc
+          working-directory: vscode
+          install: false
       - name: Install necessary Ubuntu packages
         run: |
           sudo apt update -y
@@ -229,8 +231,6 @@ jobs:
                     patch-build_gulpfile.extensions.ts \
                     patch-build_gulpfile.reh.ts \
                     patch-build_gulpfile.vscode.ts \
-                    patch-package.json \
-                    patch-remote_package.json \
                     patch-src_vs_platform_agentHost_test_node_codex_codexProviderConfiguration.test.ts"
           for p in ${PATCHES}; do
             patch -s -p0 < ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/${p}
@@ -240,15 +240,19 @@ jobs:
             build/gulpfile.vscode.ts
           env FILESDIR=${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files \
             bash ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/update-product-json.sh .
+      - name: Update package.json
+        run:
+          pnpm add --dir vscode --save-prod --lockfile-only --workspace-root node-ovsx-sign
+          pnpm add --dir vscode/remote --save-prod --lockfile-only node-ovsx-sign
       - name: Install necessary node modules
-        run: cd vscode && npm install --no-progress --no-audit --no-fund --no-update-notifier
+        run: cd vscode && pnpm install
       - name: Build remote extension host
         run: |
           cd vscode
           max_tries=3
           count=0
           while true; do
-            npm run gulp vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-min && break
+            pnpm run gulp vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-min && break
             count=$((count + 1))
             if [ ${count} -ge ${max_tries} ]; then
               echo "Failed to build after ${max_tries} attempts."
