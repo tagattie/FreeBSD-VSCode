@@ -241,7 +241,7 @@ jobs:
           env FILESDIR=${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files \
             bash ${GITHUB_WORKSPACE}/FreeBSD-VSCode/editors/vscode/files/update-product-json.sh .
       - name: Update package.json
-        run:
+        run: |
           pnpm add --dir vscode --save-prod --lockfile-only --workspace-root node-ovsx-sign
           pnpm add --dir vscode/remote --save-prod --lockfile-only node-ovsx-sign
       - name: Install necessary node modules
