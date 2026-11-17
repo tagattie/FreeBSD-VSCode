@@ -222,6 +222,7 @@ jobs:
             build-essential \
             pkg-config \
             libkrb5-dev \
+            libsecret-1-dev \
             libx11-dev \
             libxkbfile-dev
       - name: Apply some of FreeBSD patches to vscode repository
