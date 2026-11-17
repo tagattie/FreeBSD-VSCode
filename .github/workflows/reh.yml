@@ -90,7 +90,7 @@ jobs:
           esac
           gh release download ${tag} --dir release-assets --pattern '*.tar.gz'
       - name: Build remote extension host
-        uses: vmactions/freebsd-vm@83b151f58c6047089f4c80eb5ba2039d158ce093 # v1.5.3
+        uses: vmactions/freebsd-vm@811efaaac0668df8bfb8308c3ec997b5ab50037b # v1.6.0
         with:
           envs: 'APPNAME PORTSDIR NODEJS_VERSION PYTHON_VERSION'
           usesh: true
@@ -153,7 +153,7 @@ jobs:
             mv work/${APPNAME}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-*.tar.gz .
             rm -rf work
       - name: Upload artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}
           path: FreeBSD-VSCode/editors/vscode/${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-*.tar.gz
@@ -268,7 +268,7 @@ jobs:
                 || steps.checkout_ref.outputs.upstream_ref }}.tar.gz \
             -C vscode-reh-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }} .
       - name: Upload artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}
           path: ${{ env.APPNAME }}-${{ matrix.settings.name }}-${{ matrix.settings.node_arch }}-*.tar.gz
@@ -300,7 +300,7 @@ jobs:
         with:
           ref: ${{ steps.checkout_ref.outputs.port_ref }}
       - name: Download all artifacts
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           path: artifacts
           merge-multiple: true
