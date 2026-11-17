@@ -246,7 +246,7 @@ jobs:
           pnpm add --dir vscode --save-prod --lockfile-only --workspace-root node-ovsx-sign
           pnpm add --dir vscode/remote --save-prod --lockfile-only node-ovsx-sign
       - name: Install necessary node modules
-        run: cd vscode && pnpm install
+        run: cd vscode && pnpm config --global set dangerously-allow-all-builds true && pnpm install
       - name: Build remote extension host
         run: |
           cd vscode
