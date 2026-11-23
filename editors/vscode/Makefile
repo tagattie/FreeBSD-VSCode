@@ -105,9 +105,7 @@ EXTRA_PATCHES=	${PATCHDIR}/os-proxy-resolver
 NPM_FETCH_CMD=		${NPM_CMDNAME} install
 NPM_FETCH_FLAGS+=	--os freebsd \
 			--os linux
-MAKE_ENV+=		npm_config_offline=true \
-			pnpm_config_offline=true \
-			pnpm_config_store_dir=${WRKDIR}/node-modules-cache/${NPM_MODULE_CACHE} \
+MAKE_ENV+=		pnpm_config_store_dir=${WRKDIR}/node-modules-cache/${NPM_MODULE_CACHE} \
 			pnpm_config_supported_architectures='{"os":["linux","freebsd"]}' \
 			pnpm_config_trust_lockfile=true
 UPSTREAM_ELECTRON_VER=	${ELECTRON_VER}
@@ -232,7 +230,9 @@ do-build:
 	@${CHMOD} +x ${WRKDIR}/.bin/npm
 # build and package vscode
 	cd ${WRKSRC} && \
-	pnpm_env="pnpm_config_runtime=electron \
+	pnpm_env="npm_config_offline=true \
+		pnpm_config_offline=true \
+		pnpm_config_runtime=electron \
 		pnpm_config_target=${ELECTRON_VER} \
 		pnpm_config_nodedir=${LOCALBASE}/share/electron${ELECTRON_VER_MAJOR}/node_headers" && \
 	${SETENV} ${MAKE_ENV} $${pnpm_env} \
