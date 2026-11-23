@@ -121,7 +121,8 @@ jobs:
                   NEEDS_BUILD="${NEEDS_BUILD} ${dep_o}"
                 fi
               else
-                if [ "$(pkg version -t $(pkg rquery %v ${dep_o}) ${dep_v})" != "<" ]; then
+                if pkg rquery %v ${dep_o} >/dev/null && \
+                  [ "$(pkg version -t $(pkg rquery %v ${dep_o}) ${dep_v})" != "<" ]; then
                   AVAILABLE_PACKAGES="${AVAILABLE_PACKAGES} ${dep_o}"
                 else
                   NEEDS_BUILD="${NEEDS_BUILD} ${dep_o}"
