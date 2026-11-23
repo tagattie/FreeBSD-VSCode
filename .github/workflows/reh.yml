@@ -4,6 +4,7 @@ env:
   PORTSDIR: ${{ github.workspace }}/ports
   NODEJS_VERSION: '24'
   PYTHON_VERSION: '312'
+  TYPESCRIPT_VERSION: '7.1.0.d.20261105.1'
 
 on:
   release:
@@ -92,7 +93,7 @@ jobs:
       - name: Build remote extension host
         uses: vmactions/freebsd-vm@811efaaac0668df8bfb8308c3ec997b5ab50037b # v1.6.0
         with:
-          envs: 'APPNAME PORTSDIR NODEJS_VERSION PYTHON_VERSION'
+          envs: 'APPNAME PORTSDIR NODEJS_VERSION PYTHON_VERSION TYPESCRIPT_VERSION'
           usesh: true
           mem: 12288
           release: '14.4' # lowest supported release
@@ -104,7 +105,7 @@ jobs:
             pkg upgrade -Uy
 
             DEPENDENCIES="www/node${NODEJS_VERSION} www/npm-node${NODEJS_VERSION}"
-            DEPENDENCIES="${DEPENDENCIES} devel/pkgconf lang/python${PYTHON_VERSION} lang/rust textproc/jq"
+            DEPENDENCIES="${DEPENDENCIES} devel/pkgconf lang/python${PYTHON_VERSION} lang/typescript-devel:${TYPESCRIPT_VERSION} textproc/jq"
             DEPENDENCIES="${DEPENDENCIES} security/krb5 security/libsecret textproc/ripgrep textproc/tgrep"
 
             : "${NEEDS_BUILD:=}"
